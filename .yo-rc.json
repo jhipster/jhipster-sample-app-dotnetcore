@@ -1,0 +1,39 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "nativeLanguage": "en"
+    },
+    "namespace": "MyCompany",
+    "databaseType": "sqllite",
+    "authenticationType": "jwt",
+    "prodDatabaseType": "mysql",
+    "jhipsterVersion": "6.10.1",
+    "applicationType": "monolith",
+    "baseName": "jhipster",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "creationTimestamp": 1597783430481,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [
+      {
+        "name": "generator-jhipster-dotnetcore",
+        "version": "1.1.1"
+      }
+    ],
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": ["en"],
+    "blueprints": [
+      {
+        "name": "generator-jhipster-dotnetcore",
+        "version": "1.1.1"
+      }
+    ]
+  }
+}
