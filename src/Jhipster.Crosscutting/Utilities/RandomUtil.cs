@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 
 namespace MyCompany.Service.Utilities {
-    public class RandomUtil {
+    public static class RandomUtil {
         private const int DefCount = 20;
         private static readonly Random random = new Random();
 
