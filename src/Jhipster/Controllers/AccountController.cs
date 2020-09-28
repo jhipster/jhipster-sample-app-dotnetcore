@@ -1,15 +1,10 @@
 using AutoMapper;
 using System;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Security.Claims;
 using MyCompany.Domain;
 using MyCompany.Dto;
 using MyCompany.Web.Extensions;
 using MyCompany.Web.Filters;
-using MyCompany.Web.Rest.Problems;
-using MyCompany.Configuration;
-using MyCompany.Crosscutting.Constants;
 using MyCompany.Crosscutting.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using MyCompany.Domain.Services.Interfaces;

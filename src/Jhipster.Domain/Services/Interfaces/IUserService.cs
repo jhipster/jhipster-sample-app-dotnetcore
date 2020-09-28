@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using MyCompany.Crosscutting.Constants;
-using MyCompany.Crosscutting.Exceptions;
-using MyCompany.Domain;
 
 namespace MyCompany.Domain.Services.Interfaces {
     public interface IUserService {
