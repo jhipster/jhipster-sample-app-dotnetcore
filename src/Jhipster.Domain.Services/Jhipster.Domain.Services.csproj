@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Jhipster.Domain.Services</RootNamespace>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JHipsterNet.Core" Version="1.0.6" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+        <PackageReference Include="LanguageExt.Core" Version="3.4.15" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Jhipster.Infrastructure\Jhipster.Infrastructure.csproj" />
+        <ProjectReference Include="..\Jhipster.Domain\Jhipster.Domain.csproj" />
+        <ProjectReference Include="..\Jhipster.Crosscutting\Jhipster.Crosscutting.csproj" />
+    </ItemGroup>
+
+</Project>
