@@ -4,9 +4,11 @@ using Jhipster.Domain.Services.Interfaces;
 using Jhipster.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Domain.Services {
-    public class CountryService : ICountryService {
-        protected readonly ICountryRepository  _countryRepository;
+namespace Jhipster.Domain.Services
+{
+    public class CountryService : ICountryService
+    {
+        protected readonly ICountryRepository _countryRepository;
 
         public CountryService(ICountryRepository countryRepository)
         {

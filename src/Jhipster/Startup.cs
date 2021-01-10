@@ -12,8 +12,10 @@ using Newtonsoft.Json;
 
 [assembly: ApiController]
 
-namespace Jhipster {
-    public class Startup {
+namespace Jhipster
+{
+    public class Startup
+    {
         public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
@@ -27,7 +29,7 @@ namespace Jhipster {
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddNhipsterModule(Configuration);
+                .AddAppSettingsModule(Configuration);
 
             AddDatabase(services);
 
@@ -38,23 +40,23 @@ namespace Jhipster {
                 .AddAutoMapperModule()
                 .AddSwaggerModule()
                 .AddWebModule()
-                .AddRepositoryModule()            
+                .AddRepositoryModule()
                 .AddServiceModule();
 
-                
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public virtual void Configure(IApplicationBuilder app, IHostEnvironment env, IServiceProvider serviceProvider,
-            ApplicationDatabaseContext context, IOptions<JHipsterSettings> jhipsterSettingsOptions)
+            ApplicationDatabaseContext context, IOptions<SecuritySettings> securitySettingsOptions)
         {
-            var jhipsterSettings = jhipsterSettingsOptions.Value;
+            var securitySettings = securitySettingsOptions.Value;
             app
-                .UseApplicationSecurity(jhipsterSettings)
+                .UseApplicationSecurity(securitySettings)
                 .UseApplicationProblemDetails()
                 .UseApplicationSwagger()
                 .UseApplicationWeb(env)
-                .UseApplicationDatabase(serviceProvider, env)                
+                .UseApplicationDatabase(serviceProvider, env)
                 .UseApplicationIdentity(serviceProvider);
         }
 

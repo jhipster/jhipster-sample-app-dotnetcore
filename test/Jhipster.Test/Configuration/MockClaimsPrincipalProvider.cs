@@ -1,7 +1,9 @@
 using System.Security.Claims;
 
-namespace Jhipster.Test.Setup {
-    public class MockClaimsPrincipalProvider {
+namespace Jhipster.Test.Setup
+{
+    public class MockClaimsPrincipalProvider
+    {
         public MockClaimsPrincipalProvider(ClaimsPrincipal user)
         {
             User = user;

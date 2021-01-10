@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Jhipster.Web.Rest.Utilities {
-    public static class HeaderUtil {
+namespace Jhipster.Web.Rest.Utilities
+{
+    public static class HeaderUtil
+    {
         private static readonly string APPLICATION_NAME = "jhipsterApp";
 
         public static IHeaderDictionary CreateAlert(string message, string param)

@@ -26,7 +26,7 @@
                     <th scope="col"  jhiSortBy="jobTitle"><span jhiTranslate="jhipsterApp.job.jobTitle">Job Title</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="minSalary"><span jhiTranslate="jhipsterApp.job.minSalary">Min Salary</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="maxSalary"><span jhiTranslate="jhipsterApp.job.maxSalary">Max Salary</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="employee.id"><span jhiTranslate="jhipsterApp.job.employee">Employee</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="employeeId"><span jhiTranslate="jhipsterApp.job.employee">Employee</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -37,8 +37,8 @@
                     <td>{{ job.minSalary }}</td>
                     <td>{{ job.maxSalary }}</td>
                     <td>
-                        <div *ngIf="job.employee">
-                            <a [routerLink]="['/employee', job.employee?.id, 'view']" >{{ job.employee?.id }}</a>
+                        <div *ngIf="job.employeeId">
+                            <a [routerLink]="['/employee', job.employeeId , 'view']" >{{ job.employeeId }}</a>
                         </div>
                     </td>
                     <td class="text-right">

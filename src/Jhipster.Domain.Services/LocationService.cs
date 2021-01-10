@@ -4,9 +4,11 @@ using Jhipster.Domain.Services.Interfaces;
 using Jhipster.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Domain.Services {
-    public class LocationService : ILocationService {
-        protected readonly ILocationRepository  _locationRepository;
+namespace Jhipster.Domain.Services
+{
+    public class LocationService : ILocationService
+    {
+        protected readonly ILocationRepository _locationRepository;
 
         public LocationService(ILocationRepository locationRepository)
         {

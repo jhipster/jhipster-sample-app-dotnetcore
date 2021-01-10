@@ -33,8 +33,8 @@
                     <td><a [routerLink]="['/country', country.id, 'view']">{{ country.id }}</a></td>
                     <td>{{ country.countryName }}</td>
                     <td>
-                        <div *ngIf="country.region">
-                            <a [routerLink]="['/region', country.region?.id, 'view']" >{{ country.region?.id }}</a>
+                        <div *ngIf="country.regionId">
+                            <a [routerLink]="['/region', country.regionId , 'view']" >{{ country.regionId }}</a>
                         </div>
                     </td>
                     <td class="text-right">

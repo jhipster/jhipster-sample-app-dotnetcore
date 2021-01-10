@@ -26,8 +26,8 @@
                 </dd>
                 <dt><span jhiTranslate="jhipsterApp.location.country">Country</span></dt>
                 <dd>
-                    <div *ngIf="location.country">
-                        <a [routerLink]="['/country', location.country?.id, 'view']">{{ location.country?.id }}</a>
+                    <div *ngIf="location.countryId">
+                        <a [routerLink]="['/country', location.countryId, 'view']">{{ location.countryId }}</a>
                     </div>
                 </dd>
             </dl>

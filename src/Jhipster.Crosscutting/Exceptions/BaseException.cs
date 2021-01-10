@@ -1,6 +1,7 @@
 using System;
 
-namespace Jhipster.Crosscutting.Exceptions {
+namespace Jhipster.Crosscutting.Exceptions
+{
     public abstract class BaseException : Exception
     {
         public BaseException(string type, string detail) : this(type, detail, null, null)

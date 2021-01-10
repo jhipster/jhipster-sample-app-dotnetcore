@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Jhipster.Crosscutting.Constants;
 
-namespace Jhipster.Security {
-    public static class PoliciesConstants {
+namespace Jhipster.Security
+{
+    public static class PoliciesConstants
+    {
         public static readonly AuthorizationPolicy PolicyAdmin = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser().RequireRole(RolesConstants.ADMIN).Build();
 

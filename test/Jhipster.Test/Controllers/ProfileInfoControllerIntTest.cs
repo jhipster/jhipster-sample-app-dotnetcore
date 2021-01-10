@@ -6,15 +6,16 @@ using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
+namespace Jhipster.Test.Controllers
+{
     public class ProfileInfoControllerIntTest
     {
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
 
         public ProfileInfoControllerIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>();
+            _factory = new AppWebApplicationFactory<TestStartup>();
         }
 
         [Fact]

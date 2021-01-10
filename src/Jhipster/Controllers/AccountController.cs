@@ -17,11 +17,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
 
     [Route("api")]
     [ApiController]
-    public class AccountController : ControllerBase {
+    public class AccountController : ControllerBase
+    {
 
         private readonly ILogger<AccountController> _log;
         private readonly IMailService _mailService;

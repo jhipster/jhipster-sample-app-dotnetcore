@@ -2,8 +2,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Jhipster.Web.Extensions {
-    public class ActionResultWithHeaders : ActionResult {
+namespace Jhipster.Web.Extensions
+{
+    public class ActionResultWithHeaders : ActionResult
+    {
         private readonly IHeaderDictionary _headers;
         private readonly ActionResult _result;
 

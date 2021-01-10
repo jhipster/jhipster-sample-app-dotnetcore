@@ -25,9 +25,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jhipsterApp.department.location" for="field_location">Location</label>
-                    <select class="form-control" id="field_location" name="location" formControlName="location">
+                    <select class="form-control" id="field_location" name="location" formControlName="locationId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="locationOption.id === editForm.get('location')!.value?.id ? editForm.get('location')!.value : locationOption" *ngFor="let locationOption of locations; trackBy: trackById">{{ locationOption.id }}</option>
+                        <option [ngValue]="locationOption.id" *ngFor="let locationOption of locations; trackBy: trackById">{{ locationOption.id }}</option>
                     </select>
                 </div>
             </div>

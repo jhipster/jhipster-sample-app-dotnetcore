@@ -19,9 +19,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jhipsterApp.country.region" for="field_region">Region</label>
-                    <select class="form-control" id="field_region" name="region" formControlName="region">
+                    <select class="form-control" id="field_region" name="region" formControlName="regionId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="regionOption.id === editForm.get('region')!.value?.id ? editForm.get('region')!.value : regionOption" *ngFor="let regionOption of regions; trackBy: trackById">{{ regionOption.id }}</option>
+                        <option [ngValue]="regionOption.id" *ngFor="let regionOption of regions; trackBy: trackById">{{ regionOption.id }}</option>
                     </select>
                 </div>
             </div>

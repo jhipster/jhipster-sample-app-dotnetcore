@@ -7,13 +7,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Jhipster.Configuration {
-    public static class DatabaseConfiguration {
+namespace Jhipster.Configuration
+{
+    public static class DatabaseConfiguration
+    {
         public static IServiceCollection AddDatabaseModule(this IServiceCollection services, IConfiguration configuration)
         {
             var entityFrameworkConfiguration = configuration.GetSection("EntityFramework");
 
-            var connection = new SqliteConnection(new SqliteConnectionStringBuilder {
+            var connection = new SqliteConnection(new SqliteConnectionStringBuilder
+            {
                 DataSource = entityFrameworkConfiguration["DataSource"]
             }.ToString());
 

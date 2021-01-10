@@ -28,8 +28,8 @@
                 </dd>
                 <dt><span jhiTranslate="jhipsterApp.job.employee">Employee</span></dt>
                 <dd>
-                    <div *ngIf="job.employee">
-                        <a [routerLink]="['/employee', job.employee?.id, 'view']">{{ job.employee?.id }}</a>
+                    <div *ngIf="job.employeeId">
+                        <a [routerLink]="['/employee', job.employeeId, 'view']">{{ job.employeeId }}</a>
                     </div>
                 </dd>
             </dl>

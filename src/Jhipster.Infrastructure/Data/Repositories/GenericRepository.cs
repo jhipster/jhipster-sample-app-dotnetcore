@@ -27,17 +27,17 @@ namespace Jhipster.Infrastructure.Data.Repositories
         {
             return await _dbSet.FindAsync(id);
         }
-        
+
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
-        
+
         public virtual async Task<IPage<TEntity>> GetPageAsync(IPageable pageable)
         {
             return await _dbSet.UsePageableAsync(pageable);
         }
-        
+
         public virtual async Task<bool> Exists(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.AnyAsync(predicate);
@@ -59,13 +59,13 @@ namespace Jhipster.Infrastructure.Data.Repositories
         {
             var entry = _dbSet.Attach(entity);
             entry.State = EntityState.Added;
-            return entity; 
+            return entity;
         }
 
         public virtual TEntity Update(TEntity entity)
         {
             _dbSet.Update(entity);
-            return entity; 
+            return entity;
         }
 
         public virtual bool UpdateRange(params TEntity[] entities)
@@ -87,7 +87,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
             var entity = await GetOneAsync(id);
             _dbSet.Remove(entity);
         }
-        
+
         public virtual async Task DeleteAsync(TEntity entity)
         {
             await Task.FromResult(_dbSet.Remove(entity));
@@ -116,14 +116,14 @@ namespace Jhipster.Infrastructure.Data.Repositories
 
             var manyToManyData = await dbset
                 .Where(joinPropertyBag => joinPropertyBag[ownerIdKey].Equals(ownerEntityId))
-                .ToListAsync();            
+                .ToListAsync();
 
             var filteredManyToManyData = manyToManyData
                 .Where(joinPropertyBag => !idsToIgnore.Any(idToIgnore => joinPropertyBag[ownedIdKey].Equals(idToIgnore)))
                 .ToList();
 
             dbset.RemoveRange(filteredManyToManyData);
-        }        
+        }
 
         public void Dispose()
         {

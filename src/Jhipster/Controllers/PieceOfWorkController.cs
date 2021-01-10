@@ -16,11 +16,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
     [Authorize]
     [Route("api")]
     [ApiController]
-    public class PieceOfWorkController : ControllerBase {
+    public class PieceOfWorkController : ControllerBase
+    {
         private const string EntityName = "pieceOfWork";
         private readonly IMapper _mapper;
         private readonly IPieceOfWorkService _pieceOfWorkService;
@@ -55,9 +57,6 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug($"REST request to update PieceOfWork : {pieceOfWorkDto}");
             if (pieceOfWorkDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
-
-            //TODO catch //DbUpdateConcurrencyException into problem
-
             PieceOfWork pieceOfWork = _mapper.Map<PieceOfWork>(pieceOfWorkDto);
             await _pieceOfWorkService.Save(pieceOfWork);
             return Ok(pieceOfWork)
@@ -69,7 +68,7 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug("REST request to get a page of PieceOfWorks");
             var result = await _pieceOfWorkService.FindAll(pageable);
-            var page = new Page<PieceOfWorkDto>(result.Content.Select(entity => _mapper.Map<PieceOfWorkDto>(entity)).ToList(),pageable,result.TotalElements);
+            var page = new Page<PieceOfWorkDto>(result.Content.Select(entity => _mapper.Map<PieceOfWorkDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<PieceOfWorkDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 

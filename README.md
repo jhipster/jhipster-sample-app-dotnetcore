@@ -1,6 +1,6 @@
 # Jhipster
 
-This application was generated using JHipster 6.10.5 and JHipster .Net Core 2.0.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
+This application was generated using JHipster 6.10.5 and JHipster .Net Core 2.1.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
 
 ## Development
 
@@ -111,7 +111,7 @@ To format the dotnet code, run
 
 To launch your application's tests, run:
 
-    dotnet test --list-tests --verbosity normal
+    dotnet test --verbosity normal
 
 ### Client tests
 

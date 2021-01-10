@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Jhipster.Dto {
+namespace Jhipster.Dto
+{
 
-    public class JobDto {
+    public class JobDto
+    {
 
         public long Id { get; set; }
 
@@ -15,7 +17,7 @@ namespace Jhipster.Dto {
 
         public IList<PieceOfWorkDto> Chores { get; set; } = new List<PieceOfWorkDto>();
 
-        public EmployeeDto Employee { get; set; }
+        public long? EmployeeId { get; set; }
 
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove

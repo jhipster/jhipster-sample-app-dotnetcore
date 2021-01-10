@@ -16,11 +16,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
     [Authorize]
     [Route("api")]
     [ApiController]
-    public class RegionController : ControllerBase {
+    public class RegionController : ControllerBase
+    {
         private const string EntityName = "region";
         private readonly IMapper _mapper;
         private readonly IRegionService _regionService;
@@ -55,9 +57,6 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug($"REST request to update Region : {regionDto}");
             if (regionDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
-
-            //TODO catch //DbUpdateConcurrencyException into problem
-
             Region region = _mapper.Map<Region>(regionDto);
             await _regionService.Save(region);
             return Ok(region)
@@ -69,7 +68,7 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug("REST request to get a page of Regions");
             var result = await _regionService.FindAll(pageable);
-            var page = new Page<RegionDto>(result.Content.Select(entity => _mapper.Map<RegionDto>(entity)).ToList(),pageable,result.TotalElements);
+            var page = new Page<RegionDto>(result.Content.Select(entity => _mapper.Map<RegionDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<RegionDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 

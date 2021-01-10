@@ -16,19 +16,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
     [Authorize]
     [Route("api")]
     [ApiController]
-    public class EmployeeController : ControllerBase {
+    public class EmployeeController : ControllerBase
+    {
         private const string EntityName = "employee";
         private readonly IMapper _mapper;
-        private readonly IEmployeeRepository  _employeeRepository;
+        private readonly IEmployeeRepository _employeeRepository;
         private readonly ILogger<EmployeeController> _log;
 
         public EmployeeController(ILogger<EmployeeController> log,
             IMapper mapper,
-            IEmployeeRepository  employeeRepository)
+            IEmployeeRepository employeeRepository)
         {
             _log = log;
             _mapper = mapper;
@@ -56,9 +58,6 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug($"REST request to update Employee : {employeeDto}");
             if (employeeDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
-
-            //TODO catch //DbUpdateConcurrencyException into problem
-
             Employee employee = _mapper.Map<Employee>(employeeDto);
             await _employeeRepository.CreateOrUpdateAsync(employee);
             await _employeeRepository.SaveChangesAsync();
@@ -74,7 +73,7 @@ namespace Jhipster.Controllers {
                 .Include(employee => employee.Manager)
                 .Include(employee => employee.Department)
                 .GetPageAsync(pageable);
-            var page = new Page<EmployeeDto>(result.Content.Select(entity => _mapper.Map<EmployeeDto>(entity)).ToList(),pageable,result.TotalElements);
+            var page = new Page<EmployeeDto>(result.Content.Select(entity => _mapper.Map<EmployeeDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<EmployeeDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 

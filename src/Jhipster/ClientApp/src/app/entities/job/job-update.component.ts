@@ -29,7 +29,7 @@ export class JobUpdateComponent implements OnInit {
     minSalary: [],
     maxSalary: [],
     chores: [],
-    employee: [],
+    employeeId: [],
   });
 
   constructor(
@@ -57,7 +57,7 @@ export class JobUpdateComponent implements OnInit {
       minSalary: job.minSalary,
       maxSalary: job.maxSalary,
       chores: job.chores,
-      employee: job.employee,
+      employeeId: job.employeeId,
     });
   }
 
@@ -83,7 +83,7 @@ export class JobUpdateComponent implements OnInit {
       minSalary: this.editForm.get(['minSalary'])!.value,
       maxSalary: this.editForm.get(['maxSalary'])!.value,
       chores: this.editForm.get(['chores'])!.value,
-      employee: this.editForm.get(['employee'])!.value,
+      employeeId: this.editForm.get(['employeeId'])!.value,
     };
   }
 

@@ -20,29 +20,34 @@ using Microsoft.IdentityModel.Tokens;
 using AuthenticationService = Jhipster.Domain.Services.AuthenticationService;
 using IAuthenticationService = Jhipster.Domain.Services.Interfaces.IAuthenticationService;
 
-namespace Jhipster.Configuration {
-    public static class SecurityStartup {
+namespace Jhipster.Configuration
+{
+    public static class SecurityStartup
+    {
 
         public const string UserNameClaimType = JwtRegisteredClaimNames.Sub;
 
         public static IServiceCollection AddSecurityModule(this IServiceCollection services)
         {
             //TODO Retrieve the signing key properly (DRY with TokenProvider)
-            var opt = services.BuildServiceProvider().GetRequiredService<IOptions<JHipsterSettings>>();
-            var jhipsterSettings = opt.Value;
+            var opt = services.BuildServiceProvider().GetRequiredService<IOptions<SecuritySettings>>();
+            var securitySettings = opt.Value;
             byte[] keyBytes;
-            var secret = jhipsterSettings.Security.Authentication.Jwt.Secret;
+            var secret = securitySettings.Authentication.Jwt.Secret;
 
-            if (!string.IsNullOrWhiteSpace(secret)) {
+            if (!string.IsNullOrWhiteSpace(secret))
+            {
                 keyBytes = Encoding.ASCII.GetBytes(secret);
             }
-            else {
-                keyBytes = Convert.FromBase64String(jhipsterSettings.Security.Authentication.Jwt.Base64Secret);
+            else
+            {
+                keyBytes = Convert.FromBase64String(securitySettings.Authentication.Jwt.Base64Secret);
             }
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
 
-            services.AddIdentity<User, Role>(options => {
+            services.AddIdentity<User, Role>(options =>
+                {
                     options.SignIn.RequireConfirmedEmail = true;
                     options.ClaimsIdentity.UserNameClaimType = UserNameClaimType;
                 })
@@ -54,15 +59,18 @@ namespace Jhipster.Configuration {
                 .AddDefaultTokenProviders();
 
             services
-                .AddAuthentication(options => {
+                .AddAuthentication(options =>
+                {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(cfg => {
+                .AddJwtBearer(cfg =>
+                {
                     cfg.RequireHttpsMetadata = false;
                     cfg.SaveToken = true;
-                    cfg.TokenValidationParameters = new TokenValidationParameters {
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
@@ -78,20 +86,23 @@ namespace Jhipster.Configuration {
         }
 
         public static IApplicationBuilder UseApplicationSecurity(this IApplicationBuilder app,
-            JHipsterSettings jhipsterSettings)
+            SecuritySettings securitySettings)
         {
-            app.UseCors(CorsPolicyBuilder(jhipsterSettings.Cors));
+            app.UseCors(CorsPolicyBuilder(securitySettings.Cors));
             app.UseAuthentication();
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-            app.UseHttpsRedirection();
+            if (securitySettings.EnforceHttps)
+            {
+                app.UseHsts();
+                app.UseHttpsRedirection();
+            }
             return app;
         }
 
         private static Action<CorsPolicyBuilder> CorsPolicyBuilder(Cors config)
         {
             //TODO implement an url based cors policy rather than global or per controller
-            return builder => {
+            return builder =>
+            {
                 if (!config.AllowedOrigins.Equals("*"))
                 {
                     if (config.AllowCredentials)

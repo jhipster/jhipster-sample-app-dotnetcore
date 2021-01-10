@@ -11,7 +11,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
 {
     public class PieceOfWorkRepository : GenericRepository<PieceOfWork>, IPieceOfWorkRepository
     {
-        public PieceOfWorkRepository(IUnitOfWork context) : base(context) 
+        public PieceOfWorkRepository(IUnitOfWork context) : base(context)
         {
         }
 
@@ -19,12 +19,14 @@ namespace Jhipster.Infrastructure.Data.Repositories
         {
             bool exists = await Exists(x => x.Id == pieceOfWork.Id);
 
-            if (pieceOfWork.Id != 0 && exists) {
+            if (pieceOfWork.Id != 0 && exists)
+            {
                 Update(pieceOfWork);
-            } else {
-                _context.AddGraph(pieceOfWork);
             }
-
+            else
+            {
+                _context.AddOrUpdateGraph(pieceOfWork);
+            }
             return pieceOfWork;
         }
     }

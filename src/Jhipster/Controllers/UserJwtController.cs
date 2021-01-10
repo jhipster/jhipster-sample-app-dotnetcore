@@ -10,10 +10,12 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
     [Route("api")]
     [ApiController]
-    public class UserJwtController : ControllerBase {
+    public class UserJwtController : ControllerBase
+    {
         private readonly IAuthenticationService _authenticationService;
         private readonly ITokenProvider _tokenProvider;
 
@@ -30,14 +32,16 @@ namespace Jhipster.Controllers {
             var user = await _authenticationService.Authenticate(LoginDto.Username, LoginDto.Password);
             var rememberMe = LoginDto.RememberMe;
             var jwt = _tokenProvider.CreateToken(user, rememberMe);
-            var httpHeaders = new HeaderDictionary {
+            var httpHeaders = new HeaderDictionary
+            {
                 [JwtConstants.AuthorizationHeader] = $"{JwtConstants.BearerPrefix} {jwt}"
             };
             return Ok(new JwtToken(jwt)).WithHeaders(httpHeaders);
         }
     }
 
-    public class JwtToken {
+    public class JwtToken
+    {
         public JwtToken(string idToken)
         {
             IdToken = idToken;

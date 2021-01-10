@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 
-namespace Jhipster.Test.Setup {
-    public class MockHttpContextFactory : IHttpContextFactory {
+namespace Jhipster.Test.Setup
+{
+    public class MockHttpContextFactory : IHttpContextFactory
+    {
         private readonly DefaultHttpContextFactory _delegate;
         private readonly MockClaimsPrincipalProvider _mockClaimsPrincipalProvider;
 

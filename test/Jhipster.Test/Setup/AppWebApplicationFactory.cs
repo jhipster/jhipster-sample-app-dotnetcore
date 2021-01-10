@@ -15,9 +15,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace Jhipster.Test.Setup {
-    public class NhipsterWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint>
-        where TEntryPoint : class {
+namespace Jhipster.Test.Setup
+{
+    public class AppWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint>
+        where TEntryPoint : class
+    {
         private IServiceProvider _serviceProvider;
         private ClaimsPrincipal _user { get; set; }
 
@@ -31,7 +33,8 @@ namespace Jhipster.Test.Setup {
         {
             builder
                 .UseSolutionRelativeContentRoot("src/Jhipster")
-                .ConfigureServices(services => {
+                .ConfigureServices(services =>
+                {
                     services
                         .AddMvc(TestMvcStartup.ConfigureMvcAuthorization());
                     services.Replace(new ServiceDescriptor(typeof(IHttpContextFactory), typeof(MockHttpContextFactory),
@@ -47,7 +50,7 @@ namespace Jhipster.Test.Setup {
             return _serviceProvider.GetRequiredService<TService>();
         }
 
-        public NhipsterWebApplicationFactory<TEntryPoint> WithMockUser(string name = "user",
+        public AppWebApplicationFactory<TEntryPoint> WithMockUser(string name = "user",
             IEnumerable<string> roles = null, string authenticationType = "MockAuthenticationType")
         {
             _user = BuildClaimsPrincipal(name, roles, authenticationType);
@@ -57,9 +60,9 @@ namespace Jhipster.Test.Setup {
         private static ClaimsPrincipal BuildClaimsPrincipal(string name, IEnumerable<string> roles,
             string authenticationType)
         {
-            if (roles == null || !roles.Any()) roles = new HashSet<string> {RolesConstants.USER};
+            if (roles == null || !roles.Any()) roles = new HashSet<string> { RolesConstants.USER };
 
-            var claims = new List<Claim> {new Claim(SecurityStartup.UserNameClaimType, name)};
+            var claims = new List<Claim> { new Claim(SecurityStartup.UserNameClaimType, name) };
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
             return new ClaimsPrincipal(new ClaimsIdentity(claims.ToArray(), authenticationType));
         }

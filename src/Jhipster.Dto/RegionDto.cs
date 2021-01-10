@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Jhipster.Dto {
+namespace Jhipster.Dto
+{
 
-    public class RegionDto {
+    public class RegionDto
+    {
 
         public long Id { get; set; }
 

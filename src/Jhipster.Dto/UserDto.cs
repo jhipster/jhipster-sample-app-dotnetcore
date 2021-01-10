@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Jhipster.Crosscutting.Constants;
 using Newtonsoft.Json;
 
-namespace Jhipster.Dto {
-    public class UserDto {
+namespace Jhipster.Dto
+{
+    public class UserDto
+    {
         public string Id { get; set; }
 
         [Required]
@@ -38,6 +41,7 @@ namespace Jhipster.Dto {
         public DateTime? LastModifiedDate { get; set; }
 
         [JsonProperty(PropertyName = "authorities")]
+        [JsonPropertyName("authorities")]
         public ISet<string> Roles { get; set; }
     }
 }

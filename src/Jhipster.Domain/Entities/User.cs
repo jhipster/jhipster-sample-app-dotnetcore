@@ -6,9 +6,12 @@ using Jhipster.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 
-namespace Jhipster.Domain {
-    public class User : IdentityUser, IAuditedEntityBase {
-        public string Login {
+namespace Jhipster.Domain
+{
+    public class User : IdentityUser, IAuditedEntityBase
+    {
+        public string Login
+        {
             get => UserName;
             set => UserName = value;
         }

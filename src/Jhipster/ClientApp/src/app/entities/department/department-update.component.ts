@@ -22,7 +22,7 @@ export class DepartmentUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     departmentName: [null, [Validators.required]],
-    location: [],
+    locationId: [],
   });
 
   constructor(
@@ -44,11 +44,11 @@ export class DepartmentUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: ILocation[]) => {
-          if (!department.location || !department.location.id) {
+          if (!department.locationId) {
             this.locations = resBody;
           } else {
             this.locationService
-              .find(department.location.id)
+              .find(department.locationId)
               .pipe(
                 map((subRes: HttpResponse<ILocation>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -64,7 +64,7 @@ export class DepartmentUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: department.id,
       departmentName: department.departmentName,
-      location: department.location,
+      locationId: department.locationId,
     });
   }
 
@@ -87,7 +87,7 @@ export class DepartmentUpdateComponent implements OnInit {
       ...new Department(),
       id: this.editForm.get(['id'])!.value,
       departmentName: this.editForm.get(['departmentName'])!.value,
-      location: this.editForm.get(['location'])!.value,
+      locationId: this.editForm.get(['locationId'])!.value,
     };
   }
 

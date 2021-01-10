@@ -22,7 +22,7 @@ export class CountryUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     countryName: [],
-    region: [],
+    regionId: [],
   });
 
   constructor(
@@ -44,11 +44,11 @@ export class CountryUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IRegion[]) => {
-          if (!country.region || !country.region.id) {
+          if (!country.regionId) {
             this.regions = resBody;
           } else {
             this.regionService
-              .find(country.region.id)
+              .find(country.regionId)
               .pipe(
                 map((subRes: HttpResponse<IRegion>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -64,7 +64,7 @@ export class CountryUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: country.id,
       countryName: country.countryName,
-      region: country.region,
+      regionId: country.regionId,
     });
   }
 
@@ -87,7 +87,7 @@ export class CountryUpdateComponent implements OnInit {
       ...new Country(),
       id: this.editForm.get(['id'])!.value,
       countryName: this.editForm.get(['countryName'])!.value,
-      region: this.editForm.get(['region'])!.value,
+      regionId: this.editForm.get(['regionId'])!.value,
     };
   }
 

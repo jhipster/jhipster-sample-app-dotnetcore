@@ -56,17 +56,17 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jhipsterApp.employee.manager" for="field_manager">Manager</label>
-                    <select class="form-control" id="field_manager" name="manager" formControlName="manager">
+                    <select class="form-control" id="field_manager" name="manager" formControlName="managerId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="employeeOption.id === editForm.get('manager')!.value?.id ? editForm.get('manager')!.value : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackById">{{ employeeOption.id }}</option>
+                        <option [ngValue]="employeeOption.id" *ngFor="let employeeOption of employees; trackBy: trackById">{{ employeeOption.id }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jhipsterApp.employee.department" for="field_department">Department</label>
-                    <select class="form-control" id="field_department" name="department" formControlName="department">
+                    <select class="form-control" id="field_department" name="department" formControlName="departmentId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="departmentOption.id === editForm.get('department')!.value?.id ? editForm.get('department')!.value : departmentOption" *ngFor="let departmentOption of departments; trackBy: trackById">{{ departmentOption.id }}</option>
+                        <option [ngValue]="departmentOption.id" *ngFor="let departmentOption of departments; trackBy: trackById">{{ departmentOption.id }}</option>
                     </select>
                 </div>
             </div>

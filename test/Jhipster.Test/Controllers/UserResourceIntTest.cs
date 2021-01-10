@@ -15,11 +15,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class UserResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class UserResourceIntTest
+    {
         public UserResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>().WithMockUser("test", new HashSet<string> { RolesConstants.ADMIN });
+            _factory = new AppWebApplicationFactory<TestStartup>().WithMockUser("test", new HashSet<string> { RolesConstants.ADMIN });
             _client = _factory.CreateClient();
             _userManager = _factory.GetRequiredService<UserManager<User>>();
             _passwordHasher = _userManager.PasswordHasher;
@@ -57,7 +59,7 @@ namespace Jhipster.Test.Controllers {
         private const string DefaultLangkey = "en";
         private const string UpdatedLangkey = "fr";
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
 
 
@@ -69,7 +71,8 @@ namespace Jhipster.Test.Controllers {
 
         private User CreateEntity()
         {
-            return new User {
+            return new User
+            {
                 Login = $"{DefaultLogin}{TestUtil.RandomAlphabetic(5)}",
                 PasswordHash = _passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
                 Activated = true,
@@ -94,7 +97,8 @@ namespace Jhipster.Test.Controllers {
             var databaseSizeBeforeCreate = _userManager.Users.Count();
 
             // Create the User
-            var managedUserDto = new ManagedUserDto {
+            var managedUserDto = new ManagedUserDto
+            {
                 Login = DefaultLogin,
                 Password = DefaultPassword,
                 FirstName = DefaultFirstname,
@@ -103,7 +107,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = true,
                 ImageUrl = DefaultImageurl,
                 LangKey = DefaultLangkey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -130,7 +135,8 @@ namespace Jhipster.Test.Controllers {
             await _userManager.CreateAsync(_user);
             var databaseSizeBeforeCreate = _userManager.Users.Count();
 
-            var managedUserDto = new ManagedUserDto {
+            var managedUserDto = new ManagedUserDto
+            {
                 Login = "anotherlogin", // this email should already be used
                 Password = DefaultPassword,
                 FirstName = DefaultFirstname,
@@ -139,7 +145,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = true,
                 ImageUrl = DefaultImageurl,
                 LangKey = DefaultLangkey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -158,7 +165,8 @@ namespace Jhipster.Test.Controllers {
         {
             var databaseSizeBeforeCreate = _userManager.Users.Count();
 
-            var managedUserDto = new ManagedUserDto {
+            var managedUserDto = new ManagedUserDto
+            {
                 Id = "id",
                 Login = DefaultLogin,
                 Password = DefaultPassword,
@@ -189,7 +197,8 @@ namespace Jhipster.Test.Controllers {
             await _userManager.CreateAsync(_user);
             var databaseSizeBeforeCreate = _userManager.Users.Count();
 
-            var managedUserDto = new ManagedUserDto {
+            var managedUserDto = new ManagedUserDto
+            {
                 Login = DefaultLogin, // this login should already be used
                 Password = DefaultPassword,
                 FirstName = DefaultFirstname,
@@ -237,7 +246,7 @@ namespace Jhipster.Test.Controllers {
             var token = json.SelectToken("$");
             token.Should().BeOfType<JArray>();
             var array = token.ToObject<IEnumerable<string>>();
-            array.Should().Contain(new[] {RolesConstants.USER, RolesConstants.ADMIN});
+            array.Should().Contain(new[] { RolesConstants.USER, RolesConstants.ADMIN });
         }
 
         [Fact]
@@ -288,7 +297,8 @@ namespace Jhipster.Test.Controllers {
         [Fact]
         public void TestUserDtoToUser()
         {
-            var userDto = new UserDto {
+            var userDto = new UserDto
+            {
                 Id = DefaultId,
                 Login = DefaultLogin,
                 FirstName = DefaultFirstname,
@@ -318,10 +328,12 @@ namespace Jhipster.Test.Controllers {
         public void TestUserEquals()
         {
             TestUtil.EqualsVerifier(typeof(User));
-            var user1 = new User {
+            var user1 = new User
+            {
                 Id = "user-1"
             };
-            var user2 = new User {
+            var user2 = new User
+            {
                 Id = user1.Id
             };
             user1.Should().Be(user2);
@@ -336,8 +348,10 @@ namespace Jhipster.Test.Controllers {
         {
             _user.Id = DefaultId;
             //TODO set CreatedBy etc
-            var userRoles = new HashSet<UserRole> {
-                new UserRole {
+            var userRoles = new HashSet<UserRole>
+            {
+                new UserRole
+                {
                     UserId = _user.Id,
                     Role = new Role {Name = RolesConstants.USER}
                 }
@@ -367,7 +381,8 @@ namespace Jhipster.Test.Controllers {
             //Update the user
             var updatedUser = await _userManager.FindByIdAsync(_user.Id);
 
-            var managedUserDto = new ManagedUserDto {
+            var managedUserDto = new ManagedUserDto
+            {
                 Id = updatedUser.Id,
                 Login = updatedUser.Login,
                 Password = UpdatedPassword,
@@ -377,7 +392,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = updatedUser.Activated,
                 ImageUrl = UpdatedImageurl,
                 LangKey = UpdatedLangkey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -388,8 +404,8 @@ namespace Jhipster.Test.Controllers {
             // Validate the User in the database
             var userList = _userManager.Users.ToList();
             userList.Count().Should().Be(databaseSizeBeforeUpdate);
-//            var testUser = userList[userList.Count - 1];
-//            TODO FIX database refresh to prevent the usage of context/Reload
+            //            var testUser = userList[userList.Count - 1];
+            //            TODO FIX database refresh to prevent the usage of context/Reload
             var testUser = Fixme.ReloadUser(_factory, updatedUser);
             testUser.FirstName.Should().Be(UpdatedFirstname);
             testUser.LastName.Should().Be(UpdatedLastname);
@@ -404,7 +420,8 @@ namespace Jhipster.Test.Controllers {
             // Initialize the database with 2 users
             await _userManager.CreateAsync(_user);
 
-            var anotherUser = new User {
+            var anotherUser = new User
+            {
                 Login = "jhipster",
                 PasswordHash = _passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
                 Activated = true,
@@ -420,7 +437,8 @@ namespace Jhipster.Test.Controllers {
             var updatedUser = await _userManager.FindByIdAsync(_user.Id);
 
             //TODO Add CreatedBy, CreatedDate, ModifiedBy, ModidfieDate
-            var managedUserDto = new ManagedUserDto {
+            var managedUserDto = new ManagedUserDto
+            {
                 Id = updatedUser.Id,
                 Login = updatedUser.Login,
                 Password = updatedUser.PasswordHash,
@@ -430,7 +448,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = updatedUser.Activated,
                 ImageUrl = updatedUser.ImageUrl,
                 LangKey = updatedUser.LangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -445,7 +464,8 @@ namespace Jhipster.Test.Controllers {
             // Initialize the database
             await _userManager.CreateAsync(_user);
 
-            var anotherUser = new User {
+            var anotherUser = new User
+            {
                 Login = "jhipster",
                 PasswordHash = _passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
                 Activated = true,
@@ -461,7 +481,8 @@ namespace Jhipster.Test.Controllers {
             var updatedUser = await _userManager.FindByIdAsync(_user.Id);
 
             //TODO Add CreatedBy, CreatedDate, ModifiedBy, ModidfieDate
-            var managedUserDto = new ManagedUserDto {
+            var managedUserDto = new ManagedUserDto
+            {
                 Id = updatedUser.Id,
                 Login = "jhipster", //this login should be already used by anotherUser
                 Password = updatedUser.PasswordHash,
@@ -471,7 +492,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = updatedUser.Activated,
                 ImageUrl = updatedUser.ImageUrl,
                 LangKey = updatedUser.LangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -491,7 +513,8 @@ namespace Jhipster.Test.Controllers {
             var updatedUser = await _userManager.FindByIdAsync(_user.Id);
 
             //TODO Add CreatedBy, CreatedDate, ModifiedBy, ModidfieDate
-            var managedUserDto = new ManagedUserDto {
+            var managedUserDto = new ManagedUserDto
+            {
                 Id = updatedUser.Id,
                 Login = UpdatedLogin,
                 Password = UpdatedPassword,
@@ -501,7 +524,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = updatedUser.Activated,
                 ImageUrl = UpdatedImageurl,
                 LangKey = UpdatedLangkey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -512,8 +536,8 @@ namespace Jhipster.Test.Controllers {
             // Validate the User in the database
             var userList = _userManager.Users.ToList();
             userList.Count().Should().Be(databaseSizeBeforeUpdate);
-//            var testUser = userList[userList.Count - 1];
-//            TODO FIX database refresh to prevent the usage of context/Reload
+            //            var testUser = userList[userList.Count - 1];
+            //            TODO FIX database refresh to prevent the usage of context/Reload
             var testUser = Fixme.ReloadUser(_factory, updatedUser);
             testUser.Login.Should().Be(UpdatedLogin);
             testUser.FirstName.Should().Be(UpdatedFirstname);

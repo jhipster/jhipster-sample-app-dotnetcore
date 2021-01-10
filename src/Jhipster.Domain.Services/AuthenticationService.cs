@@ -12,8 +12,10 @@ using Jhipster.Crosscutting.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace Jhipster.Domain.Services {
-    public class AuthenticationService : IAuthenticationService {
+namespace Jhipster.Domain.Services
+{
+    public class AuthenticationService : IAuthenticationService
+    {
         private readonly ILogger<AuthenticationService> _log;
 
         private readonly UserManager<User> _userManager;
@@ -45,7 +47,8 @@ namespace Jhipster.Domain.Services {
         {
             _log.LogDebug($"Authenticating {username}");
 
-            if (new EmailAddressAttribute().IsValid(username)) {
+            if (new EmailAddressAttribute().IsValid(username))
+            {
                 var userByEmail = await _userManager.FindByEmailAsync(username);
                 if (userByEmail == null)
                     throw new UsernameNotFoundException(

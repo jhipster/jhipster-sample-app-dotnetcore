@@ -16,11 +16,13 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class EmployeeResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class EmployeeResourceIntTest
+    {
         public EmployeeResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>().WithMockUser();
+            _factory = new AppWebApplicationFactory<TestStartup>().WithMockUser();
             _client = _factory.CreateClient();
 
             _employeeRepository = _factory.GetRequiredService<IEmployeeRepository>();
@@ -56,9 +58,9 @@ namespace Jhipster.Test.Controllers {
         private static readonly long? DefaultCommissionPct = 1L;
         private static readonly long? UpdatedCommissionPct = 2L;
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
-        private readonly IEmployeeRepository  _employeeRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
         private Employee _employee;
 
@@ -66,7 +68,8 @@ namespace Jhipster.Test.Controllers {
 
         private Employee CreateEntity()
         {
-            return new Employee {
+            return new Employee
+            {
                 FirstName = DefaultFirstName,
                 LastName = DefaultLastName,
                 Email = DefaultEmail,
@@ -184,7 +187,7 @@ namespace Jhipster.Test.Controllers {
             // Update the employee
             var updatedEmployee = await _employeeRepository.QueryHelper().GetOneAsync(it => it.Id == _employee.Id);
             // Disconnect from session so that the updates on updatedEmployee are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedEmployee.FirstName = UpdatedFirstName;
             updatedEmployee.LastName = UpdatedLastName;
             updatedEmployee.Email = UpdatedEmail;
@@ -245,10 +248,12 @@ namespace Jhipster.Test.Controllers {
         public void EqualsVerifier()
         {
             TestUtil.EqualsVerifier(typeof(Employee));
-            var employee1 = new Employee {
+            var employee1 = new Employee
+            {
                 Id = 1L
             };
-            var employee2 = new Employee {
+            var employee2 = new Employee
+            {
                 Id = employee1.Id
             };
             employee1.Should().Be(employee2);

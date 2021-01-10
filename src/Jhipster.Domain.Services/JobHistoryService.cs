@@ -4,9 +4,11 @@ using Jhipster.Domain.Services.Interfaces;
 using Jhipster.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Domain.Services {
-    public class JobHistoryService : IJobHistoryService {
-        protected readonly IJobHistoryRepository  _jobHistoryRepository;
+namespace Jhipster.Domain.Services
+{
+    public class JobHistoryService : IJobHistoryService
+    {
+        protected readonly IJobHistoryRepository _jobHistoryRepository;
 
         public JobHistoryService(IJobHistoryRepository jobHistoryRepository)
         {

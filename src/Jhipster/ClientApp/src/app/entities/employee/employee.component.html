@@ -21,7 +21,7 @@
     <div class="table-responsive" id="entities" *ngIf="employees && employees.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="firstName"><span jhiTranslate="jhipsterApp.employee.firstName">First Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="lastName"><span jhiTranslate="jhipsterApp.employee.lastName">Last Name</span> <fa-icon icon="sort"></fa-icon></th>
@@ -30,12 +30,12 @@
                     <th scope="col"  jhiSortBy="hireDate"><span jhiTranslate="jhipsterApp.employee.hireDate">Hire Date</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="salary"><span jhiTranslate="jhipsterApp.employee.salary">Salary</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="commissionPct"><span jhiTranslate="jhipsterApp.employee.commissionPct">Commission Pct</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="manager.id"><span jhiTranslate="jhipsterApp.employee.manager">Manager</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="department.id"><span jhiTranslate="jhipsterApp.employee.department">Department</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="managerId"><span jhiTranslate="jhipsterApp.employee.manager">Manager</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="departmentId"><span jhiTranslate="jhipsterApp.employee.department">Department</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tbody>
                 <tr *ngFor="let employee of employees ;trackBy: trackId">
                     <td><a [routerLink]="['/employee', employee.id, 'view']">{{ employee.id }}</a></td>
                     <td>{{ employee.firstName }}</td>
@@ -46,13 +46,13 @@
                     <td>{{ employee.salary }}</td>
                     <td>{{ employee.commissionPct }}</td>
                     <td>
-                        <div *ngIf="employee.manager">
-                            <a [routerLink]="['/employee', employee.manager?.id, 'view']" >{{ employee.manager?.id }}</a>
+                        <div *ngIf="employee.managerId">
+                            <a [routerLink]="['/employee', employee.managerId , 'view']" >{{ employee.managerId }}</a>
                         </div>
                     </td>
                     <td>
-                        <div *ngIf="employee.department">
-                            <a [routerLink]="['/department', employee.department?.id, 'view']" >{{ employee.department?.id }}</a>
+                        <div *ngIf="employee.departmentId">
+                            <a [routerLink]="['/department', employee.departmentId , 'view']" >{{ employee.departmentId }}</a>
                         </div>
                     </td>
                     <td class="text-right">
@@ -81,5 +81,15 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div *ngIf="employees && employees.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
     </div>
 </div>

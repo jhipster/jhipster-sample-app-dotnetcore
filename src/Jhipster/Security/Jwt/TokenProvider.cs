@@ -10,17 +10,20 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Jhipster.Security.Jwt {
-    public interface ITokenProvider {
+namespace Jhipster.Security.Jwt
+{
+    public interface ITokenProvider
+    {
         string CreateToken(IPrincipal principal, bool rememberMe);
 
         ClaimsPrincipal TransformPrincipal(ClaimsPrincipal principal);
     }
 
-    public class TokenProvider : ITokenProvider {
+    public class TokenProvider : ITokenProvider
+    {
         private const string AuthoritiesKey = "auth";
 
-        private readonly JHipsterSettings _jhipsterSettings;
+        private readonly SecuritySettings _securitySettings;
 
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
@@ -33,10 +36,10 @@ namespace Jhipster.Security.Jwt {
         private long _tokenValidityInSecondsForRememberMe;
 
 
-        public TokenProvider(ILogger<TokenProvider> log, IOptions<JHipsterSettings> jhipsterSettings)
+        public TokenProvider(ILogger<TokenProvider> log, IOptions<SecuritySettings> securitySettings)
         {
             _log = log;
-            _jhipsterSettings = jhipsterSettings.Value;
+            _securitySettings = securitySettings.Value;
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             Init();
         }
@@ -49,7 +52,8 @@ namespace Jhipster.Security.Jwt {
                     ? _tokenValidityInSecondsForRememberMe
                     : _tokenValidityInSeconds);
 
-            var tokenDescriptor = new SecurityTokenDescriptor {
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
                 Subject = subject,
                 Expires = validity,
                 SigningCredentials = _key
@@ -61,7 +65,7 @@ namespace Jhipster.Security.Jwt {
 
         public ClaimsPrincipal TransformPrincipal(ClaimsPrincipal principal)
         {
-            var currentIdentity = (ClaimsIdentity) principal.Identity;
+            var currentIdentity = (ClaimsIdentity)principal.Identity;
             var roleClaims = principal
                 .Claims
                 .Filter(it => it.Type == AuthoritiesKey).First().Value
@@ -82,22 +86,24 @@ namespace Jhipster.Security.Jwt {
         private void Init()
         {
             byte[] keyBytes;
-            var secret = _jhipsterSettings.Security.Authentication.Jwt.Secret;
+            var secret = _securitySettings.Authentication.Jwt.Secret;
 
-            if (!string.IsNullOrWhiteSpace(secret)) {
+            if (!string.IsNullOrWhiteSpace(secret))
+            {
                 _log.LogWarning("Warning: the JWT key used is not Base64-encoded. " +
-                                "We recommend using the `jhipster.security.authentication.jwt.base64-secret` key for optimum security.");
+                                "We recommend using the `security.authentication.jwt.base64-secret` key for optimum security.");
                 keyBytes = Encoding.ASCII.GetBytes(secret);
             }
-            else {
+            else
+            {
                 _log.LogDebug("Using a Base64-encoded JWT secret key");
-                keyBytes = Convert.FromBase64String(_jhipsterSettings.Security.Authentication.Jwt.Base64Secret);
+                keyBytes = Convert.FromBase64String(_securitySettings.Authentication.Jwt.Base64Secret);
             }
 
             _key = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature);
-            _tokenValidityInSeconds = _jhipsterSettings.Security.Authentication.Jwt.TokenValidityInSeconds;
+            _tokenValidityInSeconds = _securitySettings.Authentication.Jwt.TokenValidityInSeconds;
             _tokenValidityInSecondsForRememberMe =
-                _jhipsterSettings.Security.Authentication.Jwt.TokenValidityInSecondsForRememberMe;
+                _securitySettings.Authentication.Jwt.TokenValidityInSecondsForRememberMe;
         }
 
         private static ClaimsIdentity CreateSubject(IPrincipal principal)

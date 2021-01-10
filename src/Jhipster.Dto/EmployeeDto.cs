@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Jhipster.Dto {
+namespace Jhipster.Dto
+{
 
-    public class EmployeeDto {
+    public class EmployeeDto
+    {
 
         public long Id { get; set; }
 
@@ -17,9 +19,9 @@ namespace Jhipster.Dto {
         public long? CommissionPct { get; set; }
         public IList<JobDto> Jobs { get; set; } = new List<JobDto>();
 
-        public EmployeeDto Manager { get; set; }
+        public long? ManagerId { get; set; }
 
-        public DepartmentDto Department { get; set; }
+        public long? DepartmentId { get; set; }
 
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove

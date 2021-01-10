@@ -2,15 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Jhipster.Dto {
+namespace Jhipster.Dto
+{
 
-    public class DepartmentDto {
+    public class DepartmentDto
+    {
 
         public long Id { get; set; }
 
         [Required]
         public string DepartmentName { get; set; }
-        public LocationDto Location { get; set; }
+        public long? LocationId { get; set; }
 
         public IList<EmployeeDto> Employees { get; set; } = new List<EmployeeDto>();
 

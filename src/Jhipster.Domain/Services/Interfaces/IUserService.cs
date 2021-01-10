@@ -6,8 +6,10 @@ using Jhipster.Crosscutting.Constants;
 using Jhipster.Crosscutting.Exceptions;
 using Jhipster.Domain;
 
-namespace Jhipster.Domain.Services.Interfaces {
-    public interface IUserService {
+namespace Jhipster.Domain.Services.Interfaces
+{
+    public interface IUserService
+    {
         Task<User> CreateUser(User userToCreate);
         IEnumerable<string> GetAuthorities();
         Task DeleteUser(string login);

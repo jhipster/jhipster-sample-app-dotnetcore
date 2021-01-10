@@ -22,20 +22,20 @@
                 </dd>
                 <dt><span jhiTranslate="jhipsterApp.jobHistory.job">Job</span></dt>
                 <dd>
-                    <div *ngIf="jobHistory.job">
-                        <a [routerLink]="['/job', jobHistory.job?.id, 'view']">{{ jobHistory.job?.id }}</a>
+                    <div *ngIf="jobHistory.jobId">
+                        <a [routerLink]="['/job', jobHistory.jobId, 'view']">{{ jobHistory.jobId }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jhipsterApp.jobHistory.department">Department</span></dt>
                 <dd>
-                    <div *ngIf="jobHistory.department">
-                        <a [routerLink]="['/department', jobHistory.department?.id, 'view']">{{ jobHistory.department?.id }}</a>
+                    <div *ngIf="jobHistory.departmentId">
+                        <a [routerLink]="['/department', jobHistory.departmentId, 'view']">{{ jobHistory.departmentId }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jhipsterApp.jobHistory.employee">Employee</span></dt>
                 <dd>
-                    <div *ngIf="jobHistory.employee">
-                        <a [routerLink]="['/employee', jobHistory.employee?.id, 'view']">{{ jobHistory.employee?.id }}</a>
+                    <div *ngIf="jobHistory.employeeId">
+                        <a [routerLink]="['/employee', jobHistory.employeeId, 'view']">{{ jobHistory.employeeId }}</a>
                     </div>
                 </dd>
             </dl>

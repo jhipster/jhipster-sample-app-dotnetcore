@@ -5,8 +5,10 @@ using System.Text;
 using FluentAssertions;
 using Newtonsoft.Json;
 
-namespace Jhipster.Test.Controllers {
-    public static class TestUtil {
+namespace Jhipster.Test.Controllers
+{
+    public static class TestUtil
+    {
         private static readonly Random random = new Random();
 
         public static HttpContent ToJsonContent(object model)
@@ -43,8 +45,8 @@ namespace Jhipster.Test.Controllers {
 
         public static void BuildHttpContextWithMockUser(string username)
         {
-//            var mock = new Mock<HttpContext>();
-//            mock.Setup(httpContext => httpContext.User).Returns(null);
+            //            var mock = new Mock<HttpContext>();
+            //            mock.Setup(httpContext => httpContext.User).Returns(null);
         }
     }
 }

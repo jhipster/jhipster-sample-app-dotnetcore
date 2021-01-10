@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jhipster.Domain {
+namespace Jhipster.Domain
+{
     [Table("employee")]
-    public class Employee {
+    public class Employee
+    {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -19,8 +21,10 @@ namespace Jhipster.Domain {
         public long? CommissionPct { get; set; }
         public IList<Job> Jobs { get; set; } = new List<Job>();
 
+        public long? ManagerId { get; set; }
         public Employee Manager { get; set; }
 
+        public long? DepartmentId { get; set; }
         public Department Department { get; set; }
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

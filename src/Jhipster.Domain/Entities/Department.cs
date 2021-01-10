@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jhipster.Domain {
+namespace Jhipster.Domain
+{
     [Table("department")]
-    public class Department {
+    public class Department
+    {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
         [Required]
         public string DepartmentName { get; set; }
-        public Location Location { get; set; }
+        public long? LocationId { get; set; }
 
+        public Location Location { get; set; }
         public IList<Employee> Employees { get; set; } = new List<Employee>();
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

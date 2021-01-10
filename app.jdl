@@ -103,8 +103,7 @@ relationship ManyToMany {
 }
 
 // Set pagination options
-paginate JobHistory, Employee with infinite-scroll
-paginate Job with pagination
+paginate JobHistory, Employee, Job with pagination
 
 // Use Data Transfert Objects (DTO)
 dto * with mapstruct

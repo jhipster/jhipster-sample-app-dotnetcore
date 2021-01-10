@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace Jhipster.Domain {
+namespace Jhipster.Domain
+{
     [Table("piece_of_work")]
-    public class PieceOfWork {
+    public class PieceOfWork
+    {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }

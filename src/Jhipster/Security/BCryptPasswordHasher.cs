@@ -1,8 +1,10 @@
 using Jhipster.Domain;
 using Microsoft.AspNetCore.Identity;
 
-namespace Jhipster.Security {
-    public class BCryptPasswordHasher : IPasswordHasher<User> {
+namespace Jhipster.Security
+{
+    public class BCryptPasswordHasher : IPasswordHasher<User>
+    {
         public string HashPassword(User user, string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);

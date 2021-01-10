@@ -15,11 +15,13 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class CountryResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class CountryResourceIntTest
+    {
         public CountryResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>().WithMockUser();
+            _factory = new AppWebApplicationFactory<TestStartup>().WithMockUser();
             _client = _factory.CreateClient();
 
             _countryRepository = _factory.GetRequiredService<ICountryRepository>();
@@ -37,9 +39,9 @@ namespace Jhipster.Test.Controllers {
         private const string DefaultCountryName = "AAAAAAAAAA";
         private const string UpdatedCountryName = "BBBBBBBBBB";
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
-        private readonly ICountryRepository  _countryRepository;
+        private readonly ICountryRepository _countryRepository;
 
         private Country _country;
 
@@ -47,7 +49,8 @@ namespace Jhipster.Test.Controllers {
 
         private Country CreateEntity()
         {
-            return new Country {
+            return new Country
+            {
                 CountryName = DefaultCountryName
             };
         }
@@ -141,7 +144,7 @@ namespace Jhipster.Test.Controllers {
             // Update the country
             var updatedCountry = await _countryRepository.QueryHelper().GetOneAsync(it => it.Id == _country.Id);
             // Disconnect from session so that the updates on updatedCountry are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedCountry.CountryName = UpdatedCountryName;
 
             CountryDto updatedCountryDto = _mapper.Map<CountryDto>(_country);
@@ -190,10 +193,12 @@ namespace Jhipster.Test.Controllers {
         public void EqualsVerifier()
         {
             TestUtil.EqualsVerifier(typeof(Country));
-            var country1 = new Country {
+            var country1 = new Country
+            {
                 Id = 1L
             };
-            var country2 = new Country {
+            var country2 = new Country
+            {
                 Id = country1.Id
             };
             country1.Should().Be(country2);

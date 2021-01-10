@@ -15,11 +15,13 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class PieceOfWorkResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class PieceOfWorkResourceIntTest
+    {
         public PieceOfWorkResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>().WithMockUser();
+            _factory = new AppWebApplicationFactory<TestStartup>().WithMockUser();
             _client = _factory.CreateClient();
 
             _pieceOfWorkRepository = _factory.GetRequiredService<IPieceOfWorkRepository>();
@@ -40,9 +42,9 @@ namespace Jhipster.Test.Controllers {
         private const string DefaultDescription = "AAAAAAAAAA";
         private const string UpdatedDescription = "BBBBBBBBBB";
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
-        private readonly IPieceOfWorkRepository  _pieceOfWorkRepository;
+        private readonly IPieceOfWorkRepository _pieceOfWorkRepository;
 
         private PieceOfWork _pieceOfWork;
 
@@ -50,7 +52,8 @@ namespace Jhipster.Test.Controllers {
 
         private PieceOfWork CreateEntity()
         {
-            return new PieceOfWork {
+            return new PieceOfWork
+            {
                 Title = DefaultTitle,
                 Description = DefaultDescription
             };
@@ -148,7 +151,7 @@ namespace Jhipster.Test.Controllers {
             // Update the pieceOfWork
             var updatedPieceOfWork = await _pieceOfWorkRepository.QueryHelper().GetOneAsync(it => it.Id == _pieceOfWork.Id);
             // Disconnect from session so that the updates on updatedPieceOfWork are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedPieceOfWork.Title = UpdatedTitle;
             updatedPieceOfWork.Description = UpdatedDescription;
 
@@ -199,10 +202,12 @@ namespace Jhipster.Test.Controllers {
         public void EqualsVerifier()
         {
             TestUtil.EqualsVerifier(typeof(PieceOfWork));
-            var pieceOfWork1 = new PieceOfWork {
+            var pieceOfWork1 = new PieceOfWork
+            {
                 Id = 1L
             };
-            var pieceOfWork2 = new PieceOfWork {
+            var pieceOfWork2 = new PieceOfWork
+            {
                 Id = pieceOfWork1.Id
             };
             pieceOfWork1.Should().Be(pieceOfWork2);

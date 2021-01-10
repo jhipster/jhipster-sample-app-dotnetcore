@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
         {
             _context.Set<TEntity>().RemoveNavigationProperty(ownerEntity, id);
         }
+
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             using var saveChangeTask = _context.SaveChangesAsync(cancellationToken);
@@ -44,13 +46,21 @@ namespace Jhipster.Infrastructure.Data.Repositories
             return _context.Set<T>(name);
         }
 
-        public void AddGraph<TEntiy>(TEntiy entity) where TEntiy : class
+        public void AddOrUpdateGraph<TEntiy>(TEntiy entity) where TEntiy : class
         {
-            _context.ChangeTracker.TrackGraph(entity, e => {
-                if (e.Entry.IsKeySet) {
-                    e.Entry.State = EntityState.Unchanged;
+            _context.ChangeTracker.TrackGraph(entity, e =>
+            {
+                var alreadyTrackedEntity = _context.ChangeTracker.Entries().FirstOrDefault(entry => entry.Entity.Equals(e.Entry.Entity));
+                if (alreadyTrackedEntity != null)
+                {
+                    return;
                 }
-                else {
+                if (e.Entry.IsKeySet)
+                {
+                    e.Entry.State = EntityState.Modified;
+                }
+                else
+                {
                     e.Entry.State = EntityState.Added;
                 }
             });

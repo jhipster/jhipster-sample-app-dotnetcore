@@ -11,18 +11,20 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class UserJwtControllerIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class UserJwtControllerIntTest
+    {
         public UserJwtControllerIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>();
+            _factory = new AppWebApplicationFactory<TestStartup>();
             _client = _factory.CreateClient();
 
             _userManager = _factory.GetRequiredService<UserManager<User>>();
             _passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
         }
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
 
         private readonly UserManager<User> _userManager;
@@ -31,7 +33,8 @@ namespace Jhipster.Test.Controllers {
         [Fact]
         public async Task TestAuthorize()
         {
-            var user = new User {
+            var user = new User
+            {
                 UserName = "user-jwt-controller",
                 Email = "user-jwt-controller@example.com",
                 PasswordHash = _passwordHasher.HashPassword(null, "test"),
@@ -39,7 +42,8 @@ namespace Jhipster.Test.Controllers {
             };
             await _userManager.CreateAsync(user);
 
-            var login = new LoginDto {
+            var login = new LoginDto
+            {
                 Username = "user-jwt-controller",
                 Password = "test"
             };
@@ -60,7 +64,8 @@ namespace Jhipster.Test.Controllers {
         [Fact]
         public async Task TestAuthorizeFails()
         {
-            var login = new LoginDto {
+            var login = new LoginDto
+            {
                 Username = "wrong-user",
                 Password = "wrong-password"
             };
@@ -78,7 +83,8 @@ namespace Jhipster.Test.Controllers {
         [Fact]
         public async Task TestAuthorizeWithRememberMe()
         {
-            var user = new User {
+            var user = new User
+            {
                 UserName = "user-jwt-controller",
                 Email = "user-jwt-controller@example.com",
                 PasswordHash = _passwordHasher.HashPassword(null, "test"),
@@ -87,7 +93,8 @@ namespace Jhipster.Test.Controllers {
 
             await _userManager.CreateAsync(user);
 
-            var login = new LoginDto {
+            var login = new LoginDto
+            {
                 Username = "user-jwt-controller",
                 Password = "test",
                 RememberMe = true

@@ -16,11 +16,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
     [Authorize]
     [Route("api")]
     [ApiController]
-    public class LocationController : ControllerBase {
+    public class LocationController : ControllerBase
+    {
         private const string EntityName = "location";
         private readonly IMapper _mapper;
         private readonly ILocationService _locationService;
@@ -55,9 +57,6 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug($"REST request to update Location : {locationDto}");
             if (locationDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
-
-            //TODO catch //DbUpdateConcurrencyException into problem
-
             Location location = _mapper.Map<Location>(locationDto);
             await _locationService.Save(location);
             return Ok(location)
@@ -69,7 +68,7 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug("REST request to get a page of Locations");
             var result = await _locationService.FindAll(pageable);
-            var page = new Page<LocationDto>(result.Content.Select(entity => _mapper.Map<LocationDto>(entity)).ToList(),pageable,result.TotalElements);
+            var page = new Page<LocationDto>(result.Content.Select(entity => _mapper.Map<LocationDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<LocationDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 

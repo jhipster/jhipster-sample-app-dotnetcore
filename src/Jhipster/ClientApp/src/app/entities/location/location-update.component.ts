@@ -25,7 +25,7 @@ export class LocationUpdateComponent implements OnInit {
     postalCode: [],
     city: [],
     stateProvince: [],
-    country: [],
+    countryId: [],
   });
 
   constructor(
@@ -47,11 +47,11 @@ export class LocationUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: ICountry[]) => {
-          if (!location.country || !location.country.id) {
+          if (!location.countryId) {
             this.countries = resBody;
           } else {
             this.countryService
-              .find(location.country.id)
+              .find(location.countryId)
               .pipe(
                 map((subRes: HttpResponse<ICountry>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -70,7 +70,7 @@ export class LocationUpdateComponent implements OnInit {
       postalCode: location.postalCode,
       city: location.city,
       stateProvince: location.stateProvince,
-      country: location.country,
+      countryId: location.countryId,
     });
   }
 
@@ -96,7 +96,7 @@ export class LocationUpdateComponent implements OnInit {
       postalCode: this.editForm.get(['postalCode'])!.value,
       city: this.editForm.get(['city'])!.value,
       stateProvince: this.editForm.get(['stateProvince'])!.value,
-      country: this.editForm.get(['country'])!.value,
+      countryId: this.editForm.get(['countryId'])!.value,
     };
   }
 

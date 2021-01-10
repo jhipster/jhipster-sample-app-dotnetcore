@@ -1,7 +1,9 @@
 using System;
 
-namespace Jhipster.Domain.Interfaces {
-    public interface IAuditedEntityBase {
+namespace Jhipster.Domain.Interfaces
+{
+    public interface IAuditedEntityBase
+    {
         string CreatedBy { get; set; }
 
         DateTime CreatedDate { get; set; }

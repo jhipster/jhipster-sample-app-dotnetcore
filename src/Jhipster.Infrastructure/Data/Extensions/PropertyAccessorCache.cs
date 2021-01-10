@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Jhipster.Infrastructure.Data.Extensions {
-    public static class PropertyAccessorCache<T> where T : class {
+namespace Jhipster.Infrastructure.Data.Extensions
+{
+    public static class PropertyAccessorCache<T> where T : class
+    {
         private static readonly IDictionary<string, LambdaExpression> _cache;
 
         static PropertyAccessorCache()
@@ -12,7 +14,8 @@ namespace Jhipster.Infrastructure.Data.Extensions {
 
             var t = typeof(T);
             var parameter = Expression.Parameter(t, "p");
-            foreach (var property in t.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
+            foreach (var property in t.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
                 var propertyAccess = Expression.MakeMemberAccess(parameter, property);
                 var lambdaExpression = Expression.Lambda(propertyAccess, parameter);
                 storage[property.Name] = lambdaExpression;

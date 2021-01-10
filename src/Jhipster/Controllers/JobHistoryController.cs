@@ -17,11 +17,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
     [Authorize]
     [Route("api")]
     [ApiController]
-    public class JobHistoryController : ControllerBase {
+    public class JobHistoryController : ControllerBase
+    {
         private const string EntityName = "jobHistory";
         private readonly IMapper _mapper;
         private readonly IJobHistoryService _jobHistoryService;
@@ -56,9 +58,6 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug($"REST request to update JobHistory : {jobHistoryDto}");
             if (jobHistoryDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
-
-            //TODO catch //DbUpdateConcurrencyException into problem
-
             JobHistory jobHistory = _mapper.Map<JobHistory>(jobHistoryDto);
             await _jobHistoryService.Save(jobHistory);
             return Ok(jobHistory)
@@ -70,7 +69,7 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug("REST request to get a page of JobHistories");
             var result = await _jobHistoryService.FindAll(pageable);
-            var page = new Page<JobHistoryDto>(result.Content.Select(entity => _mapper.Map<JobHistoryDto>(entity)).ToList(),pageable,result.TotalElements);
+            var page = new Page<JobHistoryDto>(result.Content.Select(entity => _mapper.Map<JobHistoryDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<JobHistoryDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 

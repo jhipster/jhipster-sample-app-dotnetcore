@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Jhipster.Dto {
-    public class LoginDto {
+namespace Jhipster.Dto
+{
+    public class LoginDto
+    {
         [Required]
         [StringLength(50, MinimumLength = 1)]
         public string Username { get; set; }

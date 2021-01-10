@@ -5,7 +5,8 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using Jhipster.Dto;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
 
     [Route("management")]
     [ApiController]

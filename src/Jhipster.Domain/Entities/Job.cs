@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace Jhipster.Domain {
+namespace Jhipster.Domain
+{
     [Table("job")]
-    public class Job {
+    public class Job
+    {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -16,6 +18,7 @@ namespace Jhipster.Domain {
         public long? MaxSalary { get; set; }
         public IList<PieceOfWork> Chores { get; set; } = new List<PieceOfWork>();
 
+        public long? EmployeeId { get; set; }
         public Employee Employee { get; set; }
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -7,8 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Serilog;
 
-namespace Jhipster.Infrastructure.Data.Extensions {
-    public static class DbSetExtensions {
+namespace Jhipster.Infrastructure.Data.Extensions
+{
+    public static class DbSetExtensions
+    {
         public static EntityEntry<TEntity> RemoveById<TEntity>(this DbSet<TEntity> receiver, object id)
             where TEntity : class
         {
@@ -31,8 +33,6 @@ namespace Jhipster.Infrastructure.Data.Extensions {
 
             if (key != null) return key;
 
-            //https://stackoverflow.com/questions/25141955/entityframework-6-how-to-get-identity-field-with-reflection
-            //TODO complete with FluentAPi
             return null;
         }
 
@@ -40,14 +40,17 @@ namespace Jhipster.Infrastructure.Data.Extensions {
             where TEntity : class
             where TOwnerEntity : class
         {
-            try {
+            try
+            {
                 var receiverObjects = receiver.ApplyWhere(ownerEntity.GetType().Name + "Id", id);
 
-                foreach (TEntity receiverObject in receiverObjects) {
+                foreach (TEntity receiverObject in receiverObjects)
+                {
                     receiver.Remove(receiverObject);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Log.Error(ex, $"Error when trying to remove navigation property. The deletion was not performed");
             }
         }
@@ -57,7 +60,8 @@ namespace Jhipster.Infrastructure.Data.Extensions {
         {
             // 1. Retrieve member access expression
             var mba = PropertyAccessorCache<T>.Get(propertyName);
-            if (mba == null) {
+            if (mba == null)
+            {
                 var ex = new NullReferenceException();
                 Log.Error(ex, $"Error when trying to get the property, it doesn't exist");
                 throw ex;
@@ -65,14 +69,16 @@ namespace Jhipster.Infrastructure.Data.Extensions {
 
             // 2. Try converting value to correct type
             object value;
-            try {
+            try
+            {
                 value = Convert.ChangeType(propertyValue, mba.ReturnType);
             }
             catch (SystemException ex) when (
                 ex is InvalidCastException ||
                 ex is FormatException ||
                 ex is OverflowException ||
-                ex is ArgumentNullException) {
+                ex is ArgumentNullException)
+            {
                 Log.Error(ex, $"Error when trying to convert type of property value with type of property");
                 throw;
             }

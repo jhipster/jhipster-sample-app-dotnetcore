@@ -40,6 +40,7 @@ export const employeeRoute: Routes = [
     component: EmployeeComponent,
     data: {
       authorities: [Authority.USER],
+      defaultSort: 'id,asc',
       pageTitle: 'jhipsterApp.employee.home.title',
     },
     canActivate: [UserRouteAccessService],

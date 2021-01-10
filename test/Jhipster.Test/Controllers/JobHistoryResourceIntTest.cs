@@ -17,11 +17,13 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class JobHistoryResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class JobHistoryResourceIntTest
+    {
         public JobHistoryResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>().WithMockUser();
+            _factory = new AppWebApplicationFactory<TestStartup>().WithMockUser();
             _client = _factory.CreateClient();
 
             _jobHistoryRepository = _factory.GetRequiredService<IJobHistoryRepository>();
@@ -45,9 +47,9 @@ namespace Jhipster.Test.Controllers {
         private const Language DefaultLanguage = Language.ENGLISH;
         private const Language UpdatedLanguage = Language.ENGLISH;
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
-        private readonly IJobHistoryRepository  _jobHistoryRepository;
+        private readonly IJobHistoryRepository _jobHistoryRepository;
 
         private JobHistory _jobHistory;
 
@@ -55,7 +57,8 @@ namespace Jhipster.Test.Controllers {
 
         private JobHistory CreateEntity()
         {
-            return new JobHistory {
+            return new JobHistory
+            {
                 StartDate = DefaultStartDate,
                 EndDate = DefaultEndDate,
                 Language = DefaultLanguage
@@ -157,7 +160,7 @@ namespace Jhipster.Test.Controllers {
             // Update the jobHistory
             var updatedJobHistory = await _jobHistoryRepository.QueryHelper().GetOneAsync(it => it.Id == _jobHistory.Id);
             // Disconnect from session so that the updates on updatedJobHistory are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedJobHistory.StartDate = UpdatedStartDate;
             updatedJobHistory.EndDate = UpdatedEndDate;
             updatedJobHistory.Language = UpdatedLanguage;
@@ -210,10 +213,12 @@ namespace Jhipster.Test.Controllers {
         public void EqualsVerifier()
         {
             TestUtil.EqualsVerifier(typeof(JobHistory));
-            var jobHistory1 = new JobHistory {
+            var jobHistory1 = new JobHistory
+            {
                 Id = 1L
             };
-            var jobHistory2 = new JobHistory {
+            var jobHistory2 = new JobHistory
+            {
                 Id = jobHistory1.Id
             };
             jobHistory1.Should().Be(jobHistory2);

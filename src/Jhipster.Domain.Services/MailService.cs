@@ -3,17 +3,19 @@ using Jhipster.Domain;
 using Jhipster.Domain.Services.Interfaces;
 using Microsoft.Extensions.Options;
 
-namespace Jhipster.Domain.Services {
-    public class MailService : IMailService {
+namespace Jhipster.Domain.Services
+{
+    public class MailService : IMailService
+    {
         public MailService()
         {
         }
 
-        // private readonly JHipsterSettings _jhipsterSettings;
-        
-        // public MailService(IOptions<JHipsterSettings> jhipsterSettings)
+        // private readonly SecuritySettings _securitySettings;
+
+        // public MailService(IOptions<SecuritySettings> securitySettings)
         // {
-        //     _jhipsterSettings = jhipsterSettings.Value;
+        //     _securitySettings = securitySettings.Value;
         // }
 
         public virtual Task SendPasswordResetMail(User user)

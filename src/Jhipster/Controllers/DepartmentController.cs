@@ -16,11 +16,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
     [Authorize]
     [Route("api")]
     [ApiController]
-    public class DepartmentController : ControllerBase {
+    public class DepartmentController : ControllerBase
+    {
         private const string EntityName = "department";
         private readonly IMapper _mapper;
         private readonly IDepartmentService _departmentService;
@@ -55,9 +57,6 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug($"REST request to update Department : {departmentDto}");
             if (departmentDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
-
-            //TODO catch //DbUpdateConcurrencyException into problem
-
             Department department = _mapper.Map<Department>(departmentDto);
             await _departmentService.Save(department);
             return Ok(department)
@@ -69,7 +68,7 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug("REST request to get a page of Departments");
             var result = await _departmentService.FindAll(pageable);
-            var page = new Page<DepartmentDto>(result.Content.Select(entity => _mapper.Map<DepartmentDto>(entity)).ToList(),pageable,result.TotalElements);
+            var page = new Page<DepartmentDto>(result.Content.Select(entity => _mapper.Map<DepartmentDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<DepartmentDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 

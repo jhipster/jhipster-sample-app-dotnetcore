@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
+import { ActivatedRoute, ParamMap, Router, Data } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IJobHistory } from 'app/shared/model/job-history.model';
@@ -15,54 +16,56 @@ import { JobHistoryDeleteDialogComponent } from './job-history-delete-dialog.com
   templateUrl: './job-history.component.html',
 })
 export class JobHistoryComponent implements OnInit, OnDestroy {
-  jobHistories: IJobHistory[];
+  jobHistories?: IJobHistory[];
   eventSubscriber?: Subscription;
-  itemsPerPage: number;
-  links: any;
-  page: number;
-  predicate: string;
-  ascending: boolean;
+  totalItems = 0;
+  itemsPerPage = ITEMS_PER_PAGE;
+  page!: number;
+  predicate!: string;
+  ascending!: boolean;
+  ngbPaginationPage = 1;
 
   constructor(
     protected jobHistoryService: JobHistoryService,
+    protected activatedRoute: ActivatedRoute,
+    protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal,
-    protected parseLinks: JhiParseLinks
-  ) {
-    this.jobHistories = [];
-    this.itemsPerPage = ITEMS_PER_PAGE;
-    this.page = 0;
-    this.links = {
-      last: 0,
-    };
-    this.predicate = 'id';
-    this.ascending = true;
-  }
+    protected modalService: NgbModal
+  ) {}
 
-  loadAll(): void {
+  loadPage(page?: number, dontNavigate?: boolean): void {
+    const pageToLoad: number = page || this.page || 1;
+
     this.jobHistoryService
       .query({
-        page: this.page,
+        page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe((res: HttpResponse<IJobHistory[]>) => this.paginateJobHistories(res.body, res.headers));
-  }
-
-  reset(): void {
-    this.page = 0;
-    this.jobHistories = [];
-    this.loadAll();
-  }
-
-  loadPage(page: number): void {
-    this.page = page;
-    this.loadAll();
+      .subscribe(
+        (res: HttpResponse<IJobHistory[]>) => this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate),
+        () => this.onError()
+      );
   }
 
   ngOnInit(): void {
-    this.loadAll();
+    this.handleNavigation();
     this.registerChangeInJobHistories();
+  }
+
+  protected handleNavigation(): void {
+    combineLatest(this.activatedRoute.data, this.activatedRoute.queryParamMap, (data: Data, params: ParamMap) => {
+      const page = params.get('page');
+      const pageNumber = page !== null ? +page : 1;
+      const sort = (params.get('sort') ?? data['defaultSort']).split(',');
+      const predicate = sort[0];
+      const ascending = sort[1] === 'asc';
+      if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
+        this.predicate = predicate;
+        this.ascending = ascending;
+        this.loadPage(pageNumber, true);
+      }
+    }).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -77,7 +80,7 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
   }
 
   registerChangeInJobHistories(): void {
-    this.eventSubscriber = this.eventManager.subscribe('jobHistoryListModification', () => this.reset());
+    this.eventSubscriber = this.eventManager.subscribe('jobHistoryListModification', () => this.loadPage());
   }
 
   delete(jobHistory: IJobHistory): void {
@@ -93,13 +96,23 @@ export class JobHistoryComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected paginateJobHistories(data: IJobHistory[] | null, headers: HttpHeaders): void {
-    const headersLink = headers.get('link');
-    this.links = this.parseLinks.parse(headersLink ? headersLink : '');
-    if (data) {
-      for (let i = 0; i < data.length; i++) {
-        this.jobHistories.push(data[i]);
-      }
+  protected onSuccess(data: IJobHistory[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.page = page;
+    if (navigate) {
+      this.router.navigate(['/job-history'], {
+        queryParams: {
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+        },
+      });
     }
+    this.jobHistories = data || [];
+    this.ngbPaginationPage = this.page;
+  }
+
+  protected onError(): void {
+    this.ngbPaginationPage = this.page ?? 1;
   }
 }

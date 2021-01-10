@@ -1,7 +1,9 @@
 using Jhipster.Crosscutting.Constants;
 
-namespace Jhipster.Crosscutting.Exceptions {
-    public class BadRequestAlertException : BaseException {
+namespace Jhipster.Crosscutting.Exceptions
+{
+    public class BadRequestAlertException : BaseException
+    {
         public BadRequestAlertException(string detail, string entityName, string errorKey) : this(
             ErrorConstants.DefaultType, detail, entityName, errorKey)
         {

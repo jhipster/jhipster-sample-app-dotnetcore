@@ -11,7 +11,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
 {
     public class RegionRepository : GenericRepository<Region>, IRegionRepository
     {
-        public RegionRepository(IUnitOfWork context) : base(context) 
+        public RegionRepository(IUnitOfWork context) : base(context)
         {
         }
 
@@ -19,12 +19,14 @@ namespace Jhipster.Infrastructure.Data.Repositories
         {
             bool exists = await Exists(x => x.Id == region.Id);
 
-            if (region.Id != 0 && exists) {
+            if (region.Id != 0 && exists)
+            {
                 Update(region);
-            } else {
-                Add(region);
             }
-
+            else
+            {
+                _context.AddOrUpdateGraph(region);
+            }
             return region;
         }
     }

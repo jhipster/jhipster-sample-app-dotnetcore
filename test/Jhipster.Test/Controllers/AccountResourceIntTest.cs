@@ -17,14 +17,16 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class AccountResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class AccountResourceIntTest
+    {
         public AccountResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>();
+            _factory = new AppWebApplicationFactory<TestStartup>();
         }
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
 
         [Fact]
         public async Task TestActivateAccount()
@@ -34,7 +36,8 @@ namespace Jhipster.Test.Controllers {
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
             const string activationKey = "some activation key";
-            var user = new User {
+            var user = new User
+            {
                 Login = "activate-account",
                 Email = "activate-account@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -80,7 +83,8 @@ namespace Jhipster.Test.Controllers {
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
             var currentPassword = TestUtil.RandomAlphabetic(60);
-            var user = new User {
+            var user = new User
+            {
                 Login = "change-password",
                 Email = "change-password@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, currentPassword)
@@ -89,7 +93,8 @@ namespace Jhipster.Test.Controllers {
             await userManager.CreateAsync(user);
 
             var response = await client.PostAsync("/api/account/change-password", TestUtil.ToJsonContent(
-                new PasswordChangeDto {
+                new PasswordChangeDto
+                {
                     CurrentPassword = currentPassword,
                     NewPassword = "new password"
                 }));
@@ -110,7 +115,8 @@ namespace Jhipster.Test.Controllers {
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
             var currentPassword = TestUtil.RandomAlphabetic(60);
-            var user = new User {
+            var user = new User
+            {
                 Login = "change-password-empty",
                 Email = "change-password-empty@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, currentPassword)
@@ -119,7 +125,8 @@ namespace Jhipster.Test.Controllers {
             await userManager.CreateAsync(user);
 
             var response = await client.PostAsync("/api/account/change-password", TestUtil.ToJsonContent(
-                new PasswordChangeDto {
+                new PasswordChangeDto
+                {
                     CurrentPassword = currentPassword,
                     NewPassword = ""
                 })
@@ -140,7 +147,8 @@ namespace Jhipster.Test.Controllers {
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
             var currentPassword = TestUtil.RandomAlphabetic(60);
-            var user = new User {
+            var user = new User
+            {
                 Login = "change-password-too-long",
                 Email = "change-password-too-long@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, currentPassword)
@@ -149,7 +157,8 @@ namespace Jhipster.Test.Controllers {
             await userManager.CreateAsync(user);
 
             var response = await client.PostAsync("/api/account/change-password", TestUtil.ToJsonContent(
-                new PasswordChangeDto {
+                new PasswordChangeDto
+                {
                     CurrentPassword = currentPassword,
                     NewPassword = TestUtil.RandomAlphabetic(101)
                 }));
@@ -169,7 +178,8 @@ namespace Jhipster.Test.Controllers {
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
             var currentPassword = TestUtil.RandomAlphabetic(60);
-            var user = new User {
+            var user = new User
+            {
                 Login = "change-password-too-small",
                 Email = "change-password-too-small@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, currentPassword)
@@ -178,7 +188,8 @@ namespace Jhipster.Test.Controllers {
             await userManager.CreateAsync(user);
 
             var response = await client.PostAsync("/api/account/change-password", TestUtil.ToJsonContent(
-                new PasswordChangeDto {
+                new PasswordChangeDto
+                {
                     CurrentPassword = currentPassword,
                     NewPassword = TestUtil.RandomAlphabetic(3)
                 }));
@@ -198,7 +209,8 @@ namespace Jhipster.Test.Controllers {
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
             var currentPassword = TestUtil.RandomAlphabetic(60);
-            var user = new User {
+            var user = new User
+            {
                 Login = "change-password-wrong-existing-password",
                 Email = "change-password-wrong-existing-password@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, currentPassword)
@@ -207,7 +219,8 @@ namespace Jhipster.Test.Controllers {
             await userManager.CreateAsync(user);
 
             var response = await client.PostAsync("/api/account/change-password", TestUtil.ToJsonContent(
-                new PasswordChangeDto {
+                new PasswordChangeDto
+                {
                     CurrentPassword = $"1{currentPassword}",
                     NewPassword = "new password"
                 }));
@@ -229,7 +242,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "finish-password-reset",
                 Email = "finish-password-reset@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -239,7 +253,8 @@ namespace Jhipster.Test.Controllers {
 
             await userManager.CreateAsync(user);
 
-            var keyAndPassword = new KeyAndPasswordDto {
+            var keyAndPassword = new KeyAndPasswordDto
+            {
                 Key = user.ResetKey,
                 NewPassword = "new password"
             };
@@ -262,7 +277,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "finish-password-reset-too-small",
                 Email = "finish-password-reset-too-small@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -272,7 +288,8 @@ namespace Jhipster.Test.Controllers {
 
             await userManager.CreateAsync(user);
 
-            var keyAndPassword = new KeyAndPasswordDto {
+            var keyAndPassword = new KeyAndPasswordDto
+            {
                 Key = user.ResetKey,
                 NewPassword = TestUtil.RandomAlphabetic(3)
             };
@@ -292,7 +309,8 @@ namespace Jhipster.Test.Controllers {
         public async Task TestFinishPasswordResetWrongKey()
         {
             var client = _factory.CreateClient();
-            var keyAndPassword = new KeyAndPasswordDto {
+            var keyAndPassword = new KeyAndPasswordDto
+            {
                 Key = TestUtil.RandomAlphabetic(60),
                 NewPassword = TestUtil.RandomAlphabetic(60)
             };
@@ -308,7 +326,8 @@ namespace Jhipster.Test.Controllers {
             var client = _factory.WithMockUser("test").CreateClient();
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "test",
                 FirstName = "john",
                 LastName = "doe",
@@ -318,7 +337,7 @@ namespace Jhipster.Test.Controllers {
             };
 
             await userManager.CreateAsync(user);
-            await userManager.AddToRolesAsync(user, new[] {RolesConstants.ADMIN});
+            await userManager.AddToRolesAsync(user, new[] { RolesConstants.ADMIN });
 
             var response = await client.GetAsync("/api/account");
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -331,7 +350,7 @@ namespace Jhipster.Test.Controllers {
             json.SelectToken("$.imageUrl").Value<string>().Should().Be(user.ImageUrl);
             json.SelectToken("$.langKey").Value<string>().Should().Be(user.LangKey);
             json.SelectToken("$.authorities").ToObject<IEnumerable<string>>()
-                .Should().Contain(new[] {RolesConstants.ADMIN});
+                .Should().Contain(new[] { RolesConstants.ADMIN });
         }
 
         [Fact]
@@ -360,7 +379,8 @@ namespace Jhipster.Test.Controllers {
             var client = _factory.CreateClient();
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
-            var validUser = new ManagedUserDto {
+            var validUser = new ManagedUserDto
+            {
                 Login = "badguy",
                 Password = "password",
                 FirstName = "Bad",
@@ -369,7 +389,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = true,
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.ADMIN
                 }
             };
@@ -379,8 +400,8 @@ namespace Jhipster.Test.Controllers {
 
             var user = await userManager.FindByNameAsync(validUser.Login);
             user.Should().NotBeNull();
-//            user.Roles.Count.Should().Be(1);
-//            user.Roles.Should().Contain(role => role.Name == RolesConstants.USER);
+            //            user.Roles.Count.Should().Be(1);
+            //            user.Roles.Should().Contain(role => role.Name == RolesConstants.USER);
         }
 
         [Fact]
@@ -390,7 +411,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
             // First user
-            var firstUser = new ManagedUserDto {
+            var firstUser = new ManagedUserDto
+            {
                 Login = "test-register-duplicate-email",
                 Password = "password",
                 FirstName = "Alice",
@@ -398,7 +420,8 @@ namespace Jhipster.Test.Controllers {
                 Email = "test-register-duplicate-email@example.com",
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.ADMIN
                 }
             };
@@ -411,7 +434,8 @@ namespace Jhipster.Test.Controllers {
             testUser1.Should().NotBeNull();
 
             // Duplicate email, different login
-            var secondUser = new ManagedUserDto {
+            var secondUser = new ManagedUserDto
+            {
                 Login = "test-register-duplicate-email-2",
                 Password = firstUser.Password,
                 FirstName = firstUser.FirstName,
@@ -434,7 +458,8 @@ namespace Jhipster.Test.Controllers {
             testUser3.Should().NotBeNull();
 
             // Duplicate email - with uppercase email address
-            var userWithUpperCaseEmail = new ManagedUserDto {
+            var userWithUpperCaseEmail = new ManagedUserDto
+            {
                 Id = firstUser.Id,
                 Login = "test-register-duplicate-email-3",
                 Password = firstUser.Password,
@@ -469,7 +494,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
             // First registration
-            var firstUser = new ManagedUserDto {
+            var firstUser = new ManagedUserDto
+            {
                 Login = "test-register-duplicate-email",
                 Password = "password",
                 FirstName = "Alice",
@@ -477,13 +503,15 @@ namespace Jhipster.Test.Controllers {
                 Email = "alice@example.com",
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.ADMIN
                 }
             };
 
             // Duplicate login, different email
-            var secondUser = new ManagedUserDto {
+            var secondUser = new ManagedUserDto
+            {
                 Login = firstUser.Login,
                 Password = firstUser.Password,
                 FirstName = firstUser.FirstName,
@@ -521,7 +549,8 @@ namespace Jhipster.Test.Controllers {
             var client = _factory.CreateClient();
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
-            var invalidUser = new ManagedUserDto {
+            var invalidUser = new ManagedUserDto
+            {
                 Login = "bob",
                 Password = "password",
                 FirstName = "Bob",
@@ -530,7 +559,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = true,
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -548,7 +578,8 @@ namespace Jhipster.Test.Controllers {
             var client = _factory.CreateClient();
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
-            var invalidUser = new ManagedUserDto {
+            var invalidUser = new ManagedUserDto
+            {
                 Login = "funky-log!n", // <-- invalid
                 Password = "password",
                 FirstName = "Bob",
@@ -557,7 +588,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = true,
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -575,7 +607,8 @@ namespace Jhipster.Test.Controllers {
             var client = _factory.CreateClient();
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
-            var invalidUser = new ManagedUserDto {
+            var invalidUser = new ManagedUserDto
+            {
                 Login = "bob",
                 Password = "123", // password with only 3 digits
                 FirstName = "Bob",
@@ -584,7 +617,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = true,
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -602,7 +636,8 @@ namespace Jhipster.Test.Controllers {
             var client = _factory.CreateClient();
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
-            var invalidUser = new ManagedUserDto {
+            var invalidUser = new ManagedUserDto
+            {
                 Login = "bob",
                 Password = null, // invalid null password
                 FirstName = "Bob",
@@ -611,7 +646,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = true,
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -629,7 +665,8 @@ namespace Jhipster.Test.Controllers {
             var client = _factory.CreateClient();
             var userManager = _factory.GetRequiredService<UserManager<User>>();
 
-            var validUser = new ManagedUserDto {
+            var validUser = new ManagedUserDto
+            {
                 Login = "test-register-valid",
                 Password = "password",
                 FirstName = "Alice",
@@ -637,7 +674,8 @@ namespace Jhipster.Test.Controllers {
                 Email = "test-register-valid@example.com",
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -658,7 +696,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "password-reset",
                 Email = "password-reset@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -679,7 +718,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "password-reset",
                 Email = "password-reset@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -709,7 +749,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "save-account",
                 Email = "save-account@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -718,7 +759,8 @@ namespace Jhipster.Test.Controllers {
 
             await userManager.CreateAsync(user);
 
-            var userDto = new UserDto {
+            var userDto = new UserDto
+            {
                 Login = "not-used",
                 FirstName = "firstname",
                 LastName = "lastname",
@@ -758,7 +800,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "save-existing-email",
                 Email = "save-existing-email@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -767,7 +810,8 @@ namespace Jhipster.Test.Controllers {
 
             await userManager.CreateAsync(user);
 
-            var anotherUser = new User {
+            var anotherUser = new User
+            {
                 Login = "save-existing-email2",
                 Email = "save-existing-email2@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -777,7 +821,8 @@ namespace Jhipster.Test.Controllers {
             await userManager.CreateAsync(anotherUser);
 
 
-            var userDto = new UserDto {
+            var userDto = new UserDto
+            {
                 Login = "not-used",
                 FirstName = "firstname",
                 LastName = "lastname",
@@ -785,7 +830,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = false,
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -804,7 +850,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "save-existing-email-and-login",
                 Email = "save-existing-email-and-login@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -813,7 +860,8 @@ namespace Jhipster.Test.Controllers {
 
             await userManager.CreateAsync(user);
 
-            var userDto = new UserDto {
+            var userDto = new UserDto
+            {
                 Login = "not-used",
                 FirstName = "firstname",
                 LastName = "lastname",
@@ -821,7 +869,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = false,
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.USER
                 }
             };
@@ -840,7 +889,8 @@ namespace Jhipster.Test.Controllers {
             var userManager = _factory.GetRequiredService<UserManager<User>>();
             var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
 
-            var user = new User {
+            var user = new User
+            {
                 Login = "save-invalid-email",
                 Email = "save-invalid-email@example.com",
                 PasswordHash = passwordHasher.HashPassword(null, TestUtil.RandomAlphabetic(60)),
@@ -849,7 +899,8 @@ namespace Jhipster.Test.Controllers {
 
             await userManager.CreateAsync(user);
 
-            var userDto = new UserDto {
+            var userDto = new UserDto
+            {
                 Login = "not-used",
                 FirstName = "firstname",
                 LastName = "lastname",
@@ -857,7 +908,8 @@ namespace Jhipster.Test.Controllers {
                 Activated = false,
                 ImageUrl = "http://placehold.it/50x50",
                 LangKey = Constants.DefaultLangKey,
-                Roles = new HashSet<string> {
+                Roles = new HashSet<string>
+                {
                     RolesConstants.ADMIN
                 }
             };

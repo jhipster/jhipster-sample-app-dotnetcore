@@ -14,8 +14,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Jhipster.Domain.Services {
-    public class UserService : IUserService {
+namespace Jhipster.Domain.Services
+{
+    public class UserService : IUserService
+    {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<UserService> _log;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -35,7 +37,8 @@ namespace Jhipster.Domain.Services {
 
         public virtual async Task<User> CreateUser(User userToCreate)
         {
-            var user = new User {
+            var user = new User
+            {
                 UserName = userToCreate.Login.ToLower(),
                 FirstName = userToCreate.FirstName,
                 LastName = userToCreate.LastName,
@@ -96,7 +99,8 @@ namespace Jhipster.Domain.Services {
         {
             var userName = _userManager.GetUserName(_httpContextAccessor.HttpContext.User);
             var user = await _userManager.FindByNameAsync(userName);
-            if (user != null) {
+            if (user != null)
+            {
                 var currentEncryptedPassword = user.PasswordHash;
                 var isInvalidPassword =
                     _passwordHasher.VerifyHashedPassword(user, currentEncryptedPassword, currentClearTextPassword) !=
@@ -126,18 +130,21 @@ namespace Jhipster.Domain.Services {
         public virtual async Task<User> RegisterUser(User userToRegister, string password)
         {
             var existingUser = await _userManager.FindByNameAsync(userToRegister.Login.ToLower());
-            if (existingUser != null) {
+            if (existingUser != null)
+            {
                 var removed = await RemoveNonActivatedUser(existingUser);
                 if (!removed) throw new LoginAlreadyUsedException();
             }
 
-            existingUser = _userManager.Users.FirstOrDefault(it =>it.Email == userToRegister.Email);
-            if (existingUser != null) {
+            existingUser = _userManager.Users.FirstOrDefault(it => it.Email == userToRegister.Email);
+            if (existingUser != null)
+            {
                 var removed = await RemoveNonActivatedUser(existingUser);
                 if (!removed) throw new EmailAlreadyUsedException();
             }
 
-            var newUser = new User {
+            var newUser = new User
+            {
                 Login = userToRegister.Login,
                 // new user gets initially a generated password
                 PasswordHash = _passwordHasher.HashPassword(null, password),
@@ -161,7 +168,8 @@ namespace Jhipster.Domain.Services {
         {
             var userName = _userManager.GetUserName(_httpContextAccessor.HttpContext.User);
             var user = await _userManager.FindByNameAsync(userName);
-            if (user != null) {
+            if (user != null)
+            {
                 user.FirstName = firstName;
                 user.LastName = lastName;
                 user.Email = email;
@@ -187,7 +195,8 @@ namespace Jhipster.Domain.Services {
         public virtual async Task DeleteUser(string login)
         {
             var user = await _userManager.FindByNameAsync(login);
-            if (user != null) {
+            if (user != null)
+            {
                 await DeleteUserRoles(user);
                 await _userManager.DeleteAsync(user);
                 _log.LogDebug("Deleted User: {user}");

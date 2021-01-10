@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Jhipster.Dto {
-    public class ManagedUserDto : UserDto {
+namespace Jhipster.Dto
+{
+    public class ManagedUserDto : UserDto
+    {
         public const int PasswordMinLength = 4;
 
         public const int PasswordMaxLength = 100;

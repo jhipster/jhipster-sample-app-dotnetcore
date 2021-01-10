@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
 
-namespace Jhipster.Service.Utilities {
-    public class RandomUtil {
+namespace Jhipster.Service.Utilities
+{
+    public class RandomUtil
+    {
         private const int DefCount = 20;
         private static readonly Random random = new Random();
 

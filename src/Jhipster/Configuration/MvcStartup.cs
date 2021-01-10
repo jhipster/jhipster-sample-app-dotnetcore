@@ -6,8 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Jhipster.Configuration {
-    public static class WebConfiguration {
+namespace Jhipster.Configuration
+{
+    public static class WebConfiguration
+    {
         public static IServiceCollection AddWebModule(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
@@ -17,9 +19,9 @@ namespace Jhipster.Configuration {
             //https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-2.2
             services.AddHealthChecks();
 
-            //TODO use AddMvcCore + config
             services.AddControllers(options => { options.ModelBinderProviders.Insert(0, new PageableBinderProvider()); })
-            .AddNewtonsoftJson(options => {
+            .AddNewtonsoftJson(options =>
+            {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;

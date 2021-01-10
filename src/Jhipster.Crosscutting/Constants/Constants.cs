@@ -1,6 +1,7 @@
-namespace Jhipster.Crosscutting.Constants {
-//TODO Use Constants
-    public static class Constants {
+namespace Jhipster.Crosscutting.Constants
+{
+    public static class Constants
+    {
         // Regex for acceptable logins
         public const string LoginRegex = "^[_.@A-Za-z0-9-]*$";
         public const string SystemAccount = "system";

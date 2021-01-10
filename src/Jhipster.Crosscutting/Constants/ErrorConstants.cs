@@ -1,5 +1,7 @@
-namespace Jhipster.Crosscutting.Constants {
-    public static class ErrorConstants {
+namespace Jhipster.Crosscutting.Constants
+{
+    public static class ErrorConstants
+    {
         public const string ErrValidation = "error.validation";
         private const string ProblemBaseUrl = "https://www.jhipster.tech/problem";
         public static readonly string DefaultType = $"{ProblemBaseUrl}/problem-with-message";

@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 
-namespace Jhipster.Configuration {
-    public static class ProblemDetailsStartup {
+namespace Jhipster.Configuration
+{
+    public static class ProblemDetailsStartup
+    {
         //TODO Understand difference between UI and non-ui Exceptions
         //https://github.com/christianacca/ProblemDetailsDemo/blob/master/src/ProblemDetailsDemo.Api/Startup.cs
 
@@ -16,7 +18,7 @@ namespace Jhipster.Configuration {
         {
             services.AddProblemDetails(setup =>
             {
-                setup.IncludeExceptionDetails = (_context, _exception) => !environment.IsDevelopment();
+                setup.IncludeExceptionDetails = (_context, _exception) => environment.IsDevelopment();
 
                 // Map BadRequestAlertException and inheriting exceptions to ProblemDetails
                 setup.Map<BadRequestAlertException>(exception => new ProblemDetails
@@ -32,7 +34,7 @@ namespace Jhipster.Configuration {
                 {
                     Type = exception.Type,
                     Detail = exception.Detail,
-                    Status =  StatusCodes.Status500InternalServerError
+                    Status = StatusCodes.Status500InternalServerError
                 });
 
                 // This mapping will catch exceptions inheriting from BaseException that has not been mapped previously
@@ -40,7 +42,7 @@ namespace Jhipster.Configuration {
                 {
                     Type = exception.Type,
                     Detail = exception.Detail,
-                    Status =  StatusCodes.Status400BadRequest
+                    Status = StatusCodes.Status400BadRequest
                 });
 
             });

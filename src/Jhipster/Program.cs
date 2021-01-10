@@ -10,9 +10,11 @@ using Serilog.Sinks.Syslog;
 using ILogger = Serilog.ILogger;
 using static JHipsterNet.Core.Boot.BannerPrinter;
 
-namespace Jhipster {
-    public class Program {
-        
+namespace Jhipster
+{
+    public class Program
+    {
+
         const string SerilogSection = "Serilog";
         const string SyslogPort = "SyslogPort";
         const string SyslogUrl = "SyslogUrl";
@@ -22,7 +24,8 @@ namespace Jhipster {
         {
             PrintBanner(10 * 1000);
 
-            try {
+            try
+            {
                 var appConfiguration = GetAppConfiguration();
                 Log.Logger = CreateLogger(appConfiguration);
 
@@ -31,18 +34,16 @@ namespace Jhipster {
                     .Run();
 
                 return 0;
-
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 // Use ForContext to give a context to this static environment (for Serilog LoggerNameEnricher).
                 Log.ForContext<Program>().Fatal(ex, $"Host terminated unexpectedly");
                 return 1;
-
             }
-            finally {
-
+            finally
+            {
                 Log.CloseAndFlush();
-
             }
         }
 
@@ -66,9 +67,9 @@ namespace Jhipster {
             // https://github.com/serilog/serilog-settings-configuration
             if (appConfiguration.GetSection(SerilogSection)[SyslogPort] != null)
             {
-                if(int.TryParse(appConfiguration.GetSection(SerilogSection)[SyslogPort], out var portFromConf))
+                if (int.TryParse(appConfiguration.GetSection(SerilogSection)[SyslogPort], out var portFromConf))
                 {
-                    port = portFromConf; 
+                    port = portFromConf;
                 }
             }
 
@@ -80,7 +81,7 @@ namespace Jhipster {
                 : "JhipsterApp";
             var loggerConfiguration = new LoggerConfiguration()
                 .Enrich.With<LoggerNameEnricher>()
-                .WriteTo.TcpSyslog(url,port,appName, FramingType.OCTET_COUNTING,SyslogFormat.RFC5424,Facility.Local0,SslProtocols.None)
+                .WriteTo.TcpSyslog(url, port, appName, FramingType.OCTET_COUNTING, SyslogFormat.RFC5424, Facility.Local0, SslProtocols.None)
                 .ReadFrom.Configuration(appConfiguration);
 
             return loggerConfiguration.CreateLogger();

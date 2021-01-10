@@ -40,6 +40,7 @@ export const jobHistoryRoute: Routes = [
     component: JobHistoryComponent,
     data: {
       authorities: [Authority.USER],
+      defaultSort: 'id,asc',
       pageTitle: 'jhipsterApp.jobHistory.home.title',
     },
     canActivate: [UserRouteAccessService],

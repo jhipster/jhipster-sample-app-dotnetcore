@@ -14,8 +14,8 @@
                 </dd>
                 <dt><span jhiTranslate="jhipsterApp.department.location">Location</span></dt>
                 <dd>
-                    <div *ngIf="department.location">
-                        <a [routerLink]="['/location', department.location?.id, 'view']">{{ department.location?.id }}</a>
+                    <div *ngIf="department.locationId">
+                        <a [routerLink]="['/location', department.locationId, 'view']">{{ department.locationId }}</a>
                     </div>
                 </dd>
             </dl>

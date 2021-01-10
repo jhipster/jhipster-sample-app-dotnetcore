@@ -15,11 +15,13 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class JobResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class JobResourceIntTest
+    {
         public JobResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>().WithMockUser();
+            _factory = new AppWebApplicationFactory<TestStartup>().WithMockUser();
             _client = _factory.CreateClient();
 
             _jobRepository = _factory.GetRequiredService<IJobRepository>();
@@ -43,9 +45,9 @@ namespace Jhipster.Test.Controllers {
         private static readonly long? DefaultMaxSalary = 1L;
         private static readonly long? UpdatedMaxSalary = 2L;
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
-        private readonly IJobRepository  _jobRepository;
+        private readonly IJobRepository _jobRepository;
 
         private Job _job;
 
@@ -53,7 +55,8 @@ namespace Jhipster.Test.Controllers {
 
         private Job CreateEntity()
         {
-            return new Job {
+            return new Job
+            {
                 JobTitle = DefaultJobTitle,
                 MinSalary = DefaultMinSalary,
                 MaxSalary = DefaultMaxSalary
@@ -155,7 +158,7 @@ namespace Jhipster.Test.Controllers {
             // Update the job
             var updatedJob = await _jobRepository.QueryHelper().GetOneAsync(it => it.Id == _job.Id);
             // Disconnect from session so that the updates on updatedJob are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedJob.JobTitle = UpdatedJobTitle;
             updatedJob.MinSalary = UpdatedMinSalary;
             updatedJob.MaxSalary = UpdatedMaxSalary;
@@ -208,10 +211,12 @@ namespace Jhipster.Test.Controllers {
         public void EqualsVerifier()
         {
             TestUtil.EqualsVerifier(typeof(Job));
-            var job1 = new Job {
+            var job1 = new Job
+            {
                 Id = 1L
             };
-            var job2 = new Job {
+            var job2 = new Job
+            {
                 Id = job1.Id
             };
             job1.Should().Be(job2);

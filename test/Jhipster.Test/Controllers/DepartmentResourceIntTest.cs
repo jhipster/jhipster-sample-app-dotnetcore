@@ -15,11 +15,13 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class DepartmentResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class DepartmentResourceIntTest
+    {
         public DepartmentResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>().WithMockUser();
+            _factory = new AppWebApplicationFactory<TestStartup>().WithMockUser();
             _client = _factory.CreateClient();
 
             _departmentRepository = _factory.GetRequiredService<IDepartmentRepository>();
@@ -37,9 +39,9 @@ namespace Jhipster.Test.Controllers {
         private const string DefaultDepartmentName = "AAAAAAAAAA";
         private const string UpdatedDepartmentName = "BBBBBBBBBB";
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
-        private readonly IDepartmentRepository  _departmentRepository;
+        private readonly IDepartmentRepository _departmentRepository;
 
         private Department _department;
 
@@ -47,7 +49,8 @@ namespace Jhipster.Test.Controllers {
 
         private Department CreateEntity()
         {
-            return new Department {
+            return new Department
+            {
                 DepartmentName = DefaultDepartmentName
             };
         }
@@ -158,7 +161,7 @@ namespace Jhipster.Test.Controllers {
             // Update the department
             var updatedDepartment = await _departmentRepository.QueryHelper().GetOneAsync(it => it.Id == _department.Id);
             // Disconnect from session so that the updates on updatedDepartment are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedDepartment.DepartmentName = UpdatedDepartmentName;
 
             DepartmentDto updatedDepartmentDto = _mapper.Map<DepartmentDto>(_department);
@@ -207,10 +210,12 @@ namespace Jhipster.Test.Controllers {
         public void EqualsVerifier()
         {
             TestUtil.EqualsVerifier(typeof(Department));
-            var department1 = new Department {
+            var department1 = new Department
+            {
                 Id = 1L
             };
-            var department2 = new Department {
+            var department2 = new Department
+            {
                 Id = department1.Id
             };
             department1.Should().Be(department2);

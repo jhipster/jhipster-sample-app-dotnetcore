@@ -1,11 +1,9 @@
-import { IRegion } from 'app/shared/model/region.model';
-
 export interface ICountry {
   id?: number;
   countryName?: string;
-  region?: IRegion;
+  regionId?: number;
 }
 
 export class Country implements ICountry {
-  constructor(public id?: number, public countryName?: string, public region?: IRegion) {}
+  constructor(public id?: number, public countryName?: string, public regionId?: number) {}
 }

@@ -4,9 +4,11 @@ using Jhipster.Domain.Services.Interfaces;
 using Jhipster.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Domain.Services {
-    public class DepartmentService : IDepartmentService {
-        protected readonly IDepartmentRepository  _departmentRepository;
+namespace Jhipster.Domain.Services
+{
+    public class DepartmentService : IDepartmentService
+    {
+        protected readonly IDepartmentRepository _departmentRepository;
 
         public DepartmentService(IDepartmentRepository departmentRepository)
         {

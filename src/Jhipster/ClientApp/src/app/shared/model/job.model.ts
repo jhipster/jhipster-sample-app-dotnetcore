@@ -1,5 +1,4 @@
 import { IPieceOfWork } from 'app/shared/model/piece-of-work.model';
-import { IEmployee } from 'app/shared/model/employee.model';
 
 export interface IJob {
   id?: number;
@@ -7,7 +6,7 @@ export interface IJob {
   minSalary?: number;
   maxSalary?: number;
   chores?: IPieceOfWork[];
-  employee?: IEmployee;
+  employeeId?: number;
 }
 
 export class Job implements IJob {
@@ -17,6 +16,6 @@ export class Job implements IJob {
     public minSalary?: number,
     public maxSalary?: number,
     public chores?: IPieceOfWork[],
-    public employee?: IEmployee
+    public employeeId?: number
   ) {}
 }

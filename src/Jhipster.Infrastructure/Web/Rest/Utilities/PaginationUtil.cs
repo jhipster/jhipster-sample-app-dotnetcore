@@ -2,8 +2,10 @@ using JHipsterNet.Core.Pagination;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
-namespace Jhipster.Web.Rest.Utilities {
-    public static class PaginationUtil {
+namespace Jhipster.Web.Rest.Utilities
+{
+    public static class PaginationUtil
+    {
         private const string _XTotalCountHeaderName = "X-Total-Count";
         private const string _XPaginationHeaderName = "X-Pagination";
         public static IHeaderDictionary GeneratePaginationHttpHeaders<T>(this IPage<T> page)

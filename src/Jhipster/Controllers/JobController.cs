@@ -16,19 +16,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Controllers {
+namespace Jhipster.Controllers
+{
     [Authorize]
     [Route("api")]
     [ApiController]
-    public class JobController : ControllerBase {
+    public class JobController : ControllerBase
+    {
         private const string EntityName = "job";
         private readonly IMapper _mapper;
-        private readonly IJobRepository  _jobRepository;
+        private readonly IJobRepository _jobRepository;
         private readonly ILogger<JobController> _log;
 
         public JobController(ILogger<JobController> log,
             IMapper mapper,
-            IJobRepository  jobRepository)
+            IJobRepository jobRepository)
         {
             _log = log;
             _mapper = mapper;
@@ -56,9 +58,6 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug($"REST request to update Job : {jobDto}");
             if (jobDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
-
-            //TODO catch //DbUpdateConcurrencyException into problem
-
             Job job = _mapper.Map<Job>(jobDto);
             await _jobRepository.CreateOrUpdateAsync(job);
             await _jobRepository.SaveChangesAsync();
@@ -71,9 +70,10 @@ namespace Jhipster.Controllers {
         {
             _log.LogDebug("REST request to get a page of Jobs");
             var result = await _jobRepository.QueryHelper()
+                .Include(job => job.Chores)
                 .Include(job => job.Employee)
                 .GetPageAsync(pageable);
-            var page = new Page<JobDto>(result.Content.Select(entity => _mapper.Map<JobDto>(entity)).ToList(),pageable,result.TotalElements);
+            var page = new Page<JobDto>(result.Content.Select(entity => _mapper.Map<JobDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<JobDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 

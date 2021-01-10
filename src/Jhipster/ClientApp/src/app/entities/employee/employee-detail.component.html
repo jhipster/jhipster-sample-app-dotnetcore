@@ -38,14 +38,14 @@
                 </dd>
                 <dt><span jhiTranslate="jhipsterApp.employee.manager">Manager</span></dt>
                 <dd>
-                    <div *ngIf="employee.manager">
-                        <a [routerLink]="['/employee', employee.manager?.id, 'view']">{{ employee.manager?.id }}</a>
+                    <div *ngIf="employee.managerId">
+                        <a [routerLink]="['/employee', employee.managerId, 'view']">{{ employee.managerId }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jhipsterApp.employee.department">Department</span></dt>
                 <dd>
-                    <div *ngIf="employee.department">
-                        <a [routerLink]="['/department', employee.department?.id, 'view']">{{ employee.department?.id }}</a>
+                    <div *ngIf="employee.departmentId">
+                        <a [routerLink]="['/department', employee.departmentId, 'view']">{{ employee.departmentId }}</a>
                     </div>
                 </dd>
             </dl>

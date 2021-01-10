@@ -4,9 +4,11 @@ using Jhipster.Domain.Services.Interfaces;
 using Jhipster.Domain.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Domain.Services {
-    public class PieceOfWorkService : IPieceOfWorkService {
-        protected readonly IPieceOfWorkRepository  _pieceOfWorkRepository;
+namespace Jhipster.Domain.Services
+{
+    public class PieceOfWorkService : IPieceOfWorkService
+    {
+        protected readonly IPieceOfWorkRepository _pieceOfWorkRepository;
 
         public PieceOfWorkService(IPieceOfWorkRepository pieceOfWorkRepository)
         {

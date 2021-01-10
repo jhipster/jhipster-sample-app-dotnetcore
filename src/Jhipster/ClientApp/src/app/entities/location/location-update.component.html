@@ -37,9 +37,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jhipsterApp.location.country" for="field_country">Country</label>
-                    <select class="form-control" id="field_country" name="country" formControlName="country">
+                    <select class="form-control" id="field_country" name="country" formControlName="countryId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="countryOption.id === editForm.get('country')!.value?.id ? editForm.get('country')!.value : countryOption" *ngFor="let countryOption of countries; trackBy: trackById">{{ countryOption.id }}</option>
+                        <option [ngValue]="countryOption.id" *ngFor="let countryOption of countries; trackBy: trackById">{{ countryOption.id }}</option>
                     </select>
                 </div>
             </div>

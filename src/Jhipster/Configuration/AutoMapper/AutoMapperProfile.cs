@@ -5,7 +5,8 @@ using Jhipster.Domain;
 using Jhipster.Dto;
 
 
-namespace Jhipster.Configuration.AutoMapper {
+namespace Jhipster.Configuration.AutoMapper
+{
 
     public class AutoMapperProfile : Profile
     {
@@ -24,7 +25,6 @@ namespace Jhipster.Configuration.AutoMapper {
             CreateMap<Employee, EmployeeDto>().ReverseMap();
             CreateMap<Job, JobDto>().ReverseMap();
             CreateMap<JobHistory, JobHistoryDto>().ReverseMap();
-            
         }
     }
 }

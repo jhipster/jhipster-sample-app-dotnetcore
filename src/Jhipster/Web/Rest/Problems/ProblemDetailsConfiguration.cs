@@ -6,8 +6,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace Jhipster.Web.Rest.Problems {
-    public class ProblemDetailsConfiguration : IConfigureOptions<ProblemDetailsOptions> {
+namespace Jhipster.Web.Rest.Problems
+{
+    public class ProblemDetailsConfiguration : IConfigureOptions<ProblemDetailsOptions>
+    {
         public ProblemDetailsConfiguration(IHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _environment = environment;
@@ -19,9 +21,10 @@ namespace Jhipster.Web.Rest.Problems {
 
         public void Configure(ProblemDetailsOptions options)
         {
-            options.IncludeExceptionDetails = (ctx , details) => _environment.IsDevelopment();
+            options.IncludeExceptionDetails = (ctx, details) => _environment.IsDevelopment();
 
-            options.OnBeforeWriteDetails = (ctx, details) => {
+            options.OnBeforeWriteDetails = (ctx, details) =>
+            {
                 // keep consistent with asp.net core 2.2 conventions that adds a tracing value
                 var traceId = Activity.Current?.Id ?? _HttpContextAccessor.HttpContext.TraceIdentifier;
                 details.Extensions["traceId"] = traceId;

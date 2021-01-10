@@ -3,7 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Jhipster.Domain.Repositories.Interfaces;
 using Jhipster.Infrastructure.Data.Repositories;
 
-namespace Jhipster.Configuration {
+namespace Jhipster.Configuration
+{
     public static class RepositoryStartup
     {
         public static IServiceCollection AddRepositoryModule(this IServiceCollection services)
@@ -17,7 +18,7 @@ namespace Jhipster.Configuration {
                         .UsingRegistrationStrategy(RegistrationStrategy.Replace(ReplacementBehavior.ServiceType))
                         .AsMatchingInterface()
                         .WithScopedLifetime()
-                    
+
                     // Now find repositories that has class name ending with "ExtendedRepository" and register interfaces it implements with priority.
                     // For example: if JobExtendedRepository class is present and implements IJobRepository interface, take precedence over
                     // existing registrations.
@@ -25,7 +26,7 @@ namespace Jhipster.Configuration {
                                                                  type.Name.EndsWith("ExtendedRepository")))
                         .UsingRegistrationStrategy(RegistrationStrategy.Replace(ReplacementBehavior.ServiceType))
                         .AsImplementedInterfaces()
-                        .WithScopedLifetime()                    
+                        .WithScopedLifetime()
             );
 
             return services;

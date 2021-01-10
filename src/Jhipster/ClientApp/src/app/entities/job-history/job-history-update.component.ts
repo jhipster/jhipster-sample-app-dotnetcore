@@ -34,9 +34,9 @@ export class JobHistoryUpdateComponent implements OnInit {
     startDate: [],
     endDate: [],
     language: [],
-    job: [],
-    department: [],
-    employee: [],
+    jobId: [],
+    departmentId: [],
+    employeeId: [],
   });
 
   constructor(
@@ -66,11 +66,11 @@ export class JobHistoryUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IJob[]) => {
-          if (!jobHistory.job || !jobHistory.job.id) {
+          if (!jobHistory.jobId) {
             this.jobs = resBody;
           } else {
             this.jobService
-              .find(jobHistory.job.id)
+              .find(jobHistory.jobId)
               .pipe(
                 map((subRes: HttpResponse<IJob>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -88,11 +88,11 @@ export class JobHistoryUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IDepartment[]) => {
-          if (!jobHistory.department || !jobHistory.department.id) {
+          if (!jobHistory.departmentId) {
             this.departments = resBody;
           } else {
             this.departmentService
-              .find(jobHistory.department.id)
+              .find(jobHistory.departmentId)
               .pipe(
                 map((subRes: HttpResponse<IDepartment>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -110,11 +110,11 @@ export class JobHistoryUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IEmployee[]) => {
-          if (!jobHistory.employee || !jobHistory.employee.id) {
+          if (!jobHistory.employeeId) {
             this.employees = resBody;
           } else {
             this.employeeService
-              .find(jobHistory.employee.id)
+              .find(jobHistory.employeeId)
               .pipe(
                 map((subRes: HttpResponse<IEmployee>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -132,9 +132,9 @@ export class JobHistoryUpdateComponent implements OnInit {
       startDate: jobHistory.startDate ? jobHistory.startDate.format(DATE_TIME_FORMAT) : null,
       endDate: jobHistory.endDate ? jobHistory.endDate.format(DATE_TIME_FORMAT) : null,
       language: jobHistory.language,
-      job: jobHistory.job,
-      department: jobHistory.department,
-      employee: jobHistory.employee,
+      jobId: jobHistory.jobId,
+      departmentId: jobHistory.departmentId,
+      employeeId: jobHistory.employeeId,
     });
   }
 
@@ -159,9 +159,9 @@ export class JobHistoryUpdateComponent implements OnInit {
       startDate: this.editForm.get(['startDate'])!.value ? moment(this.editForm.get(['startDate'])!.value, DATE_TIME_FORMAT) : undefined,
       endDate: this.editForm.get(['endDate'])!.value ? moment(this.editForm.get(['endDate'])!.value, DATE_TIME_FORMAT) : undefined,
       language: this.editForm.get(['language'])!.value,
-      job: this.editForm.get(['job'])!.value,
-      department: this.editForm.get(['department'])!.value,
-      employee: this.editForm.get(['employee'])!.value,
+      jobId: this.editForm.get(['jobId'])!.value,
+      departmentId: this.editForm.get(['departmentId'])!.value,
+      employeeId: this.editForm.get(['employeeId'])!.value,
     };
   }
 

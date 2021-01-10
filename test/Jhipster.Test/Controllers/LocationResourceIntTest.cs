@@ -15,11 +15,13 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Jhipster.Test.Controllers {
-    public class LocationResourceIntTest {
+namespace Jhipster.Test.Controllers
+{
+    public class LocationResourceIntTest
+    {
         public LocationResourceIntTest()
         {
-            _factory = new NhipsterWebApplicationFactory<TestStartup>().WithMockUser();
+            _factory = new AppWebApplicationFactory<TestStartup>().WithMockUser();
             _client = _factory.CreateClient();
 
             _locationRepository = _factory.GetRequiredService<ILocationRepository>();
@@ -46,9 +48,9 @@ namespace Jhipster.Test.Controllers {
         private const string DefaultStateProvince = "AAAAAAAAAA";
         private const string UpdatedStateProvince = "BBBBBBBBBB";
 
-        private readonly NhipsterWebApplicationFactory<TestStartup> _factory;
+        private readonly AppWebApplicationFactory<TestStartup> _factory;
         private readonly HttpClient _client;
-        private readonly ILocationRepository  _locationRepository;
+        private readonly ILocationRepository _locationRepository;
 
         private Location _location;
 
@@ -56,7 +58,8 @@ namespace Jhipster.Test.Controllers {
 
         private Location CreateEntity()
         {
-            return new Location {
+            return new Location
+            {
                 StreetAddress = DefaultStreetAddress,
                 PostalCode = DefaultPostalCode,
                 City = DefaultCity,
@@ -162,7 +165,7 @@ namespace Jhipster.Test.Controllers {
             // Update the location
             var updatedLocation = await _locationRepository.QueryHelper().GetOneAsync(it => it.Id == _location.Id);
             // Disconnect from session so that the updates on updatedLocation are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedLocation.StreetAddress = UpdatedStreetAddress;
             updatedLocation.PostalCode = UpdatedPostalCode;
             updatedLocation.City = UpdatedCity;
@@ -217,10 +220,12 @@ namespace Jhipster.Test.Controllers {
         public void EqualsVerifier()
         {
             TestUtil.EqualsVerifier(typeof(Location));
-            var location1 = new Location {
+            var location1 = new Location
+            {
                 Id = 1L
             };
-            var location2 = new Location {
+            var location2 = new Location
+            {
                 Id = location1.Id
             };
             location1.Should().Be(location2);
