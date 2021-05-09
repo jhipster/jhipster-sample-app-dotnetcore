@@ -7,7 +7,7 @@
           "name": ".NET Core Attach",
           "type": "coreclr",
           "request": "attach",
-          "processId": "${command:pickProcess}"  // if this doesn't work, use
+          "processId": "${command:pickProcess}"  // if this doesn't work, use ps -aux
       },
                  {
           "name": ".NET Core Launch (web)",
