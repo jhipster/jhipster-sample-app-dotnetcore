@@ -1,0 +1,529 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj": {}
+  },
+  "projects": {
+    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj",
+        "projectName": "Jhipster.Crosscutting",
+        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj",
+        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
+        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj",
+        "projectName": "Jhipster.Domain.Services",
+        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj",
+        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
+        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              },
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj"
+              },
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "JHipsterNet.Core": {
+              "target": "Package",
+              "version": "[1.0.7, )"
+            },
+            "LanguageExt.Core": {
+              "target": "Package",
+              "version": "[3.4.15, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj",
+        "projectName": "Jhipster.Domain",
+        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj",
+        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
+        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "JHipsterNet.Core": {
+              "target": "Package",
+              "version": "[1.0.7, )"
+            },
+            "Microsoft.AspNetCore.Identity": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj",
+        "projectName": "Jhipster.Dto",
+        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj",
+        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
+        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "System.ComponentModel.Annotations": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj",
+        "projectName": "Jhipster.Infrastructure",
+        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
+        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              },
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj"
+              },
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.10.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj": {
+      "version": "0.0.1",
+      "restore": {
+        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj",
+        "projectName": "jhipster",
+        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj",
+        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
+        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              },
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj"
+              },
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj"
+              },
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj"
+              },
+              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj": {
+                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.2, )"
+            },
+            "Hellang.Middleware.ProblemDetails": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "JHipsterNet.Core": {
+              "target": "Package",
+              "version": "[1.0.7, )"
+            },
+            "JHipsterNet.Web": {
+              "target": "Package",
+              "version": "[1.0.7, )"
+            },
+            "LanguageExt.Core": {
+              "target": "Package",
+              "version": "[3.4.15, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.AspNetCore.SpaServices.Extensions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Scrutor": {
+              "target": "Package",
+              "version": "[3.3.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[3.4.0, )"
+            },
+            "Serilog.Enrichers.Process": {
+              "target": "Package",
+              "version": "[2.0.1, )"
+            },
+            "Serilog.Enrichers.Thread": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Serilog.Settings.Configuration": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Serilog.Sinks.SyslogMessages": {
+              "target": "Package",
+              "version": "[2.0.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.6.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.8.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
