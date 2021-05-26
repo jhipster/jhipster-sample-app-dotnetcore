@@ -775,7 +775,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eisne\\.nuget\\packages\\": {}
+    "..\\..\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -783,7 +783,7 @@
       "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj",
       "projectName": "Jhipster.Dto",
       "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj",
-      "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
+      "packagesPath": "..\\..\\packages\\",
       "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [

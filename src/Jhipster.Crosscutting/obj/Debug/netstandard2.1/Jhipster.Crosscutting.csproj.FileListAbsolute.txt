@@ -1,0 +1,9 @@
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\bin\Debug\netstandard2.1\Jhipster.Crosscutting.deps.json
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\bin\Debug\netstandard2.1\Jhipster.Crosscutting.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\bin\Debug\netstandard2.1\Jhipster.Crosscutting.pdb
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\obj\Debug\netstandard2.1\Jhipster.Crosscutting.csprojAssemblyReference.cache
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\obj\Debug\netstandard2.1\Jhipster.Crosscutting.AssemblyInfoInputs.cache
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\obj\Debug\netstandard2.1\Jhipster.Crosscutting.AssemblyInfo.cs
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\obj\Debug\netstandard2.1\Jhipster.Crosscutting.csproj.CoreCompileInputs.cache
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\obj\Debug\netstandard2.1\Jhipster.Crosscutting.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster.Crosscutting\obj\Debug\netstandard2.1\Jhipster.Crosscutting.pdb

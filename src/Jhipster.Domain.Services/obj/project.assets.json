@@ -4936,7 +4936,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eisne\\.nuget\\packages\\": {}
+    "..\\..\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -4944,7 +4944,7 @@
       "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj",
       "projectName": "Jhipster.Domain.Services",
       "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj",
-      "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
+      "packagesPath": "..\\..\\packages\\",
       "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [

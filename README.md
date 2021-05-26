@@ -21,10 +21,7 @@ We use npm scripts and [Webpack][] as our build system.
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
-    dotnet run --verbosity normal --project ./src/Jhipster/Jhipster.csproj
-
-    (dotnet run --verbosity normal --project --no-restore ./src/Jhipster/Jhipster.csproj if the assets files points to projects)
-
+    dotnet run --verbosity normal --no-restore --project ./src/Jhipster/Jhipster.csproj
     npm --prefix ./src/Jhipster/ClientApp start
 
 To determine which process is running, you can use the powershell command:
