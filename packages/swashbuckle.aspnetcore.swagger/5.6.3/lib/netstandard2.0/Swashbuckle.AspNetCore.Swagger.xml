@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Swashbuckle.AspNetCore.Swagger</name>
+    </assembly>
+    <members>
+        <member name="P:Swashbuckle.AspNetCore.Swagger.SwaggerEndpointOptions.SerializeAsV2">
+            <summary>
+            Return Swagger JSON in the V2 format rather than V3
+            </summary>
+        </member>
+        <member name="P:Swashbuckle.AspNetCore.Swagger.SwaggerEndpointOptions.PreSerializeFilters">
+            <summary>
+            Actions that can be applied SwaggerDocument's before they're serialized to JSON.
+            Useful for setting metadata that's derived from the current request
+            </summary>
+        </member>
+        <member name="P:Swashbuckle.AspNetCore.Swagger.SwaggerOptions.RouteTemplate">
+            <summary>
+            Sets a custom route for the Swagger JSON endpoint(s). Must include the {documentName} parameter
+            </summary>
+        </member>
+        <member name="P:Swashbuckle.AspNetCore.Swagger.SwaggerOptions.SerializeAsV2">
+            <summary>
+            Return Swagger JSON in the V2 format rather than V3
+            </summary>
+        </member>
+        <member name="P:Swashbuckle.AspNetCore.Swagger.SwaggerOptions.PreSerializeFilters">
+            <summary>
+            Actions that can be applied SwaggerDocument's before they're serialized to JSON.
+            Useful for setting metadata that's derived from the current request
+            </summary>
+        </member>
+    </members>
+</doc>

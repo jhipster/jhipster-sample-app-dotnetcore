@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="2.12">
+    <id>Newtonsoft.Json.Bson</id>
+    <version>1.0.2</version>
+    <authors>James Newton-King</authors>
+    <owners>James Newton-King</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>http://www.newtonsoft.com/json</projectUrl>
+    <iconUrl>http://www.newtonsoft.com/content/images/nugeticon.png</iconUrl>
+    <description>Json.NET BSON adds support for reading and writing BSON</description>
+    <copyright>Copyright © James Newton-King 2017</copyright>
+    <tags>bson</tags>
+    <repository type="git" url="https://github.com/JamesNK/Newtonsoft.Json.Bson" commit="a1db92678e7e72eb733f37079f3a93bfb6215338" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

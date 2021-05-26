@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNetCore.Cryptography.Internal</id>
+    <version>2.2.0</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt</licenseUrl>
+    <projectUrl>https://asp.net/</projectUrl>
+    <iconUrl>https://go.microsoft.com/fwlink/?LinkID=288859</iconUrl>
+    <description>Infrastructure for ASP.NET Core cryptographic packages. Applications and libraries should not reference this package directly.
+
+This package was built from the source code at https://github.com/aspnet/AspNetCore/tree/ce8cf65589734f82b0536c543aba5bd60d0a5a98</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>aspnetcore dataprotection</tags>
+    <serviceable>true</serviceable>
+    <repository type="git" url="https://github.com/aspnet/AspNetCore" commit="ce8cf65589734f82b0536c543aba5bd60d0a5a98" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

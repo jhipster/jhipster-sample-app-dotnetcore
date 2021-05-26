@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="3.6">
+    <id>Microsoft.EntityFrameworkCore.Analyzers</id>
+    <version>5.0.0</version>
+    <authors>Microsoft</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <icon>Icon.png</icon>
+    <projectUrl>https://docs.microsoft.com/ef/core/</projectUrl>
+    <description>CSharp Analyzers for Entity Framework Core.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>Entity Framework Core entity-framework-core EF Data O/RM EntityFramework EntityFrameworkCore EFCore</tags>
+    <serviceable>true</serviceable>
+    <repository type="git" url="https://github.com/dotnet/efcore" commit="33570d0337f76208fa3a814f7f6d3a506bd9c0be" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

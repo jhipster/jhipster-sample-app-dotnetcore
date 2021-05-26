@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Serilog.Enrichers.Process</id>
+    <version>2.0.1</version>
+    <authors>Serilog Contributors</authors>
+    <owners>Serilog Contributors</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://serilog.net/</projectUrl>
+    <iconUrl>http://serilog.net/images/serilog-enricher-nuget.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The process enricher for Serilog.</description>
+    <tags>serilog,process,enricher</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Serilog" version="[2.0.0, )" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="System.Diagnostics.Process" version="[4.1.0, )" />
+        <dependency id="Serilog" version="[2.0.0, )" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

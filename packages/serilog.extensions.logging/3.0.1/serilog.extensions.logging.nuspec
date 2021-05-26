@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Serilog.Extensions.Logging</id>
+    <version>3.0.1</version>
+    <authors>Microsoft,Serilog Contributors</authors>
+    <owners>Microsoft,Serilog Contributors</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/serilog/serilog-extensions-logging</projectUrl>
+    <iconUrl>http://serilog.net/images/serilog-extension-nuget.png</iconUrl>
+    <description>Low-level Serilog provider for Microsoft.Extensions.Logging</description>
+    <tags>serilog Microsoft.Extensions.Logging</tags>
+    <repository type="git" url="https://github.com/serilog/serilog-extensions-logging" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Extensions.Logging" version="2.0.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.8.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Serilog.Settings.Configuration</id>
+    <version>3.1.0</version>
+    <authors>Serilog Contributors</authors>
+    <owners>Serilog Contributors</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <projectUrl>https://github.com/serilog/serilog-settings-configuration</projectUrl>
+    <iconUrl>https://serilog.net/images/serilog-configuration-nuget.png</iconUrl>
+    <description>Microsoft.Extensions.Configuration (appsettings.json) support for Serilog.</description>
+    <tags>serilog json</tags>
+    <repository type="git" url="https://github.com/serilog/serilog-settings-configuration" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.1">
+        <dependency id="Microsoft.Extensions.DependencyModel" version="2.0.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="1.1.2" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.6.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="Microsoft.Extensions.DependencyModel" version="2.0.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.6.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Extensions.DependencyModel" version="2.0.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.6.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

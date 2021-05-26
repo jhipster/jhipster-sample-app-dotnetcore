@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Serilog.Enrichers.Thread</id>
+    <version>3.1.0</version>
+    <authors>Serilog Contributors</authors>
+    <owners>Serilog Contributors</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://serilog.net/</projectUrl>
+    <iconUrl>http://serilog.net/images/serilog-enricher-nuget.png</iconUrl>
+    <description>Enrich Serilog events with properties from the current thread.</description>
+    <tags>serilog thread enricher</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Serilog" version="2.3.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard1.0">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.3.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Serilog" version="2.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

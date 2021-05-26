@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Serilog.Sinks.File</id>
+    <version>4.1.0</version>
+    <authors>Serilog Contributors</authors>
+    <owners>Serilog Contributors</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://serilog.net/</projectUrl>
+    <iconUrl>http://serilog.net/images/serilog-sink-nuget.png</iconUrl>
+    <description>Write Serilog events to text files in plain or JSON format.</description>
+    <tags>serilog file</tags>
+    <repository type="git" url="https://github.com/serilog/serilog-sinks-file" commit="272085f4c9440e62448b65829ad35cc3dea15ab1" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Serilog" version="2.5.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="Serilog" version="2.5.0" exclude="Build,Analyzers" />
+        <dependency id="System.IO" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.IO.FileSystem" version="4.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.IO.FileSystem.Primitives" version="4.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.InteropServices" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Encoding.Extensions" version="4.0.11" exclude="Build,Analyzers" />
+        <dependency id="System.Threading" version="4.0.11" exclude="Build,Analyzers" />
+        <dependency id="System.Threading.Timer" version="4.0.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Serilog" version="2.5.0" exclude="Build,Analyzers" />
+        <dependency id="System.IO.FileSystem" version="4.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Encoding.Extensions" version="4.0.11" exclude="Build,Analyzers" />
+        <dependency id="System.Threading.Timer" version="4.0.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.EntityFrameworkCore.Design</id>
+    <version>5.0.0</version>
+    <authors>Microsoft</authors>
+    <developmentDependency>true</developmentDependency>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <icon>Icon.png</icon>
+    <projectUrl>https://docs.microsoft.com/ef/core/</projectUrl>
+    <description>Shared design-time components for Entity Framework Core tools.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>Entity Framework Core entity-framework-core EF Data O/RM EntityFramework EntityFrameworkCore EFCore</tags>
+    <serviceable>true</serviceable>
+    <repository type="git" url="https://github.com/dotnet/efcore" commit="33570d0337f76208fa3a814f7f6d3a506bd9c0be" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.EntityFrameworkCore.Relational" version="5.0.0" exclude="Build" />
+        <dependency id="Humanizer.Core" version="2.8.26" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

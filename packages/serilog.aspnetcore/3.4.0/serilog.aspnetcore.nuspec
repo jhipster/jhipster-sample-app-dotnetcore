@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Serilog.AspNetCore</id>
+    <version>3.4.0</version>
+    <authors>Microsoft,Serilog Contributors</authors>
+    <owners>Microsoft,Serilog Contributors</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <icon>serilog-extension-nuget.png</icon>
+    <projectUrl>https://github.com/serilog/serilog-aspnetcore</projectUrl>
+    <iconUrl>https://serilog.net/images/serilog-extension-nuget.png</iconUrl>
+    <description>Serilog support for ASP.NET Core logging</description>
+    <tags>serilog aspnet aspnetcore</tags>
+    <repository type="git" url="https://github.com/serilog/serilog-aspnetcore" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="3.1.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="3.1.2" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.9.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Extensions.Hosting" version="3.1.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Formatting.Compact" version="1.1.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Settings.Configuration" version="3.1.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Sinks.Console" version="3.1.1" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Sinks.Debug" version="1.0.1" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Sinks.File" version="4.1.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.AspNetCore.Hosting.Abstractions" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.9.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Extensions.Hosting" version="3.1.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Formatting.Compact" version="1.1.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Settings.Configuration" version="3.1.0" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Sinks.Console" version="3.1.1" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Sinks.Debug" version="1.0.1" exclude="Build,Analyzers" />
+        <dependency id="Serilog.Sinks.File" version="4.1.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+</package>

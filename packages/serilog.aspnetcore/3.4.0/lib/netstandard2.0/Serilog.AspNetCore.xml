@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Serilog.AspNetCore</name>
+    </assembly>
+    <members>
+        <member name="T:Serilog.AspNetCore.RequestLoggingOptions">
+            <summary>
+            Contains options for the <see cref="T:Serilog.AspNetCore.RequestLoggingMiddleware"/>.
+            </summary>
+        </member>
+        <member name="P:Serilog.AspNetCore.RequestLoggingOptions.MessageTemplate">
+            <summary>
+            Gets or sets the message template. The default value is
+            <c>"HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms"</c>. The
+            template can contain any of the placeholders from the default template, names of properties
+            added by ASP.NET Core, and names of properties added to the <see cref="T:Serilog.IDiagnosticContext"/>.
+            </summary>
+            <value>
+            The message template.
+            </value>
+        </member>
+        <member name="P:Serilog.AspNetCore.RequestLoggingOptions.GetLevel">
+            <summary>
+            A function returning the <see cref="T:Serilog.Events.LogEventLevel"/> based on the <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>, the number of
+            elapsed milliseconds required for handling the request, and an <see cref="T:System.Exception" /> if one was thrown.
+            The default behavior returns <see cref="F:Serilog.Events.LogEventLevel.Error"/> when the response status code is greater than 499 or if the
+            <see cref="T:System.Exception"/> is not null.
+            </summary>
+            <value>
+            A function returning the <see cref="T:Serilog.Events.LogEventLevel"/>.
+            </value>
+        </member>
+        <member name="P:Serilog.AspNetCore.RequestLoggingOptions.EnrichDiagnosticContext">
+            <summary>
+            A callback that can be used to set additional properties on the request completion event.
+            </summary>
+        </member>
+        <member name="P:Serilog.AspNetCore.RequestLoggingOptions.Logger">
+            <summary>
+            The logger through which request completion events will be logged. The default is to use the
+            static <see cref="T:Serilog.Log"/> class.
+            </summary>
+        </member>
+        <member name="M:Serilog.AspNetCore.RequestLoggingOptions.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:Serilog.AspNetCore.SerilogLoggerFactory">
+            <summary>
+            Implements <see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/> so that we can inject Serilog Logger.
+            </summary>
+        </member>
+        <member name="M:Serilog.AspNetCore.SerilogLoggerFactory.#ctor(Serilog.ILogger,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Serilog.AspNetCore.SerilogLoggerFactory"/> class.
+            </summary>
+            <param name="logger">The Serilog logger; if not supplied, the static <see cref="T:Serilog.Log"/> will be used.</param>
+            <param name="dispose">When true, dispose <paramref name="logger"/> when the framework disposes the provider. If the
+            logger is not specified but <paramref name="dispose"/> is true, the <see cref="M:Serilog.Log.CloseAndFlush"/> method will be
+            called on the static <see cref="T:Serilog.Log"/> class instead.</param>
+        </member>
+        <member name="M:Serilog.AspNetCore.SerilogLoggerFactory.Dispose">
+            <summary>
+            Disposes the provider.
+            </summary>
+        </member>
+        <member name="M:Serilog.AspNetCore.SerilogLoggerFactory.CreateLogger(System.String)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.Extensions.Logging.ILogger" /> instance.
+            </summary>
+            <param name="categoryName">The category name for messages produced by the logger.</param>
+            <returns>
+            The <see cref="T:Microsoft.Extensions.Logging.ILogger" />.
+            </returns>
+        </member>
+        <member name="M:Serilog.AspNetCore.SerilogLoggerFactory.AddProvider(Microsoft.Extensions.Logging.ILoggerProvider)">
+            <summary>
+            Adds an <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider" /> to the logging system.
+            </summary>
+            <param name="provider">The <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider" />.</param>
+        </member>
+        <member name="T:Serilog.SerilogApplicationBuilderExtensions">
+            <summary>
+            Extends <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> with methods for configuring Serilog features.
+            </summary>
+        </member>
+        <member name="M:Serilog.SerilogApplicationBuilderExtensions.UseSerilogRequestLogging(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String)">
+            <summary>
+            Adds middleware for streamlined request logging. Instead of writing HTTP request information
+            like method, path, timing, status code and exception details
+            in several events, this middleware collects information during the request (including from
+            <see cref="T:Serilog.IDiagnosticContext"/>), and writes a single event at request completion. Add this
+            in <c>Startup.cs</c> before any handlers whose activities should be logged.
+            </summary>
+            <param name="app">The application builder.</param>
+            <param name="messageTemplate">The message template to use when logging request completion
+            events. The default is
+            <c>"HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms"</c>. The
+            template can contain any of the placeholders from the default template, names of properties
+            added by ASP.NET Core, and names of properties added to the <see cref="T:Serilog.IDiagnosticContext"/>.
+            </param>
+            <returns>The application builder.</returns>
+        </member>
+        <member name="M:Serilog.SerilogApplicationBuilderExtensions.UseSerilogRequestLogging(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Serilog.AspNetCore.RequestLoggingOptions})">
+            <summary>
+            Adds middleware for streamlined request logging. Instead of writing HTTP request information
+            like method, path, timing, status code and exception details
+            in several events, this middleware collects information during the request (including from
+            <see cref="T:Serilog.IDiagnosticContext"/>), and writes a single event at request completion. Add this
+            in <c>Startup.cs</c> before any handlers whose activities should be logged.
+            </summary>
+            <param name="app">The application builder.</param>
+            <param name="configureOptions">A <see cref="T:System.Action`1" /> to configure the provided <see cref="T:Serilog.AspNetCore.RequestLoggingOptions" />.</param>
+            <returns>The application builder.</returns>
+        </member>
+        <member name="T:Serilog.SerilogWebHostBuilderExtensions">
+            <summary>
+            Extends <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> with Serilog configuration methods.
+            </summary>
+        </member>
+        <member name="M:Serilog.SerilogWebHostBuilderExtensions.UseSerilog(Microsoft.AspNetCore.Hosting.IWebHostBuilder,Serilog.ILogger,System.Boolean,Serilog.Extensions.Logging.LoggerProviderCollection)">
+            <summary>
+            Sets Serilog as the logging provider.
+            </summary>
+            <param name="builder">The web host builder to configure.</param>
+            <param name="logger">The Serilog logger; if not supplied, the static <see cref="T:Serilog.Log"/> will be used.</param>
+            <param name="dispose">When true, dispose <paramref name="logger"/> when the framework disposes the provider. If the
+            logger is not specified but <paramref name="dispose"/> is true, the <see cref="M:Serilog.Log.CloseAndFlush"/> method will be
+            called on the static <see cref="T:Serilog.Log"/> class instead.</param>
+            <param name="providers">A <see cref="T:Serilog.Extensions.Logging.LoggerProviderCollection"/> registered in the Serilog pipeline using the
+            <c>WriteTo.Providers()</c> configuration method, enabling other <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider"/>s to receive events. By
+            default, only Serilog sinks will receive events.</param>
+            <returns>The web host builder.</returns>
+        </member>
+        <member name="M:Serilog.SerilogWebHostBuilderExtensions.UseSerilog(Microsoft.AspNetCore.Hosting.IWebHostBuilder,System.Action{Microsoft.AspNetCore.Hosting.WebHostBuilderContext,Serilog.LoggerConfiguration},System.Boolean,System.Boolean)">
+            <summary>Sets Serilog as the logging provider.</summary>
+            <remarks>
+            A <see cref="T:Microsoft.AspNetCore.Hosting.WebHostBuilderContext"/> is supplied so that configuration and hosting information can be used.
+            The logger will be shut down when application services are disposed.
+            </remarks>
+            <param name="builder">The web host builder to configure.</param>
+            <param name="configureLogger">The delegate for configuring the <see cref="T:Serilog.LoggerConfiguration" /> that will be used to construct a <see cref="T:Microsoft.Extensions.Logging.Logger" />.</param>
+            <param name="preserveStaticLogger">Indicates whether to preserve the value of <see cref="P:Serilog.Log.Logger"/>.</param>
+            <param name="writeToProviders">By default, Serilog does not write events to <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider"/>s registered through
+            the Microsoft.Extensions.Logging API. Normally, equivalent Serilog sinks are used in place of providers. Specify
+            <c>true</c> to write events to all providers.</param>
+            <returns>The web host builder.</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Swashbuckle.AspNetCore.SwaggerGen</id>
+    <version>5.6.3</version>
+    <authors>Swashbuckle.AspNetCore.SwaggerGen</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/domaindrivendev/Swashbuckle.AspNetCore/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/domaindrivendev/Swashbuckle.AspNetCore</projectUrl>
+    <description>Swagger Generator for APIs built on ASP.NET Core</description>
+    <tags>swagger documentation discovery help webapi aspnet aspnetcore</tags>
+    <repository type="git" url="https://github.com/domaindrivendev/Swashbuckle.AspNetCore.git" commit="90a6382eab701ced8ed6bf4a2c60ed760fd232db" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.0">
+        <dependency id="Swashbuckle.AspNetCore.Swagger" version="5.6.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Swashbuckle.AspNetCore.Swagger" version="5.6.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Mvc.ApiExplorer" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Mvc.DataAnnotations" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="4.6.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.0">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+</package>

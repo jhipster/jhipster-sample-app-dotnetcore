@@ -24,7 +24,9 @@ auto-refreshes when files change on your hard drive.
     dotnet run --verbosity normal --project ./src/Jhipster/Jhipster.csproj
     npm --prefix ./src/Jhipster/ClientApp start
 
-To determine which process is running, you can use the command ps -aux
+To determine which process is running, you can use the powershell command:
+
+	get-nettcpconnection | where {($_.State -eq "Listen") -and ($_.RemoteAddress -eq "0.0.0.0")} | Select LocalAddress,LocalPort,RemoteAddress,RemotePort,State,OwningProcess | ft
 
 npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
 specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
