@@ -46,7 +46,7 @@ npm-debug.log.*
 ###########
 # DOTNET build res
 ###########
-#[Dd]ebug/
+[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
@@ -54,8 +54,8 @@ x64/
 x86/
 build/
 bld/
-#[Bb]in/
-#[Oo]bj/
+[Bb]in/
+[Oo]bj/
 [Oo]ut/
 
 # MSTest test Results

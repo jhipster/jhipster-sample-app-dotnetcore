@@ -9,6 +9,7 @@ using JHipsterNet.Web.Logging;
 using Serilog.Sinks.Syslog;
 using ILogger = Serilog.ILogger;
 using static JHipsterNet.Core.Boot.BannerPrinter;
+using Nest;
 
 namespace Jhipster
 {
@@ -22,9 +23,41 @@ namespace Jhipster
 
         public static int Main(string[] args)
         {
-            PrintBanner(10 * 1000);
+            PrintBanner(1 * 1000);
+            //1. Setup Connection and ElasticClient
+            Console.WriteLine("Connecting to Elastic-Search");
+            var node = new Uri("https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/");
 
-            try
+            var setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9","4cdkz0o14").DefaultIndex("birthdays");
+
+            var elastic = new ElasticClient(setting);
+
+            var searchResponse = elastic.Search<Birthday>(s => s
+                .Query(q => q
+                    .MatchAll()
+                )
+            );
+            Console.WriteLine(searchResponse.Hits.Count + " hits");
+            foreach (var hit in searchResponse.Hits)
+            {
+                Console.WriteLine(hit.Source.ToString());
+            }
+             searchResponse = elastic.Search<Birthday>(s => s
+                .Size(1000)
+                .Query(q => q
+                    .DateRange(r => r
+                        .Field(f => f.dob)
+                        .GreaterThanOrEquals(new DateTime(1941, 01, 01))
+                        .LessThan(new DateTime(1942, 01, 01))
+                    )
+                )
+            );            
+            Console.WriteLine(searchResponse.Hits.Count + " hits");
+            foreach (var hit in searchResponse.Hits)
+            {
+                Console.WriteLine(hit.Source.ToString());
+            }
+          try
             {
                 var appConfiguration = GetAppConfiguration();
                 Log.Logger = CreateLogger(appConfiguration);
@@ -107,4 +140,24 @@ namespace Jhipster
                 .Build();
         }
     }
+   public class Birthday
+    {
+        public long id { get; set; }
+        public string lname { get; set; }
+        public string fname { get; set; }
+        public DateTime dob{ get; set; }
+        public string sign { get; set; }
+        public bool isAlive { get; set; }
+        
+        public override string ToString()
+        {
+            return "Birthday{" +
+                    $"lname='{lname}'" +
+                    $", fname='{fname}'" +
+                    $", dob={dob.ToString("d")}" +
+                    $", sign='{sign}'" +
+                    $", isAlive={(isAlive ? "true" : "false")}" +
+                "}";
+        }
+    }    
 }

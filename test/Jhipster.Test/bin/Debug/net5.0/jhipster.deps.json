@@ -39,6 +39,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.0",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "5.0.0",
           "Microsoft.AspNetCore.SpaServices.Extensions": "5.0.0",
+          "NEST": "0.9.0.2",
           "Scrutor": "3.3.0",
           "Serilog.AspNetCore": "3.4.0",
           "Serilog.Enrichers.Process": "2.0.1",
@@ -976,6 +977,20 @@
         "dependencies": {
           "System.Security.AccessControl": "4.5.0",
           "System.Security.Principal.Windows": "4.5.0"
+        }
+      },
+      "NEST/0.9.0.2": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "runtime": {
+          "lib/NET4/Nest.dll": {
+            "assemblyVersion": "0.9.0.2",
+            "fileVersion": "0.9.0.2"
+          }
+        },
+        "compile": {
+          "lib/NET4/Nest.dll": {}
         }
       },
       "Newtonsoft.Json/12.0.3": {
@@ -4060,6 +4075,13 @@
       "sha512": "sha512-+FWlwd//+Tt56316p00hVePBCouXyEzT86Jb3+AuRotTND0IYn0OO3obs1gnQEs/txEnt+rF2JBGLItTG+Be6A==",
       "path": "microsoft.win32.registry/4.5.0",
       "hashPath": "microsoft.win32.registry.4.5.0.nupkg.sha512"
+    },
+    "NEST/0.9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oBYiKYYb64Ua3Dup9Z6ddg/4vvZTsQvI7tMRi6zBN2GFyFAdhuF8gVWajwoGTWJTLEA0Lp4cLyETptfAfNCYsA==",
+      "path": "nest/0.9.0.2",
+      "hashPath": "nest.0.9.0.2.nupkg.sha512"
     },
     "Newtonsoft.Json/12.0.3": {
       "type": "package",

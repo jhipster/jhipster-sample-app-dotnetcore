@@ -46,6 +46,7 @@ C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\jhipster.pdb
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\AutoMapper.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\BCrypt.Net-Next.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Elasticsearch.Net.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Hellang.Middleware.ProblemDetails.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Humanizer.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\JHipsterNet.Core.dll
@@ -70,6 +71,7 @@ C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Microsoft.Id
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Nest.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Newtonsoft.Json.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Scrutor.dll

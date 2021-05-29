@@ -466,6 +466,10 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
+            "NEST": {
+              "target": "Package",
+              "version": "[7.13.0, )"
+            },
             "Scrutor": {
               "target": "Package",
               "version": "[3.3.0, )"
