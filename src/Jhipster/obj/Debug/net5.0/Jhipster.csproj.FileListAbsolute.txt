@@ -1,3 +1,10 @@
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.csprojAssemblyReference.cache
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.GeneratedMSBuildEditorConfig.editorconfig
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.AssemblyInfoInputs.cache
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.AssemblyInfo.cs
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.csproj.CoreCompileInputs.cache
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\jhipster.MvcApplicationPartsAssemblyInfo.cs
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\jhipster.MvcApplicationPartsAssemblyInfo.cache
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\app\out\app\out\app\out\app\out\app\out\web.config
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\app\out\app\out\app\out\app\out\web.config
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\app\out\app\out\app\out\web.config
@@ -119,13 +126,6 @@ C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Jhipster.Dom
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Jhipster.Crosscutting.pdb
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Jhipster.Dto.pdb
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Jhipster.Domain.pdb
-C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.csprojAssemblyReference.cache
-C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.GeneratedMSBuildEditorConfig.editorconfig
-C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.AssemblyInfoInputs.cache
-C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.AssemblyInfo.cs
-C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.csproj.CoreCompileInputs.cache
-C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\jhipster.MvcApplicationPartsAssemblyInfo.cs
-C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\jhipster.MvcApplicationPartsAssemblyInfo.cache
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\staticwebassets\jhipster.StaticWebAssets.Manifest.cache
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\staticwebassets\jhipster.StaticWebAssets.xml
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\scopedcss\bundle\jhipster.styles.css

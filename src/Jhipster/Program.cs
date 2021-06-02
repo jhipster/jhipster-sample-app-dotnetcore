@@ -10,6 +10,7 @@ using Serilog.Sinks.Syslog;
 using ILogger = Serilog.ILogger;
 using static JHipsterNet.Core.Boot.BannerPrinter;
 using Nest;
+using Jhipster.Domain;
 
 namespace Jhipster
 {
@@ -140,24 +141,4 @@ namespace Jhipster
                 .Build();
         }
     }
-   public class Birthday
-    {
-        public long id { get; set; }
-        public string lname { get; set; }
-        public string fname { get; set; }
-        public DateTime dob{ get; set; }
-        public string sign { get; set; }
-        public bool isAlive { get; set; }
-        
-        public override string ToString()
-        {
-            return "Birthday{" +
-                    $"lname='{lname}'" +
-                    $", fname='{fname}'" +
-                    $", dob={dob.ToString("d")}" +
-                    $", sign='{sign}'" +
-                    $", isAlive={(isAlive ? "true" : "false")}" +
-                "}";
-        }
-    }    
 }

@@ -14,6 +14,7 @@
         "pieceOfWork": "Piece Of Work",
         "employee": "Employee",
         "job": "Job",
+        "birthday" : "Birthday",        
         "jobHistory": "Job History",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
