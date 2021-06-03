@@ -2190,6 +2190,7 @@
           "Microsoft.EntityFrameworkCore": "5.0.0",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.0",
+          "NEST": "7.13.0",
           "Serilog": "2.10.0"
         },
         "compile": {

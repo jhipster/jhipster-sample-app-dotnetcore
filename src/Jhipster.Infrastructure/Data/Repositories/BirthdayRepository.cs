@@ -6,11 +6,21 @@ using JHipsterNet.Core.Pagination.Extensions;
 using Jhipster.Domain;
 using Jhipster.Domain.Repositories.Interfaces;
 using Jhipster.Infrastructure.Data.Extensions;
+using System;
+using Nest;
+using Jhipster.Dto;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Query;
+
 
 namespace Jhipster.Infrastructure.Data.Repositories
 {
     public class BirthdayRepository : GenericRepository<Birthday>, IBirthdayRepository
     {
+        private static Uri node = new Uri("https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/");
+        private static Nest.ConnectionSettings setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9","4cdkz0o14").DefaultIndex("birthdays");
+        private static ElasticClient elastic = new ElasticClient(setting);
         public BirthdayRepository(IUnitOfWork context) : base(context)
         {
         }
@@ -27,6 +37,57 @@ namespace Jhipster.Infrastructure.Data.Repositories
             {
                 _context.AddOrUpdateGraph(birthday);
             }
+            return birthday;
+        }
+        public override async Task<IPage<Birthday>> GetPageAsync(IPageable pageable){
+            var searchResponse = await elastic.SearchAsync<birthday>(s => s
+                .Size(10000)
+                .Query(q => q
+                    .MatchAll()
+                    //.DateRange(r => r
+                    //    .Field(f => f.dob)
+                    //    .GreaterThanOrEquals(new DateTime(1940, 01, 01))
+                    //    .LessThan(new DateTime(1941, 01, 01))
+                    //)
+                )
+            );
+            List<Birthday> content = new List<Birthday>();
+            Console.WriteLine(searchResponse.Hits.Count + " hits");
+            foreach (var hit in searchResponse.Hits)
+            {
+                content.Add(new Birthday{
+                    Id = hit.Id,
+                    Lname = hit.Source.lname,
+                    Fname = hit.Source.fname,
+                    Dob = hit.Source.dob,
+                    Sign = hit.Source.sign,
+                    IsAlive = hit.Source.isAlive 
+                });
+            }
+            return new Page<Birthday>(content, pageable, content.Count);
+        }
+        // the lower-case birthday class is needed to characterize the elastic data, which should be changed
+        private class birthday
+        {
+            public string Id { get; set; }
+            public string lname { get; set; }
+            public string fname { get; set; }
+            public DateTime dob{ get; set; }
+            public string sign { get; set; }
+            public bool isAlive { get; set; }
+        }
+
+        public override async Task<Birthday> GetOneAsync(object id)
+        {
+            var hit = await elastic.GetAsync<birthday>((string)id);
+            Birthday birthday = new Birthday{
+                Id = hit.Id,
+                Lname = hit.Source.lname,
+                Fname = hit.Source.fname,
+                Dob = hit.Source.dob,
+                Sign = hit.Source.sign,
+                IsAlive = hit.Source.isAlive 
+            };
             return birthday;
         }
     }

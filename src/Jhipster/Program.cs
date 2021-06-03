@@ -47,7 +47,7 @@ namespace Jhipster
                 .Size(1000)
                 .Query(q => q
                     .DateRange(r => r
-                        .Field(f => f.dob)
+                        .Field(f => f.Dob)
                         .GreaterThanOrEquals(new DateTime(1941, 01, 01))
                         .LessThan(new DateTime(1942, 01, 01))
                     )

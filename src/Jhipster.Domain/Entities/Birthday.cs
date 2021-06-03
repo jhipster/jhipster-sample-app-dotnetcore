@@ -11,11 +11,11 @@ namespace Jhipster.Domain
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        public string lname { get; set; }
-        public string fname { get; set; }
-        public DateTime dob{ get; set; }
-        public string sign { get; set; }
-        public bool isAlive { get; set; }
+        public string Lname { get; set; }
+        public string Fname { get; set; }
+        public DateTime Dob{ get; set; }
+        public string Sign { get; set; }
+        public bool IsAlive { get; set; }
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
@@ -37,11 +37,11 @@ namespace Jhipster.Domain
         public override string ToString()
         {
             return "Birthday{" +
-                    $"lname='{lname}'" +
-                    $", fname='{fname}'" +
-                    $", dob={dob.ToString("d")}" +
-                    $", sign='{sign}'" +
-                    $", isAlive={(isAlive ? "true" : "false")}" +
+                    $"Lname='{Lname}'" +
+                    $", Fname='{Fname}'" +
+                    $", Dob={Dob.ToString("d")}" +
+                    $", Sign='{Sign}'" +
+                    $", IsAlive={(IsAlive ? "true" : "false")}" +
                 "}";
         }
     }   

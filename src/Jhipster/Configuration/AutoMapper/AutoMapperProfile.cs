@@ -25,6 +25,7 @@ namespace Jhipster.Configuration.AutoMapper
             CreateMap<Employee, EmployeeDto>().ReverseMap();
             CreateMap<Job, JobDto>().ReverseMap();
             CreateMap<JobHistory, JobHistoryDto>().ReverseMap();
+            CreateMap<Birthday, BirthdayDto>().ReverseMap();
         }
     }
 }

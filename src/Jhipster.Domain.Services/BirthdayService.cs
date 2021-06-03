@@ -24,25 +24,22 @@ namespace Jhipster.Domain.Services
 
         public virtual async Task<IPage<Birthday>> FindAll(IPageable pageable)
         {
-            var page = await _birthdayRepository.QueryHelper()
-                .Include(birthday => birthday.lname)
-                .Include(birthday => birthday.fname)
-                .Include(birthday => birthday.dob)
-                .Include(birthday => birthday.sign)
-                .Include(birthday => birthday.isAlive)
-                .GetPageAsync(pageable);
+            var page = await _birthdayRepository.GetPageAsync(pageable);
             return page;
         }
 
         public virtual async Task<Birthday> FindOne(string id)
         {
-            var result = await _birthdayRepository.QueryHelper()
-                .Include(birthday => birthday.lname)
-                .Include(birthday => birthday.fname)
-                .Include(birthday => birthday.dob)
-                .Include(birthday => birthday.sign)
-                .Include(birthday => birthday.isAlive)
-                .GetOneAsync(birthday => birthday.Id == id);
+            var result = await _birthdayRepository
+            /* .QueryHelper()
+                .Include(birthday => birthday.Lname)
+                .Include(birthday => birthday.Fname)
+                .Include(birthday => birthday.Dob)
+                .Include(birthday => birthday.Sign)
+                .Include(birthday => birthday.IsAlive)
+                ._birthdayRepository
+            */
+            .GetOneAsync(id);
             return result;
         }
 

@@ -16,7 +16,7 @@
       "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj",
       "projectName": "Jhipster.Crosscutting",
       "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj",
-      "packagesPath": "..\\..\\packages\\",
+      "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
       "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [

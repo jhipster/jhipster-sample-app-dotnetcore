@@ -74,31 +74,14 @@ namespace Jhipster.Controllers
         public async Task<ActionResult<IEnumerable<BirthdayDto>>> GetAllBirthdays(IPageable pageable)
         {
             _log.LogDebug("REST request to get a page of Birthdays");
-            var searchResponse = await elastic.SearchAsync<Birthday>(s => s
-                .Size(10000)
-                .Query(q => q
-                    .MatchAll()
-                    //.DateRange(r => r
-                    //    .Field(f => f.dob)
-                    //    .GreaterThanOrEquals(new DateTime(1940, 01, 01))
-                    //    .LessThan(new DateTime(1941, 01, 01))
-                    //)
-                )
-            );
-            List<BirthdayDto> content = new List<BirthdayDto>();
-            Console.WriteLine(searchResponse.Hits.Count + " hits");
-            foreach (var hit in searchResponse.Hits)
+            Birthday birthday = new Birthday
             {
-                content.Add(new BirthdayDto{
-                    Id = hit.Id,
-                    Lname = hit.Source.lname,
-                    Fname = hit.Source.fname,
-                    Dob = hit.Source.dob,
-                    Sign = hit.Source.sign,
-                    IsAlive = hit.Source.isAlive 
-                });
-            }
-            Page<BirthdayDto> page = new Page<BirthdayDto>(content, pageable, content.Count);
+                Id = "abc",
+                Lname = "Eisner"
+            };
+            BirthdayDto birthdaydto = _mapper.Map<BirthdayDto>(birthday);
+            var result = await _birthdayService.FindAll(pageable);
+            var page = new Page<BirthdayDto>(result.Content.Select(entity => _mapper.Map<BirthdayDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<BirthdayDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 
@@ -106,17 +89,10 @@ namespace Jhipster.Controllers
         public async Task<IActionResult> GetBirthday([FromRoute] string id)
         {
             _log.LogDebug($"REST request to get Birthday : {id}");
-            var hit = await elastic.GetAsync<Birthday>(id);
-            BirthdayDto birthdayDto = new BirthdayDto{
-                Id = hit.Id,
-                Lname = hit.Source.lname,
-                Fname = hit.Source.fname,
-                Dob = hit.Source.dob,
-                Sign = hit.Source.sign,
-                IsAlive = hit.Source.isAlive 
-            };
-            return ActionResultUtil.WrapOrNotFound(birthdayDto);
-        }
+            var result = await _birthdayService.FindOne(id);
+            BirthdayDto birthdayDto = _mapper.Map<BirthdayDto>(result);
+            return ActionResultUtil.WrapOrNotFound(birthdayDto);            
+         }
 
         [HttpDelete("birthdays/{id}")]
         public async Task<IActionResult> DeleteBirthday([FromRoute] string id)

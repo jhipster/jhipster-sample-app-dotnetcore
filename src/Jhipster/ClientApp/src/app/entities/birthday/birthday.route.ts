@@ -9,7 +9,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access-service'
 import { IBirthday, Birthday } from 'app/shared/model/birthday.model';
 import { BirthdayService } from './birthday.service';
 import { BirthdayComponent } from './birthday.component';
-// import { BirthdayDetailComponent } from './birthday-detail.component';
+import { BirthdayDetailComponent } from './birthday-detail.component';
 // import { BirthdayUpdateComponent } from './birthday-update.component';
 
 @Injectable({ providedIn: 'root' })
@@ -46,29 +46,29 @@ export const birthdayRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    /* path: ':id/view',
+    path: ':id/view',
     component: BirthdayDetailComponent,
     resolve: {
       birthday: BirthdayResolve,
-    },*/
+    },
     data: {
       authorities: [Authority.USER],
       pageTitle: 'jhipsterApp.birthday.home.title',
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    /* path: 'new',
+  /* {
+     path: 'new',
     component: BirthdayUpdateComponent,
     resolve: {
       birthday: BirthdayResolve,
-    },*/
+    },
     data: {
       authorities: [Authority.USER],
       pageTitle: 'jhipsterApp.birthday.home.title',
     },
     canActivate: [UserRouteAccessService],
-  },
+  },*/
   {
     /* path: ':id/edit',
     component: BirthdayUpdateComponent,

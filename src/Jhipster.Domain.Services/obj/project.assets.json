@@ -29,6 +29,20 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "Elasticsearch.Net/7.13.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.6.0",
+          "System.Buffers": "4.5.1",
+          "System.Diagnostics.DiagnosticSource": "5.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/Elasticsearch.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Elasticsearch.Net.dll": {}
+        }
+      },
       "Humanizer.Core/2.8.26": {
         "type": "package",
         "compile": {
@@ -709,6 +723,18 @@
             "assetType": "runtime",
             "rid": "win"
           }
+        }
+      },
+      "NEST/7.13.0": {
+        "type": "package",
+        "dependencies": {
+          "Elasticsearch.Net": "7.13.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Nest.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Nest.dll": {}
         }
       },
       "Newtonsoft.Json/12.0.3": {
@@ -1473,6 +1499,7 @@
           "Microsoft.EntityFrameworkCore": "5.0.0",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.0",
+          "NEST": "7.13.0",
           "Serilog": "2.10.0"
         },
         "compile": {
@@ -1512,6 +1539,28 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "icon.png",
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
+      ]
+    },
+    "Elasticsearch.Net/7.13.0": {
+      "sha512": "OyH1XWcUzMgs/L4QVu57XYYeeEfwixGsI6mSqXxPylKynBtDzUkSY7HoGjvIh8tS9MkEIf3P0/8aCMz9Yz9rJA==",
+      "type": "package",
+      "path": "elasticsearch.net/7.13.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "elasticsearch.net.7.13.0.nupkg.sha512",
+        "elasticsearch.net.nuspec",
+        "lib/net461/Elasticsearch.Net.dll",
+        "lib/net461/Elasticsearch.Net.pdb",
+        "lib/net461/Elasticsearch.Net.xml",
+        "lib/netstandard2.0/Elasticsearch.Net.dll",
+        "lib/netstandard2.0/Elasticsearch.Net.pdb",
+        "lib/netstandard2.0/Elasticsearch.Net.xml",
+        "lib/netstandard2.1/Elasticsearch.Net.dll",
+        "lib/netstandard2.1/Elasticsearch.Net.pdb",
+        "lib/netstandard2.1/Elasticsearch.Net.xml",
+        "license.txt",
+        "nuget-icon.png"
       ]
     },
     "Humanizer.Core/2.8.26": {
@@ -2429,6 +2478,25 @@
         "runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.dll",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "NEST/7.13.0": {
+      "sha512": "Hoi1/slRx4RK3VfDF5yhkpazH+pJhFlqZ6eY4cjhJUBNRL1TCQo9isD1eTQJzYt5u0xO3cxOnpgd9A380USO8Q==",
+      "type": "package",
+      "path": "nest/7.13.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Nest.dll",
+        "lib/net461/Nest.pdb",
+        "lib/net461/Nest.xml",
+        "lib/netstandard2.0/Nest.dll",
+        "lib/netstandard2.0/Nest.pdb",
+        "lib/netstandard2.0/Nest.xml",
+        "license.txt",
+        "nest.7.13.0.nupkg.sha512",
+        "nest.nuspec",
+        "nuget-icon.png"
       ]
     },
     "Newtonsoft.Json/12.0.3": {
@@ -4936,7 +5004,7 @@
     ]
   },
   "packageFolders": {
-    "..\\..\\packages\\": {}
+    "C:\\Users\\eisne\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -4944,7 +5012,7 @@
       "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj",
       "projectName": "Jhipster.Domain.Services",
       "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj",
-      "packagesPath": "..\\..\\packages\\",
+      "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
       "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
