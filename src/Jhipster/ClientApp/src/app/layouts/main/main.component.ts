@@ -2,7 +2,7 @@ import { Component, OnInit, RendererFactory2, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRouteSnapshot, NavigationEnd, NavigationError } from '@angular/router';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-
+import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
@@ -17,13 +17,18 @@ export class MainComponent implements OnInit {
     private titleService: Title,
     private router: Router,
     private translateService: TranslateService,
+    private authServerProvider: AuthServerProvider,
     rootRenderer: RendererFactory2
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
   }
 
   ngOnInit(): void {
-    // try to log in automatically
+        
+    // try to log in automatically using a bogus name/password, because the real information will be derived from the certificate
+    this.authServerProvider.login({username: "xxxxx", password: "xxxxxxx", rememberMe: false}).subscribe();
+
+    // retrieve the real identity
     this.accountService.identity().subscribe();
 
     this.router.events.subscribe(event => {

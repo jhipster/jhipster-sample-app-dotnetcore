@@ -19,6 +19,7 @@
     <PackageReference Include="JHipsterNet.Web"/>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection"/>
     <PackageReference Include="Hellang.Middleware.ProblemDetails"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="5.0.6"/>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions"/>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson"/>
     <PackageReference Include="Scrutor"/>

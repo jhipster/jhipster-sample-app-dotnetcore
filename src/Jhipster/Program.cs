@@ -11,6 +11,9 @@ using ILogger = Serilog.ILogger;
 using static JHipsterNet.Core.Boot.BannerPrinter;
 using Nest;
 using Jhipster.Domain;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 namespace Jhipster
 {
@@ -86,7 +89,18 @@ namespace Jhipster
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseWebRoot(Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "dist"))
-                .UseSerilog();
+                .UseSerilog()
+                // vvv requires client certificate when connecting vvv 
+                .ConfigureKestrel((context, options) =>
+                {
+                    options.ConfigureHttpsDefaults(configureOptions =>
+                    {
+                        configureOptions.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
+                        configureOptions.ClientCertificateValidation = ValidateClientCertificate;
+                            
+                    });
+                });
+                // ^^^ requires client certificate when connecting ^^^                
         }
 
         /// <summary>
@@ -140,5 +154,10 @@ namespace Jhipster
                 .AddEnvironmentVariables()
                 .Build();
         }
+        private static bool ValidateClientCertificate (X509Certificate2 clientCertificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
     }
 }
+

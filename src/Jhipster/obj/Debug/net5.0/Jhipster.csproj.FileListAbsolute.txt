@@ -135,3 +135,5 @@ C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\jhipster.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\ref\jhipster.dll
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\jhipster.pdb
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.genruntimeconfig.cache
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.Certificate.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll

@@ -458,6 +458,10 @@
               "target": "Package",
               "version": "[3.4.15, )"
             },
+            "Microsoft.AspNetCore.Authentication.Certificate": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[5.0.0, )"

@@ -66,6 +66,20 @@
           "build/coverlet.msbuild.targets": {}
         }
       },
+      "Elasticsearch.Net/7.13.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.6.0",
+          "System.Buffers": "4.5.1",
+          "System.Diagnostics.DiagnosticSource": "5.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/Elasticsearch.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Elasticsearch.Net.dll": {}
+        }
+      },
       "FakeItEasy/6.2.1": {
         "type": "package",
         "dependencies": {
@@ -229,6 +243,21 @@
         "runtime": {
           "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.Abstractions.dll": {}
         }
+      },
+      "Microsoft.AspNetCore.Authentication.Certificate/5.0.6": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Memory": "5.0.0"
+        },
+        "compile": {
+          "lib/net5.0/Microsoft.AspNetCore.Authentication.Certificate.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Microsoft.AspNetCore.Authentication.Certificate.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Microsoft.AspNetCore.Authentication.Cookies/2.2.0": {
         "type": "package",
@@ -1536,6 +1565,18 @@
           "lib/netstandard2.0/Moq.dll": {}
         }
       },
+      "NEST/7.13.0": {
+        "type": "package",
+        "dependencies": {
+          "Elasticsearch.Net": "7.13.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Nest.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Nest.dll": {}
+        }
+      },
       "NETStandard.Library/1.6.1": {
         "type": "package",
         "dependencies": {
@@ -2150,7 +2191,7 @@
           "lib/netstandard1.6/System.AppContext.dll": {}
         }
       },
-      "System.Buffers/4.5.0": {
+      "System.Buffers/4.5.1": {
         "type": "package",
         "compile": {
           "ref/netcoreapp2.0/_._": {}
@@ -3638,9 +3679,11 @@
           "Jhipster.Dto": "1.0.0",
           "Jhipster.Infrastructure": "1.0.0",
           "LanguageExt.Core": "3.4.15",
+          "Microsoft.AspNetCore.Authentication.Certificate": "5.0.6",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.0",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "5.0.0",
           "Microsoft.AspNetCore.SpaServices.Extensions": "5.0.0",
+          "NEST": "7.13.0",
           "Scrutor": "3.3.0",
           "Serilog.AspNetCore": "3.4.0",
           "Serilog.Enrichers.Process": "2.0.1",
@@ -3735,6 +3778,7 @@
           "Microsoft.EntityFrameworkCore": "5.0.0",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.0",
+          "NEST": "7.13.0",
           "Serilog": "2.10.0"
         },
         "compile": {
@@ -3891,6 +3935,28 @@
         "coverlet-icon.png",
         "coverlet.msbuild.2.9.0.nupkg.sha512",
         "coverlet.msbuild.nuspec"
+      ]
+    },
+    "Elasticsearch.Net/7.13.0": {
+      "sha512": "OyH1XWcUzMgs/L4QVu57XYYeeEfwixGsI6mSqXxPylKynBtDzUkSY7HoGjvIh8tS9MkEIf3P0/8aCMz9Yz9rJA==",
+      "type": "package",
+      "path": "elasticsearch.net/7.13.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "elasticsearch.net.7.13.0.nupkg.sha512",
+        "elasticsearch.net.nuspec",
+        "lib/net461/Elasticsearch.Net.dll",
+        "lib/net461/Elasticsearch.Net.pdb",
+        "lib/net461/Elasticsearch.Net.xml",
+        "lib/netstandard2.0/Elasticsearch.Net.dll",
+        "lib/netstandard2.0/Elasticsearch.Net.pdb",
+        "lib/netstandard2.0/Elasticsearch.Net.xml",
+        "lib/netstandard2.1/Elasticsearch.Net.dll",
+        "lib/netstandard2.1/Elasticsearch.Net.pdb",
+        "lib/netstandard2.1/Elasticsearch.Net.xml",
+        "license.txt",
+        "nuget-icon.png"
       ]
     },
     "FakeItEasy/6.2.1": {
@@ -4079,6 +4145,21 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.Abstractions.xml",
         "microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
         "microsoft.aspnetcore.authentication.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Authentication.Certificate/5.0.6": {
+      "sha512": "QMtyvGTjXRFnCdZ5073n+Rf/fa9eb4yMpZUyTpQkw5A+oH0qM1sxxHUnCEYZW+tz35Z12F2VGXuxlzh2Ake/yQ==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.certificate/5.0.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net5.0/Microsoft.AspNetCore.Authentication.Certificate.dll",
+        "lib/net5.0/Microsoft.AspNetCore.Authentication.Certificate.xml",
+        "microsoft.aspnetcore.authentication.certificate.5.0.6.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.certificate.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Authentication.Cookies/2.2.0": {
@@ -5820,6 +5901,25 @@
         "moq.png"
       ]
     },
+    "NEST/7.13.0": {
+      "sha512": "Hoi1/slRx4RK3VfDF5yhkpazH+pJhFlqZ6eY4cjhJUBNRL1TCQo9isD1eTQJzYt5u0xO3cxOnpgd9A380USO8Q==",
+      "type": "package",
+      "path": "nest/7.13.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Nest.dll",
+        "lib/net461/Nest.pdb",
+        "lib/net461/Nest.xml",
+        "lib/netstandard2.0/Nest.dll",
+        "lib/netstandard2.0/Nest.pdb",
+        "lib/netstandard2.0/Nest.xml",
+        "license.txt",
+        "nest.7.13.0.nupkg.sha512",
+        "nest.nuspec",
+        "nuget-icon.png"
+      ]
+    },
     "NETStandard.Library/1.6.1": {
       "sha512": "WcSp3+vP+yHNgS8EV5J7pZ9IRpeDuARBPN28by8zqff1wJQXm26PVU8L3/fYLBJVU7BtDyqNVWq2KlCVvSSR4A==",
       "type": "package",
@@ -6560,15 +6660,17 @@
         "system.appcontext.nuspec"
       ]
     },
-    "System.Buffers/4.5.0": {
-      "sha512": "pL2ChpaRRWI/p4LXyy4RgeWlYF2sgfj/pnVMvBqwNFr5cXg7CXNnWZWxrOONLg8VGdFB8oB+EG2Qw4MLgTOe+A==",
+    "System.Buffers/4.5.1": {
+      "sha512": "Rw7ijyl1qqRS0YQD/WycNst8hUUMgrMH4FCn1nNm27M4VxchZ1js3fVjQaANHO5f3sN4isvP4a+Met9Y4YomAg==",
       "type": "package",
-      "path": "system.buffers/4.5.0",
+      "path": "system.buffers/4.5.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Buffers.dll",
+        "lib/net461/System.Buffers.xml",
         "lib/netcoreapp2.0/_._",
         "lib/netstandard1.1/System.Buffers.dll",
         "lib/netstandard1.1/System.Buffers.xml",
@@ -6583,7 +6685,7 @@
         "ref/netstandard2.0/System.Buffers.dll",
         "ref/netstandard2.0/System.Buffers.xml",
         "ref/uap10.0.16299/_._",
-        "system.buffers.4.5.0.nupkg.sha512",
+        "system.buffers.4.5.1.nupkg.sha512",
         "system.buffers.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -11125,7 +11227,7 @@
       "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\test\\Jhipster.Test\\Jhipster.Test.csproj",
       "projectName": "Jhipster.Test",
       "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\test\\Jhipster.Test\\Jhipster.Test.csproj",
-      "packagesPath": "..\\..\\packages\\",
+      "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
       "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\test\\Jhipster.Test\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [

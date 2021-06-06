@@ -2,6 +2,36 @@
   "version": 3,
   "targets": {
     "net5.0": {
+      "Microsoft.AspNetCore.Authentication.Certificate/5.0.6": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Memory": "5.0.0"
+        },
+        "compile": {
+          "lib/net5.0/Microsoft.AspNetCore.Authentication.Certificate.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Microsoft.AspNetCore.Authentication.Certificate.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "Microsoft.AspNetCore.Authentication.OpenIdConnect/5.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.7.1"
+        },
+        "compile": {
+          "lib/net5.0/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "AutoMapper/10.1.0": {
         "type": "package",
         "dependencies": {
@@ -2383,6 +2413,21 @@
         "microsoft.aspnetcore.authentication.abstractions.nuspec"
       ]
     },
+    "Microsoft.AspNetCore.Authentication.Certificate/5.0.6": {
+      "sha512": "QMtyvGTjXRFnCdZ5073n+Rf/fa9eb4yMpZUyTpQkw5A+oH0qM1sxxHUnCEYZW+tz35Z12F2VGXuxlzh2Ake/yQ==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.certificate/5.0.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net5.0/Microsoft.AspNetCore.Authentication.Certificate.dll",
+        "lib/net5.0/Microsoft.AspNetCore.Authentication.Certificate.xml",
+        "microsoft.aspnetcore.authentication.certificate.5.0.6.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.certificate.nuspec"
+      ]
+    },
     "Microsoft.AspNetCore.Authentication.Cookies/2.2.0": {
       "sha512": "Iar9VFlBHkZGdSG9ZUTmn6Q8Qg+6CtW5G/TyJI2F8B432TOH+nZlkU7O0W0byow6xsxqOYeTviSHz4cCJ3amfQ==",
       "type": "package",
@@ -2422,6 +2467,21 @@
         "lib/net5.0/Microsoft.AspNetCore.Authentication.JwtBearer.xml",
         "microsoft.aspnetcore.authentication.jwtbearer.5.0.0.nupkg.sha512",
         "microsoft.aspnetcore.authentication.jwtbearer.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect/5.0.1": {
+      "sha512": "bZZrUvT54W3lKQiP7e/11e2h76Qk81bG5TlqLB7tOTg02Uc02dYpbm6488NwmeKfSfO8Pto8rPwy5aq2rFRSgA==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.openidconnect/5.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net5.0/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll",
+        "lib/net5.0/Microsoft.AspNetCore.Authentication.OpenIdConnect.xml",
+        "microsoft.aspnetcore.authentication.openidconnect.5.0.1.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.openidconnect.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Cryptography.Internal/5.0.0": {
@@ -6871,7 +6931,9 @@
       "Jhipster.Dto >= 1.0.0",
       "Jhipster.Infrastructure >= 1.0.0",
       "LanguageExt.Core >= 3.4.15",
+      "Microsoft.AspNetCore.Authentication.Certificate >= 5.0.6",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 5.0.0",
+      "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 5.0.1",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 5.0.0",
       "Microsoft.AspNetCore.SpaServices.Extensions >= 5.0.0",
       "NEST >= 7.13.0",

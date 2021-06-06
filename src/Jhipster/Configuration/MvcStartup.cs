@@ -43,6 +43,8 @@ namespace Jhipster.Configuration
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCertificateForwarding();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

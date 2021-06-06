@@ -11,6 +11,7 @@ using Jhipster.Domain.Services.Interfaces;
 using Jhipster.Crosscutting.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace Jhipster.Domain.Services
 {
@@ -20,10 +21,13 @@ namespace Jhipster.Domain.Services
 
         private readonly UserManager<User> _userManager;
 
-        public AuthenticationService(ILogger<AuthenticationService> log, UserManager<User> userManager)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public AuthenticationService(ILogger<AuthenticationService> log, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _log = log;
             _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public virtual async Task<IPrincipal> Authenticate(string username, string password)
@@ -33,6 +37,21 @@ namespace Jhipster.Domain.Services
             //=> https://stackoverflow.com/questions/53854051/usermanager-checkpasswordasync-vs-signinmanager-passwordsigninasync
             //https://github.com/openiddict/openiddict-core/issues/578
 
+
+            var certSubject = _httpContextAccessor.HttpContext.Connection.ClientCertificate.Subject;
+            Jhipster.Domain.User jdu = new Jhipster.Domain.User{
+                FirstName = certSubject.ToLower().Contains("joan") ? "joan" : "Bill",
+                LastName = "Eisner",
+                Activated = true,
+                Id = "eisnerw",
+                Login = certSubject.ToLower().Contains("joan") ? "Joan Eisner" : "Bill Eisner",
+                LangKey = "en",
+                CreatedBy = "System",
+                CreatedDate = new System.DateTime()
+            };
+            if (certSubject != null){
+                return await CreatePrincipal(jdu);
+            }
             var user = await LoadUserByUsername(username);
 
             if (!user.Activated) throw new UserNotActivatedException($"User {user.UserName} was not activated.");

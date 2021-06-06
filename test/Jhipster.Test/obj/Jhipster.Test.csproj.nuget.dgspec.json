@@ -354,6 +354,10 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
+            "NEST": {
+              "target": "Package",
+              "version": "[7.13.0, )"
+            },
             "Serilog": {
               "target": "Package",
               "version": "[2.10.0, )"
@@ -454,6 +458,10 @@
               "target": "Package",
               "version": "[3.4.15, )"
             },
+            "Microsoft.AspNetCore.Authentication.Certificate": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -465,6 +473,10 @@
             "Microsoft.AspNetCore.SpaServices.Extensions": {
               "target": "Package",
               "version": "[5.0.0, )"
+            },
+            "NEST": {
+              "target": "Package",
+              "version": "[7.13.0, )"
             },
             "Scrutor": {
               "target": "Package",

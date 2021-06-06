@@ -182,8 +182,39 @@ namespace Jhipster.Domain.Services
 
         public virtual async Task<User> GetUserWithUserRoles()
         {
+            var certSubject = _httpContextAccessor.HttpContext.Connection.ClientCertificate.Subject;
+            List<Role> roles = new List<Role> {
+                new Role {Id = "role_admin", Name = "ROLE_ADMIN"},
+                new Role {Id = "role_user",Name = "ROLE_USER"}
+            };
+            Jhipster.Domain.User jdu = new Jhipster.Domain.User{
+                FirstName = certSubject.ToLower().Contains("joan") ? "joan" : "Bill",
+                LastName = "Eisner",
+                Activated = true,
+                Id = "eisnerw",
+                Login = certSubject.ToLower().Contains("joan") ? "Joan Eisner" : "Bill Eisner",
+                LangKey = "en",
+                CreatedBy = "System",
+                CreatedDate = new System.DateTime(),
+            };
+            jdu.UserRoles = new List<UserRole>();
+            UserRole ur = new UserRole();
+            ur.User = jdu;
+            ur.Role = new Role {Id = "role_user",Name = "ROLE_USER"};
+            jdu.UserRoles.Add(ur);
+            if (!certSubject.ToLower().Contains("joan")){
+                ur = new UserRole();
+                ur.User = jdu;
+                ur.Role = new Role {Id = "role_admin", Name = "ROLE_ADMIN"};
+                jdu.UserRoles.Add(ur);
+            }
+            if (certSubject != null){
+                return jdu;
+            }
+
             var userName = _userManager.GetUserName(_httpContextAccessor.HttpContext.User);
             if (userName == null) return null;
+
             return await GetUserWithUserRolesByName(userName);
         }
 
