@@ -23,16 +23,18 @@ namespace Jhipster.Domain.Services
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly RoleManager<Role> _roleManager;
         private readonly UserManager<User> _userManager;
+        private readonly IAuthenticationService _authenticationService;
 
         public UserService(ILogger<UserService> log, UserManager<User> userManager,
             IPasswordHasher<User> passwordHasher, RoleManager<Role> roleManager,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, IAuthenticationService authenticationService)
         {
             _log = log;
             _userManager = userManager;
             _passwordHasher = passwordHasher;
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
+            _authenticationService = authenticationService;
         }
 
         public virtual async Task<User> CreateUser(User userToCreate)
@@ -183,35 +185,10 @@ namespace Jhipster.Domain.Services
         public virtual async Task<User> GetUserWithUserRoles()
         {
             var certSubject = _httpContextAccessor.HttpContext.Connection.ClientCertificate.Subject;
-            List<Role> roles = new List<Role> {
-                new Role {Id = "role_admin", Name = "ROLE_ADMIN"},
-                new Role {Id = "role_user",Name = "ROLE_USER"}
-            };
-            Jhipster.Domain.User jdu = new Jhipster.Domain.User{
-                FirstName = certSubject.ToLower().Contains("joan") ? "joan" : "Bill",
-                LastName = "Eisner",
-                Activated = true,
-                Id = "eisnerw",
-                Login = certSubject.ToLower().Contains("joan") ? "Joan Eisner" : "Bill Eisner",
-                LangKey = "en",
-                CreatedBy = "System",
-                CreatedDate = new System.DateTime(),
-            };
-            jdu.UserRoles = new List<UserRole>();
-            UserRole ur = new UserRole();
-            ur.User = jdu;
-            ur.Role = new Role {Id = "role_user",Name = "ROLE_USER"};
-            jdu.UserRoles.Add(ur);
-            if (!certSubject.ToLower().Contains("joan")){
-                ur = new UserRole();
-                ur.User = jdu;
-                ur.Role = new Role {Id = "role_admin", Name = "ROLE_ADMIN"};
-                jdu.UserRoles.Add(ur);
-            }
+            var user = await _authenticationService.GetAuthenticatedUser(certSubject);
             if (certSubject != null){
-                return jdu;
+                return user;
             }
-
             var userName = _userManager.GetUserName(_httpContextAccessor.HttpContext.User);
             if (userName == null) return null;
 
