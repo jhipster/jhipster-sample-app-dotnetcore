@@ -10,6 +10,8 @@ import { IBirthday } from 'app/shared/model/birthday.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { BirthdayService } from './birthday.service';
 // import { BirthdayDeleteDialogComponent } from './birthday-delete-dialog.component';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'jhi-birthday',
@@ -24,6 +26,25 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+
+  columnDefs = [
+    { field: 'lname', sortable: true, filter: true },
+    { field: 'fname', sortable: true, filter: true },
+  { field: 'dob', sortable: true, filter: true/* , valueFormatter: (data: any) => this.formatMediumPipe.transform(dayjs(data.value)) */},
+    { field: 'additional', headerName: 'sign', sortable: true, filter: true },
+    { field: 'isAlive', sortable: true, filter: true },
+  ];
+
+  rowData = new Observable<any[]>();
+  // rowData = new Observable<IBirthday[]>();
+  /*
+  rowData = [
+    { lname: 'Toyota', fname: 'Celica', dob: '2021-05-14T04:00:00.000Z' },
+    { lname: 'Ford', fname: 'Mondeo', dob: '2021-05-14T04:00:00.000Z' },
+    { lname: 'Porsche', fname: 'Boxter', dob: '2021-05-14T04:00:00.000Z' }
+  ];
+  */
+
 
   constructor(
     protected birthdayService: BirthdayService,
@@ -110,6 +131,11 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     }
     this.birthdays = data || [];
     this.ngbPaginationPage = this.page;
+    
+    if (data) {
+      this.rowData = of(this.birthdays);
+    }
+    
   }
 
   protected onError(): void {
