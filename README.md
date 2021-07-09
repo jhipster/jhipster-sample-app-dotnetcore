@@ -12,6 +12,10 @@ Before you can build this project, you must install and configure the following 
 After installing Node, you should be able to run the following command to install development tools.
 You will only need to run this command when dependencies change in [package.json](package.json).
 
+In the ./ directory run
+
+    dotnet restore
+
 In ./src/Jhipster/ClientApp run
 
     npm install

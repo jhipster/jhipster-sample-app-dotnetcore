@@ -66,6 +66,16 @@ export class BirthdayService {
     if (res.body) {
       res.body.forEach((birthday: IBirthday) => {
         birthday.dob = birthday.dob ? moment(birthday.dob) : undefined;
+        const dob : any = birthday.dob;
+        if (dob){
+          dob.getTime = function (): Date {
+            return new Date(dob.toString().substr(0,15)); // based on date without time
+          };
+          dob.toDateString = function(): string {
+            const dobtime : any = dob.getTime();
+            return dobtime.toDateString();
+          };
+        }        
        });
     }
     return res;

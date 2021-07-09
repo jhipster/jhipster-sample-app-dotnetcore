@@ -1,150 +1,131 @@
 <div>
-    <h2 id="page-heading">
-        <span jhiTranslate="jhipsterApp.birthday.home.title">Regions</span>
-  
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
-            <fa-icon icon="plus"></fa-icon>
-            <span  jhiTranslate="jhipsterApp.birthday.home.createLabel">
-            Create a new Region
-            </span>
-        </button>
-    </h2>
-  
-    <jhi-alert-error></jhi-alert-error>
-  
-    <jhi-alert></jhi-alert>
-  
-    <div class="alert alert-warning" id="no-result" *ngIf="birthdays?.length === 0">
-        <span jhiTranslate="jhipsterApp.birthday.home.notFound">No birthdays found</span>
-    </div>
-  
-    <!--div class="table-responsive" id="entities" *ngIf="birthdays && birthdays.length > 0">
-        <table class="table table-striped" aria-describedby="page-heading">
-            <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="lname"><span jhiTranslate="jhipsterApp.birthday.lname">Last Name</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="fname"><span jhiTranslate="jhipsterApp.birthday.fname">First Name</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="dob"><span jhiTranslate="jhipsterApp.birthday.dob">Birth Date</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let birthday of birthdays ;trackBy: trackId">
-                    <td><a [routerLink]="['/birthday', birthday.id, 'view']">{{ birthday.id }}</a></td>
-                    <td>{{ birthday.lname }}</td>
-                    <td>{{ birthday.fname }}</td>
-                    <td>{{ birthday.dob | date:'medium' }}</td>
-                    <td class="text-right">
-                        <div class="btn-group">
-                            <button type="submit"
-                                    [routerLink]="['/birthday', birthday.id, 'view']"
-                                    class="btn btn-info btn-sm">
-                                <fa-icon icon="eye"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                            </button>
-  
-                            <button type="submit"
-                                    [routerLink]="['/birthday', birthday.id, 'edit']"
-                                    class="btn btn-primary btn-sm">
-                                <fa-icon icon="pencil-alt"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                            </button>
-  
-                            <!--button type="submit" (click)="delete(birthday)"
-                                    class="btn btn-danger btn-sm">
-                                <fa-icon icon="times"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                            </button-->
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div-->
-    <!--ag-grid-angular style="width: 100%; height: 400px" class="ag-theme-alpine" [rowData]="rowData | async" [columnDefs]="columnDefs">
-    </ag-grid-angular-->
-    <ng-container *ngIf="rowData | async as birthday">
-      <p-table #birthdays [value]="birthday" [resizableColumns]="true" [globalFilterFields]="['lname', 'fname', 'additional']" dataKey="id">
-        <ng-template pTemplate="caption">
-          <div class="p-d-flex">
-            <!--button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)">
-              Clear
-            </button-->
-            <span class="p-input-icon-left p-ml-auto">
-              <i class="pi pi-search"></i>
-              <input
-                #searchInput
-                pInputText
-                type="text"
-                (input)="birthdays.filterGlobal($any($event.target).value, 'contains')"
-                placeholder="Search keyword"
-              />
-            </span>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-          <tr>
-            <th pResizableColumn [pSortableColumn]="'lname'">
-              <div class="p-d-flex p-jc-between p-ai-center">
-                Name
-                <p-sortIcon [field]="'lname'"></p-sortIcon>
-                <p-columnFilter type="text" field="lname" display="menu"></p-columnFilter>
-              </div>
-            </th>
-            <th pResizableColumn [pSortableColumn]="'fname'">
-              <div class="p-d-flex p-jc-between p-ai-center">
-                First
-                <p-sortIcon [field]="'fname'"></p-sortIcon>
-                <p-columnFilter type="text" field="fname" display="menu"></p-columnFilter>
-              </div>
-            </th>
-            <th pResizableColumn [pSortableColumn]="'dob'">
-              <div class="p-d-flex p-jc-between p-ai-center">
-                Date of Birth
-                <p-sortIcon [field]="'dob'"></p-sortIcon>
-                <p-columnFilter
-                  type="date"
-                  field="dob"
-                  matchMode="in"
-                  display="menu"
-                  [showMatchModes]="true"
-                  [showOperator]="true"
-                  [showAddButton]="true"
-                >
-                  <ng-template pTemplate="header">
-                    <div class="p-px-3 p-pt-3 p-pb-0">
-                      <span class="p-text-bold">Date Picker</span>
-                    </div>
-                  </ng-template>
-                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                    <p-calendar [(ngModel)]="page" [monthNavigator]="true" [yearNavigator]="true" yearRange="1000:2030" inputId="navigators">
-                    </p-calendar>
-                  </ng-template>
-                </p-columnFilter>
-              </div>
-            </th>
-            <th pResizableColumn [pSortableColumn]="'additional'">
-              <div class="p-d-flex p-jc-between p-ai-center">
-                Sign
-                <p-sortIcon [field]="'additional'"></p-sortIcon>
-                <p-columnFilter type="text" field="additional" display="menu"></p-columnFilter>
-              </div>
-            </th>
-            <th>Alive?</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-birthday>
-          <tr>
-            <td>{{ birthday.lname }}</td>
-            <td>{{ birthday.fname }}</td>
-            <td>{{ birthday.dob | date: 'MM/dd/yyyy' }}</td>
-            <td>{{ birthday.additional }}</td>
-            <td *ngIf="birthday.isAlive">Yes</td>
-            <td *ngIf="!birthday.isAlive">No</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </ng-container>    
+  <h2 id="page-heading">
+      <span jhiTranslate="jhipsterApp.birthday.home.title">Regions</span>
+
+      <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
+          <fa-icon icon="plus"></fa-icon>
+          <span  jhiTranslate="jhipsterApp.birthday.home.createLabel">
+          Create a new Region
+          </span>
+      </button>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="birthdays?.length === 0">
+      <span jhiTranslate="jhipsterApp.birthday.home.notFound">No birthdays found</span>
   </div>
-  
+
+  <!--div class="table-responsive" id="entities" *ngIf="birthdays && birthdays.length > 0">
+      <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+              <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                  <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="lname"><span jhiTranslate="jhipsterApp.birthday.lname">Last Name</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="fname"><span jhiTranslate="jhipsterApp.birthday.fname">First Name</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"  jhiSortBy="dob"><span jhiTranslate="jhipsterApp.birthday.dob">Birth Date</span> <fa-icon icon="sort"></fa-icon></th>
+                  <th scope="col"></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let birthday of birthdays ;trackBy: trackId">
+                  <td><a [routerLink]="['/birthday', birthday.id, 'view']">{{ birthday.id }}</a></td>
+                  <td>{{ birthday.lname }}</td>
+                  <td>{{ birthday.fname }}</td>
+                  <td>{{ birthday.dob | date:'medium' }}</td>
+                  <td class="text-right">
+                      <div class="btn-group">
+                          <button type="submit"
+                                  [routerLink]="['/birthday', birthday.id, 'view']"
+                                  class="btn btn-info btn-sm">
+                              <fa-icon icon="eye"></fa-icon>
+                              <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                          </button>
+
+                          <button type="submit"
+                                  [routerLink]="['/birthday', birthday.id, 'edit']"
+                                  class="btn btn-primary btn-sm">
+                              <fa-icon icon="pencil-alt"></fa-icon>
+                              <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                          </button>
+
+                          <!--button type="submit" (click)="delete(birthday)"
+                                  class="btn btn-danger btn-sm">
+                              <fa-icon icon="times"></fa-icon>
+                              <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                          </button-->
+                      </div>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div-->
+  <!--ag-grid-angular style="width: 100%; height: 400px" class="ag-theme-alpine" [rowData]="rowData | async" [columnDefs]="columnDefs">
+  </ag-grid-angular-->
+  <ng-container *ngIf="rowData | async as birthday">
+    <p-table #birthdays [value]="birthday" [resizableColumns]="true" [globalFilterFields]="['lname', 'fname', 'additional']" dataKey="id">
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+          <!--button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)">
+            Clear
+          </button-->
+          <span class="p-input-icon-left p-ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              #searchInput
+              pInputText
+              type="text"
+              (input)="birthdays.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Search keyword"
+            />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn [pSortableColumn]="'lname'">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Name
+              <p-sortIcon [field]="'lname'"></p-sortIcon>
+              <p-columnFilter type="text" field="lname" display="menu"></p-columnFilter>
+            </div>
+          </th>
+          <th pResizableColumn [pSortableColumn]="'fname'">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              First
+              <p-sortIcon [field]="'fname'"></p-sortIcon>
+              <p-columnFilter type="text" field="fname" display="menu"></p-columnFilter>
+            </div>
+          </th>
+          <th pResizableColumn [pSortableColumn]="'dob'">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Date of Birth
+              <p-sortIcon [field]="'dob'"></p-sortIcon>
+              <p-columnFilter type="date" field="dob" display="menu"></p-columnFilter>
+            </div>
+          </th>
+          <th pResizableColumn [pSortableColumn]="'additional'">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Sign
+              <p-sortIcon [field]="'additional'"></p-sortIcon>
+              <p-columnFilter type="text" field="additional" display="menu"></p-columnFilter>
+            </div>
+          </th>
+          <th>Alive?</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-birthday>
+        <tr>
+          <td>{{ birthday.lname }}</td>
+          <td>{{ birthday.fname }}</td>
+          <td>{{ birthday.dob | date: 'MM/dd/yyyy' }}</td>
+          <td>{{ birthday.additional }}</td>
+          <td *ngIf="birthday.isAlive">Yes</td>
+          <td *ngIf="!birthday.isAlive">No</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>    
+</div>
