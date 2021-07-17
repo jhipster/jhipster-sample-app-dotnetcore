@@ -85,6 +85,7 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
+          <th style="width:40px;"></th> 
           <th pResizableColumn [pSortableColumn]="'lname'">
             <div class="p-d-flex p-jc-between p-ai-center">
               Name
@@ -118,6 +119,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-birthday>
         <tr>
+          <td><p-tableCheckbox [value]="birthday"></p-tableCheckbox></td>
           <td>{{ birthday.lname }}</td>
           <td>{{ birthday.fname }}</td>
           <td>{{ birthday.dob | date: 'MM/dd/yyyy' }}</td>
