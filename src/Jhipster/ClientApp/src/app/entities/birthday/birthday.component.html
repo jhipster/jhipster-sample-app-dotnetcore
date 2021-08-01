@@ -65,12 +65,14 @@
   <!--ag-grid-angular style="width: 100%; height: 400px" class="ag-theme-alpine" [rowData]="rowData | async" [columnDefs]="columnDefs">
   </ag-grid-angular-->
   <ng-container *ngIf="rowData | async as birthday">
-    <p-table #birthdays [value]="birthday" [resizableColumns]="true" [globalFilterFields]="['lname', 'fname', 'additional']" dataKey="id">
+    <p-contextMenu #cm [model]="menuItems"></p-contextMenu>
+    <p-messages></p-messages>
+    <p-table #birthdays [value]="birthday" [resizableColumns]="true" [globalFilterFields]="['lname', 'fname', 'additional']" dataKey="id" [(contextMenuSelection)]="selectedRow" [contextMenu]="cm">
       <ng-template pTemplate="caption">
         <div class="p-d-flex">
-          <!--button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)">
+          <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)">
             Clear
-          </button-->
+          </button>
           <span class="p-input-icon-left p-ml-auto">
             <i class="pi pi-search"></i>
             <input
@@ -118,7 +120,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-birthday>
-        <tr>
+        <tr [pContextMenuRow]="birthday">
           <td><p-tableCheckbox [value]="birthday"></p-tableCheckbox></td>
           <td>{{ birthday.lname }}</td>
           <td>{{ birthday.fname }}</td>

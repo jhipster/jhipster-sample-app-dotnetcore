@@ -26,10 +26,10 @@ export class MainComponent implements OnInit {
   ngOnInit(): void {
         
     // try to log in automatically using a bogus name/password, because the real information will be derived from the certificate
-    this.authServerProvider.login({username: "xxxxx", password: "xxxxxxx", rememberMe: false}).subscribe();
-
-    // retrieve the real identity
-    this.accountService.identity().subscribe();
+    this.authServerProvider.login({username: "xxxxx", password: "xxxxxxx", rememberMe: false}).subscribe(()=>{
+      // retrieve the real identity
+      this.accountService.identity().subscribe();
+    });
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

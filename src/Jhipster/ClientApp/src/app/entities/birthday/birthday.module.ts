@@ -10,9 +10,11 @@ import { birthdayRoute } from './birthday.route';
 /* import { AgGridModule } from 'ag-grid-angular'; */
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
-  imports: [JhipsterSharedModule, RouterModule.forChild(birthdayRoute), TableModule, CalendarModule],
+  imports: [JhipsterSharedModule, RouterModule.forChild(birthdayRoute), TableModule, CalendarModule, ContextMenuModule, MessagesModule],
 declarations: [BirthdayComponent, BirthdayDetailComponent /* , BirthdayUpdateComponent, BirthdayDeleteDialogComponent*/],
   entryComponents: [/* BirthdayDeleteDialogComponent*/],
 })

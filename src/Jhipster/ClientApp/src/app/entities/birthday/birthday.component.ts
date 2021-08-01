@@ -12,10 +12,13 @@ import { BirthdayService } from './birthday.service';
 // import { BirthdayDeleteDialogComponent } from './birthday-delete-dialog.component';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
+import { Table } from 'primeng/table';
+import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'jhi-birthday',
   templateUrl: './birthday.component.html',
+  providers: [MessageService]
 })
 export class BirthdayComponent implements OnInit, OnDestroy {
   birthdays?: IBirthday[];
@@ -36,6 +39,10 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   ];
 
   rowData = new Observable<any[]>();
+
+  menuItems: MenuItem[] = [];
+
+  selectedRow: any;
   // rowData = new Observable<IBirthday[]>();
   /*
   rowData = [
@@ -51,7 +58,8 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected messageService: MessageService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -69,10 +77,30 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       );
   }
 
+  clearFilters(table: Table, searchInput: any): void{
+    searchInput.value = "";
+    // table.clear();
+    table.reset();
+  }
+
   ngOnInit(): void {
     this.handleNavigation();
     this.registerChangeInBirthdays();
+    this.menuItems = [
+      {label: 'View', icon: 'pi pi-fw pi-search', command: () => this.doMenuView(this.selectedRow)},
+          {label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.doMenuDelete(this.selectedRow)}
+    ];    
   }
+
+  doMenuView(selectedRow: any) : void {
+    const selected : IBirthday = selectedRow;
+    this.messageService.add({severity: 'success', summary: 'Row Viewed', detail: selected.lname });
+  }
+
+  doMenuDelete(selectedRow: any) : void {
+    const selectedRowType : string = selectedRow.constructor.name;
+    this.messageService.add({severity: 'success', summary: 'Row Deleted', detail: selectedRowType});
+}
 
   protected handleNavigation(): void {
     combineLatest(this.activatedRoute.data, this.activatedRoute.queryParamMap, (data: Data, params: ParamMap) => {
