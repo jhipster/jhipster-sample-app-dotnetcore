@@ -42,7 +42,9 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   menuItems: MenuItem[] = [];
 
-  selectedRow: any;
+  contextSelectedRow: IBirthday | null = null;
+
+  checkboxSelectedRows : IBirthday[] = [];
   // rowData = new Observable<IBirthday[]>();
   /*
   rowData = [
@@ -87,13 +89,14 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.handleNavigation();
     this.registerChangeInBirthdays();
     this.menuItems = [
-      {label: 'View', icon: 'pi pi-fw pi-search', command: () => this.doMenuView(this.selectedRow)},
-          {label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.doMenuDelete(this.selectedRow)}
+      {label: 'View', icon: 'pi pi-fw pi-search', command: () => this.doMenuView(this.contextSelectedRow)},
+          {label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.doMenuDelete(this.contextSelectedRow)}
     ];    
   }
 
   doMenuView(selectedRow: any) : void {
     const selected : IBirthday = selectedRow;
+    const count = this.checkboxSelectedRows.length;
     this.messageService.add({severity: 'success', summary: 'Row Viewed', detail: selected.lname });
   }
 
