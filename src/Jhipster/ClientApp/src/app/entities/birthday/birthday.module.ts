@@ -12,9 +12,11 @@ import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MessagesModule } from 'primeng/messages';
+import { ChipsModule } from 'primeng/chips';
+import { ConfirmPopupModule } from "primeng/confirmpopup";
 
 @NgModule({
-  imports: [JhipsterSharedModule, RouterModule.forChild(birthdayRoute), TableModule, CalendarModule, ContextMenuModule, MessagesModule],
+  imports: [JhipsterSharedModule, RouterModule.forChild(birthdayRoute), TableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule],
 declarations: [BirthdayComponent, BirthdayDetailComponent /* , BirthdayUpdateComponent, BirthdayDeleteDialogComponent*/],
   entryComponents: [/* BirthdayDeleteDialogComponent*/],
 })

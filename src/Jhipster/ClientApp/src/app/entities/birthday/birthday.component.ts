@@ -14,14 +14,18 @@ import { Observable } from 'rxjs';
 import { of } from 'rxjs';
 import { Table } from 'primeng/table';
 import { MenuItem, MessageService } from 'primeng/api';
+import { DomSanitizer } from "@angular/platform-browser";
+import { ConfirmationService, PrimeNGConfig} from "primeng/api";
 
 @Component({
   selector: 'jhi-birthday',
   templateUrl: './birthday.component.html',
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
+
 export class BirthdayComponent implements OnInit, OnDestroy {
   birthdays?: IBirthday[];
+  birthdaysMap : {} = {};
   eventSubscriber?: Subscription;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -29,11 +33,12 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
-
+  expandedRows = {};
+  
   columnDefs = [
     { field: 'lname', sortable: true, filter: true },
     { field: 'fname', sortable: true, filter: true },
-  { field: 'dob', sortable: true, filter: true/* , valueFormatter: (data: any) => this.formatMediumPipe.transform(dayjs(data.value)) */},
+    { field: 'dob', sortable: true, filter: true/* , valueFormatter: (data: any) => this.formatMediumPipe.transform(dayjs(data.value)) */},
     { field: 'additional', headerName: 'sign', sortable: true, filter: true },
     { field: 'isAlive', sortable: true, filter: true },
   ];
@@ -45,15 +50,8 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   contextSelectedRow: IBirthday | null = null;
 
   checkboxSelectedRows : IBirthday[] = [];
-  // rowData = new Observable<IBirthday[]>();
-  /*
-  rowData = [
-    { lname: 'Toyota', fname: 'Celica', dob: '2021-05-14T04:00:00.000Z' },
-    { lname: 'Ford', fname: 'Mondeo', dob: '2021-05-14T04:00:00.000Z' },
-    { lname: 'Porsche', fname: 'Boxter', dob: '2021-05-14T04:00:00.000Z' }
-  ];
-  */
 
+  chipSelectedRows : object[] = [];
 
   constructor(
     protected birthdayService: BirthdayService,
@@ -61,7 +59,10 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     protected router: Router,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
-    protected messageService: MessageService
+    protected messageService: MessageService,
+    public sanitizer:DomSanitizer,
+    private confirmationService: ConfirmationService,
+    private primeNGConfig : PrimeNGConfig
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -83,11 +84,85 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     searchInput.value = "";
     // table.clear();
     table.reset();
+    Object.keys(this.expandedRows).forEach((key)=>{
+      this.expandedRows[key] = false;
+    });
+    this.chipSelectedRows = [];
+    this.checkboxSelectedRows = [];
+  }
+
+  onCheckboxChange() : void {
+    this.chipSelectedRows = [];
+    if (this.checkboxSelectedRows.length < 3){
+      this.checkboxSelectedRows.forEach((row)=>{
+        this.chipSelectedRows.push(row);
+      });
+    }
+  }
+
+  onChipClick(event: Event) : void {
+    const clickTarget : any = event.target;
+    this.confirmationService.confirm({
+      target: clickTarget,
+      message: "Are you sure that you want to proceed?",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => {
+        this.messageService.add({
+          severity: "info",
+          summary: "Confirmed",
+          detail: "You have accepted"
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: "error",
+          summary: "Rejected",
+          detail: "You have rejected"
+        });
+      }
+    });
+  }
+  onExpandChange(expanded : boolean) : void {
+    if (expanded){
+      // ignore
+    }
+    /* 
+    this.chipSelectedRows = [];
+    Object.keys(this.expandedRows).forEach((key)=>{
+      if (this.expandedRows[key]){
+        this.chipSelectedRows.push(this.birthdaysMap[key]);
+      }
+    });
+    */
+  }
+
+  onRemoveChip(chip : any) : void {
+    if (this.expandedRows[chip.id]){
+      this.expandedRows[chip.id] = false;
+    }
+    const newSelection : IBirthday[] = [];
+    this.checkboxSelectedRows.forEach((row)=>{
+      if (row.id !== chip.id){
+        newSelection.push(row)
+      }
+    });
+    this.checkboxSelectedRows = newSelection;
+  }
+
+  isSelected(key : any) : boolean {
+    let ret = false;
+    this.checkboxSelectedRows.forEach((row)=>{
+      if (row.id === key){
+        ret = true;
+      }
+    });
+    return ret;
   }
 
   ngOnInit(): void {
     this.handleNavigation();
     this.registerChangeInBirthdays();
+    this.primeNGConfig.ripple = true;
     this.menuItems = [
       {label: 'View', icon: 'pi pi-fw pi-search', command: () => this.doMenuView(this.contextSelectedRow)},
           {label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.doMenuDelete(this.contextSelectedRow)}
@@ -96,14 +171,14 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   doMenuView(selectedRow: any) : void {
     const selected : IBirthday = selectedRow;
-    const count = this.checkboxSelectedRows.length;
+    // const count = this.checkboxSelectedRows.length;
     this.messageService.add({severity: 'success', summary: 'Row Viewed', detail: selected.lname });
   }
 
   doMenuDelete(selectedRow: any) : void {
     const selectedRowType : string = selectedRow.constructor.name;
     this.messageService.add({severity: 'success', summary: 'Row Deleted', detail: selectedRowType});
-}
+  }
 
   protected handleNavigation(): void {
     combineLatest(this.activatedRoute.data, this.activatedRoute.queryParamMap, (data: Data, params: ParamMap) => {
@@ -161,12 +236,14 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       });
     }
     this.birthdays = data || [];
+    this.birthdays.forEach((birthday)=>{
+      this.birthdaysMap[birthday.id as number] = birthday;
+    });
     this.ngbPaginationPage = this.page;
     
     if (data) {
       this.rowData = of(this.birthdays);
     }
-    
   }
 
   protected onError(): void {
