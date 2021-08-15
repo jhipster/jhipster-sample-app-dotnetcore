@@ -13,4 +13,23 @@ eg $input-color: red;
 @import '~primeng/resources/primeng.min.css';
 @import '~primeflex/primeflex.css';
 
+.p-datatable .p-datatable-tbody > tr > td {
+    text-align: left;
+    border: 1px solid #c8c8c8;
+    border-width: 1px;
+    padding: 0px 0.857rem;
+}
+.p-button.p-button-icon-only.p-button-rounded {
+    width: 20px;
+    border-radius: 100px;
+    height: 20px;
+    margin-bottom: 2px;
+}
+.p-checkbox {
+    display: inline-flex;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: text-bottom ;
+}
+  
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */
