@@ -90,6 +90,11 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.chipSelectedRows = [];
     this.checkboxSelectedRows = [];
   }
+  
+  isDisplayingEllipsis(element : HTMLElement) : boolean{
+    const tolerance = 3;
+    return element.offsetWidth + tolerance < element.scrollWidth
+  }
 
   onCheckboxChange() : void {
     this.chipSelectedRows = [];

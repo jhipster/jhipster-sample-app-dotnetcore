@@ -99,7 +99,7 @@
       <ng-template pTemplate="body" let-birthday let-expanded="expanded">
         <tr [pContextMenuRow]="birthday">
           <td><p-tableCheckbox [value]="birthday"></p-tableCheckbox></td>
-          <td>{{ birthday.lname }}</td>
+          <td #tt pTooltip="{{ birthday.lname }}" [tooltipDisabled]='false' style="text-overflow: ellipsis;overflow: hidden;">{{ birthday.lname }}</td>
           <td>{{ birthday.fname }}</td>
           <td>{{ birthday.dob | date: 'MM/dd/yyyy' }}</td>
           <td>{{ birthday.additional }}</td>
