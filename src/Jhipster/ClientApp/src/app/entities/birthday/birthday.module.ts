@@ -15,9 +15,10 @@ import { MessagesModule } from 'primeng/messages';
 import { ChipsModule } from 'primeng/chips';
 import { ConfirmPopupModule } from "primeng/confirmpopup";
 import {TooltipModule} from 'primeng/tooltip';
+import {ScrollTopModule} from 'primeng/scrolltop';
 
 @NgModule({
-  imports: [JhipsterSharedModule, RouterModule.forChild(birthdayRoute), TableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule],
+  imports: [JhipsterSharedModule, RouterModule.forChild(birthdayRoute), TableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule],
 declarations: [BirthdayComponent, BirthdayDetailComponent /* , BirthdayUpdateComponent, BirthdayDeleteDialogComponent*/],
   entryComponents: [/* BirthdayDeleteDialogComponent*/],
 })
