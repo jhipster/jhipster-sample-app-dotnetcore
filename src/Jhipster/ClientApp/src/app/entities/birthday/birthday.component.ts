@@ -89,7 +89,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   }
 
   clearFilters(table: Table, searchInput: any): void{
-    searchInput.value = "";
+    searchInput.value = ""; // should clear filter
     // table.clear();
     table.reset();
     Object.keys(this.expandedRows).forEach((key)=>{
@@ -97,6 +97,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     });
     this.chipSelectedRows = [];
     this.checkboxSelectedRows = [];
+    table.filterGlobal(searchInput.value, 'contains');  // Not sure why this is necessary, but otherwise filter stays active
   }
   
   isDisplayingEllipsis(element : HTMLElement) : boolean{
@@ -113,11 +114,32 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     }
   }
 
+  setMenu(birthday : any):void{
+    this.menuItems[0].label = `Select action for ${birthday.fname} ${birthday.lname}`;
+    let alternate : any = null;
+    this.chipSelectedRows.forEach((selectedRow)=>{
+      if ((selectedRow as IBirthday).id !== birthday.id){
+        alternate = selectedRow as IBirthday;
+      }
+    });
+    if (alternate != null){
+      this.menuItems[1].label = `Relate to ${alternate.fname} ${alternate.lname}`
+    }
+  }
+
+  onMenuShow(menu : any): void{
+    // this shouldn't be necessary, but the p-menu menuleave is not firing
+    menu.el.nativeElement.children[0].addEventListener('mouseleave', () => {
+      menu.hide();
+    });
+  }
+
   onChipClick(event: Event) : void {
     const clickTarget : any = event.target;
+    const id = clickTarget.children[0].innerHTML;
     this.confirmationService.confirm({
       target: clickTarget,
-      message: "Are you sure that you want to proceed?",
+      message: `Are you sure that you want to proceed with ${id}?`,
       icon: "pi pi-exclamation-triangle",
       accept: () => {
         this.messageService.add({
@@ -176,10 +198,30 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.handleNavigation();
     this.registerChangeInBirthdays();
     this.primeNGConfig.ripple = true;
-    this.menuItems = [
-      {label: 'View', icon: 'pi pi-fw pi-search', command: () => this.doMenuView(this.contextSelectedRow)},
-          {label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.doMenuDelete(this.contextSelectedRow)}
-    ];    
+    this.menuItems = [{
+      label: 'Options',
+      items: [{
+          label: 'Update',
+          icon: 'pi pi-refresh',
+      },
+      {
+          label: 'Delete',
+          icon: 'pi pi-times',
+      }
+      ]},
+      {
+          label: 'Navigate',
+          items: [{
+              label: 'Angular Website',
+              icon: 'pi pi-external-link',
+              url: 'http://angular.io'
+          },
+          {
+              label: 'Router',
+              icon: 'pi pi-upload'
+          }
+      ]}
+    ];
   }
 
   doMenuView(selectedRow: any) : void {

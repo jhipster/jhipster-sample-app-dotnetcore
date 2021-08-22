@@ -15,7 +15,8 @@
   <jhi-alert></jhi-alert>
 
   <ng-container *ngIf="rowData | async as birthday">
-    <p-contextMenu #cm [model]="menuItems"></p-contextMenu>
+    <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>
+    <p-menu #menu [popup]="true" [model]="menuItems" (onShow)="onMenuShow(menu)" appendTo="body"></p-menu>
     <p-confirmPopup></p-confirmPopup>
     <p-messages></p-messages>
     <p-table #birthdays [value]="birthday" 
@@ -23,13 +24,14 @@
         [globalFilterFields]="['lname', 'fname', 'additional']" 
         dataKey="id" 
         [(contextMenuSelection)]="contextSelectedRow" 
-        [contextMenu]="cm"
+        [contextMenu]="contextMenu"
         selectionMode="multiple" 
         [(selection)]="checkboxSelectedRows"
         [expandedRowKeys]="expandedRows"
         (onRowExpand)="onExpandChange(true)" 
         (onRowCollapse)="onExpandChange(false)"
         (selectionChange)="onCheckboxChange()" 
+        (onContextMenuSelect)="setMenu(contextSelectedRow)"
       >
       <ng-template pTemplate="caption">
         <div class="p-d-flex">
@@ -39,9 +41,15 @@
           </button>
           <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
           <span *ngIf="chipSelectedRows.length > 0">
-            <p-chips [(ngModel)]="chipSelectedRows" (onRemove)="onRemoveChip($event.value)" (onChipClick)="onChipClick($event.originalEvent)">
+            <p-chips pRipple
+              [(ngModel)]="chipSelectedRows" 
+              (onRemove)="onRemoveChip($event.value)" 
+              (onChipClick)="onChipClick($event.originalEvent)" 
+            >
               <ng-template let-item pTemplate="item">
-                {{item.fname}} {{item.lname}}
+                <span  (mouseover)="setMenu(item);menu.show($event)" >
+                  {{item.fname}} {{item.lname}}<span style="display: none;">{{item.id}}</span>
+                </span>
               </ng-template>
             </p-chips>
           </span>
