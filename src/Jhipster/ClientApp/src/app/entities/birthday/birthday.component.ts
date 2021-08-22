@@ -34,6 +34,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
   expandedRows = {};
+  loading = true;
   
   columnDefs = [
     { field: 'lname', sortable: true, filter: true },
@@ -68,6 +69,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;
 
+    this.loading = true;
     this.birthdayService
       .query({
         page: pageToLoad - 1,
@@ -78,6 +80,12 @@ export class BirthdayComponent implements OnInit, OnDestroy {
         (res: HttpResponse<IBirthday[]>) => this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate),
         () => this.onError()
       );
+  }
+
+  refreshData(): void {
+    this.birthdays =[];
+    this.rowData = of(this.birthdays);
+    this.loadPage();
   }
 
   clearFilters(table: Table, searchInput: any): void{
@@ -249,6 +257,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     if (data) {
       this.rowData = of(this.birthdays);
     }
+    this.loading = false;
   }
 
   protected onError(): void {

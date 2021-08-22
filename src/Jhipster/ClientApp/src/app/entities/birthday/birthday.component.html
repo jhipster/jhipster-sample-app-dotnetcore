@@ -14,9 +14,6 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="birthdays?.length === 0">
-      <span jhiTranslate="jhipsterApp.birthday.home.notFound">No birthdays found</span>
-  </div>
   <ng-container *ngIf="rowData | async as birthday">
     <p-contextMenu #cm [model]="menuItems"></p-contextMenu>
     <p-confirmPopup></p-confirmPopup>
@@ -36,8 +33,9 @@
       >
       <ng-template pTemplate="caption">
         <div class="p-d-flex">
-          <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)">
-            Clear
+          <button pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;" icon="pi pi-refresh" (click)="refreshData()"></button>
+          &nbsp;
+          <button pButton label="Clear" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)">
           </button>
           <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
           <span *ngIf="chipSelectedRows.length > 0">
@@ -119,6 +117,9 @@
         </td>
       </ng-template>
     </p-table>
+    <div class="alert alert-light" id="no-result" *ngIf="loading">
+      <span >loading ...</span>
+    </div>
   </ng-container>
   <p-scrollTop
     target="parent"
