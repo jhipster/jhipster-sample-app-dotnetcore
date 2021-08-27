@@ -18,11 +18,12 @@ eg $input-color: red;
     border: 1px solid #c8c8c8;
     border-width: 1px;
     padding: 0px 0.857rem;
+    font-size: 12px;
 }
 .p-button.p-button-icon-only.p-button-rounded {
-    width: 20px;
+    width: 14px;
     border-radius: 100px;
-    height: 20px;
+    height: 14px;
     margin-bottom: 2px;
 }
 .p-checkbox {
@@ -30,6 +31,32 @@ eg $input-color: red;
     cursor: pointer;
     user-select: none;
     vertical-align: text-bottom ;
+}
+.p-checkbox .p-checkbox-box {
+    height: 14px;
+    width: 14px;
+    margin-top: 3px;
+}
+.p-checkbox .p-checkbox-box .p-checkbox-icon {
+    font-size: 8px;
+}
+.pi {
+    font-size: 10px;
+}
+.p-component {
+    font-size: 12px;
+}
+.p-datatable .p-datatable-thead > tr > th {
+    padding: 0.0rem 0.400rem;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+    padding: 0px 0.400rem;
+}
+.p-inputtext {
+    font-size: 12px;
+}
+.p-chips .p-chips-multiple-container {
+    padding: 0.1rem 0.429rem;
 }
   
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

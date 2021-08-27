@@ -2,7 +2,7 @@
   <h2 id="page-heading">
       <span jhiTranslate="jhipsterApp.birthday.home.title">Regions</span>
 
-      <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
+      <button *ngif="false" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
           <fa-icon icon="plus"></fa-icon>
           <span  jhiTranslate="jhipsterApp.birthday.home.createLabel">
           Create a new Region
@@ -67,7 +67,7 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 3rem">
+          <th style="width: 2rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
           <th pResizableColumn [pSortableColumn]="'lname'">
@@ -99,7 +99,7 @@
             </div>
           </th>
           <th>Alive?</th>
-          <th style="width:75px;">Expand</th>
+          <th style="width:25px;font-weight: 700;"><span class="p-button-icon pi pi-chevron-right" aria-hidden="true"></span></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-birthday let-expanded="expanded">
