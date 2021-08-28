@@ -95,8 +95,9 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     Object.keys(this.expandedRows).forEach((key)=>{
       this.expandedRows[key] = false;
     });
-    this.chipSelectedRows = [];
-    this.checkboxSelectedRows = [];
+    // no need to clear checkboxes or chips
+    // this.chipSelectedRows = [];
+    // this.checkboxSelectedRows = [];
     table.filterGlobal(searchInput.value, 'contains');  // Not sure why this is necessary, but otherwise filter stays active
   }
   

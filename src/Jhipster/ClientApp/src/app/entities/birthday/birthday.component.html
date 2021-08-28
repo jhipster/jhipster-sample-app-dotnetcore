@@ -38,7 +38,7 @@
           &nbsp;
           <button pButton label="Clear" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)">
           </button>
-          <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
+          <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100; padding-top: 10px;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
           <span *ngIf="chipSelectedRows.length > 0">
             <p-menu #menu [popup]="true" [model]="menuItems" (onShow)="onMenuShow(menu, chips)" appendTo="body"></p-menu>
             <p-chips #chips pRipple
