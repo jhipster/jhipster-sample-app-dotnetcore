@@ -127,11 +127,32 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     }
   }
 
-  onMenuShow(menu : any): void{
+  onMenuShow(menu : any, chips : any): void{
     // this shouldn't be necessary, but the p-menu menuleave is not firing
-    menu.el.nativeElement.children[0].addEventListener('mouseleave', () => {
+    const menuEl = menu.el.nativeElement.children[0];
+    const chipsEl = chips.el.nativeElement.parentElement;
+    let mouseOver : any = null;
+    let chipsMouseOut : any = null;
+    let bMouseOnMenu = false;
+    const hideMenu = ()=>{
       menu.hide();
-    });
+      chipsEl.removeEventListener('mouseout', chipsMouseOut);
+      menuEl.removeEventListener('mouseleave', hideMenu);
+      menuEl.removeEventListener('mouseover', mouseOver);
+    }
+    mouseOver = ()=>{
+      bMouseOnMenu = true;
+    }
+    chipsMouseOut = ()=>{
+      setTimeout(function() : void{
+        if (!bMouseOnMenu){
+          hideMenu();
+        }
+      }, 0);
+    }       
+    menuEl.addEventListener('mouseover', mouseOver);
+    menuEl.addEventListener('mouseleave', hideMenu);
+    chipsEl.addEventListener('mouseout', chipsMouseOut);
   }
 
   onChipClick(event: Event) : void {

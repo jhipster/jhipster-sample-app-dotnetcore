@@ -5,7 +5,7 @@
       <button *ngif="false" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
           <fa-icon icon="plus"></fa-icon>
           <span  jhiTranslate="jhipsterApp.birthday.home.createLabel">
-          Create a new Region
+          Create a new ...
           </span>
       </button>
   </h2>
@@ -16,7 +16,6 @@
 
   <ng-container *ngIf="rowData | async as birthday">
     <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>
-    <p-menu #menu [popup]="true" [model]="menuItems" (onShow)="onMenuShow(menu)" appendTo="body"></p-menu>
     <p-confirmPopup></p-confirmPopup>
     <p-messages></p-messages>
     <p-table #birthdays [value]="birthday" 
@@ -41,7 +40,8 @@
           </button>
           <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
           <span *ngIf="chipSelectedRows.length > 0">
-            <p-chips pRipple
+            <p-menu #menu [popup]="true" [model]="menuItems" (onShow)="onMenuShow(menu, chips)" appendTo="body"></p-menu>
+            <p-chips #chips pRipple
               [(ngModel)]="chipSelectedRows" 
               (onRemove)="onRemoveChip($event.value)" 
               (onChipClick)="onChipClick($event.originalEvent)" 
