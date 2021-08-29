@@ -130,10 +130,21 @@
         <td colspan="6">
           <h1>Hello {{ birthday.fname }} whose last name is {{birthday.lname}} </h1>
           <iframe style="width:100%; height:100%;" 
-             [src]= "sanitizer.bypassSecurityTrustResourceUrl('https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/birthdays/_doc/'+birthday.id)">"</iframe>
+            [src]= "sanitizer.bypassSecurityTrustResourceUrl('https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/birthdays/_doc/'+birthday.id)">"
+          </iframe>
         </td>
       </ng-template>
     </p-table>
+
+    <p-dialog header="{{ birthdayDialogTitle }}" [(visible)]="bDisplayBirthday" [style]="{width: '50vw'}" [baseZIndex]="10000">
+      <iframe style="width:100%; height:100%;" 
+        [src]= "sanitizer.bypassSecurityTrustResourceUrl('https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/birthdays/_doc/'+birthdayDialogId)">"
+      </iframe>
+      <ng-template pTemplate="footer">
+      </ng-template>      
+    </p-dialog>
+
+
     <div class="alert alert-light" id="no-result" *ngIf="loading">
       <span >loading ...</span>
     </div>

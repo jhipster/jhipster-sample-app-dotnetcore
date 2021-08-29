@@ -56,6 +56,12 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   bDisplaySearchDialog = false;
 
+  bDisplayBirthday = false;
+
+  birthdayDialogTitle  = "";
+
+  birthdayDialogId : any = "";
+
   constructor(
     protected birthdayService: BirthdayService,
     protected activatedRoute: ActivatedRoute,
@@ -131,8 +137,11 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       }
     });
     if (alternate != null){
-      this.menuItems[1].label = `Relate to ${alternate.fname} ${alternate.lname}`
+      this.menuItems[1].label = `Relate to ${alternate.fname} ${alternate.lname}`;
+    } else {
+      this.menuItems[1].label = `Select another birthday to relate`;
     }
+    this.contextSelectedRow = birthday;
   }
 
   onMenuShow(menu : any, chips : any): void{
@@ -163,7 +172,9 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     chipsEl.addEventListener('mouseout', chipsMouseOut);
   }
 
-  onChipClick(event: Event) : void {
+  onChipClick(event: Event) : Event {
+    return event;
+    /*
     const clickTarget : any = event.target;
     const id = clickTarget.children[0].innerHTML;
     this.confirmationService.confirm({
@@ -185,6 +196,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
         });
       }
     });
+    */
   }
   onExpandChange(expanded : boolean) : void {
     if (expanded){
@@ -230,24 +242,38 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.menuItems = [{
       label: 'Options',
       items: [{
-          label: 'Update',
-          icon: 'pi pi-refresh',
+          label: 'Display',
+          icon: 'pi pi-book',
+          command: ()=>{
+            setTimeout(()=>{
+              this.birthdayDialogId = this.contextSelectedRow ? this.contextSelectedRow?.id?.toString() : "";
+              this.birthdayDialogTitle = this.contextSelectedRow ? this.contextSelectedRow?.lname as string : "";
+              this.bDisplayBirthday = true;
+            }, 0);
+          }
       },
       {
-          label: 'Delete',
-          icon: 'pi pi-times',
+          label: 'Ingest',
+          icon: 'pi pi-upload',
       }
       ]},
       {
-          label: 'Navigate',
+          label: 'Relationship',
           items: [{
-              label: 'Angular Website',
-              icon: 'pi pi-external-link',
-              url: 'http://angular.io'
+              label: 'Favorable',
+              icon: 'pi pi-thumbs-up'
           },
           {
-              label: 'Router',
-              icon: 'pi pi-upload'
+              label: 'Unfavorable',
+              icon: 'pi pi-thumbs-down'
+          },
+          {
+              label: 'Iden',
+              icon: 'pi pi-id-card'
+          },
+          {
+              label: 'Revision',
+              icon: 'pi pi-pencil'
           }
       ]}
     ];
