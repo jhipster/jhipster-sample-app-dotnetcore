@@ -54,6 +54,8 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   chipSelectedRows : object[] = [];
 
+  bDisplaySearchDialog = false;
+
   constructor(
     protected birthdayService: BirthdayService,
     protected activatedRoute: ActivatedRoute,
@@ -104,6 +106,11 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   isDisplayingEllipsis(element : HTMLElement) : boolean{
     const tolerance = 3;
     return element.offsetWidth + tolerance < element.scrollWidth
+  }
+
+  showSearchDialog() : void {
+    // initialize dialog here
+    this.bDisplaySearchDialog = true;
   }
 
   onCheckboxChange() : void {
