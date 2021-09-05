@@ -1,17 +1,13 @@
 <div style="height: calc(100vh - 174px);overflow: auto;">
   <h2 id="page-heading">
       <span jhiTranslate="jhipsterApp.birthday.home.title">filled in by translate</span><span style="font-size: 16px;font-weight: 700;">... </span><span (click)="showSearchDialog()"><span class="pi pi-external-link" style="cursor:pointer;"></span></span>
-      <p-dialog header="Header" [(visible)]="bDisplaySearchDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-        [draggable]="false" [resizable]="false">
-        <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <ng-template pTemplate="footer">
-                <p-button icon="pi pi-check" (click)="bDisplaySearchDialog=false" label="Yes" class="p-button-text"></p-button>
-            </ng-template>
+      <p-dialog header="Enter Search Criteria" [(visible)]="bDisplaySearchDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+        [draggable]="true" [resizable]="false">
+            <jhi-birhday-query-builder></jhi-birhday-query-builder>
+            <button pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;">Ok</button>
       </p-dialog>
 
-      <button *ngif="false" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
+      <button *ngIf="false" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
           <fa-icon icon="plus"></fa-icon>
           <span  jhiTranslate="jhipsterApp.birthday.home.createLabel">
           Create a new ...
