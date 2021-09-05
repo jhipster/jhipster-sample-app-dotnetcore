@@ -3,9 +3,16 @@
       <span jhiTranslate="jhipsterApp.birthday.home.title">filled in by translate</span><span style="font-size: 16px;font-weight: 700;">... </span><span (click)="showSearchDialog()"><span class="pi pi-external-link" style="cursor:pointer;"></span></span>
       <p-dialog header="Enter Search Criteria" [(visible)]="bDisplaySearchDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
         [draggable]="true" [resizable]="false">
-            <jhi-birhday-query-builder></jhi-birhday-query-builder>
-            <button pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;">Ok</button>
-      </p-dialog>
+            <jhi-birhday-query-builder #queryBuilder></jhi-birhday-query-builder>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelSearchDialog()">
+                  <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+              </button>
+      
+              <button type="submit" class="btn btn-primary" [disabled]="queryBuilder.queryCtrl.errors">
+                <fa-icon [icon]="faCheck"></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok" (click)="okSearchDialog(queryBuilder)"></span>
+              </button>
+          </div>      </p-dialog>
 
       <button *ngIf="false" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
           <fa-icon icon="plus"></fa-icon>
@@ -25,7 +32,7 @@
     <p-messages></p-messages>
     <p-table #birthdays [value]="birthday" 
         [resizableColumns]="true" 
-        [globalFilterFields]="['lname', 'fname', 'additional']" 
+        [globalFilterFields]="['lname', 'fname', 'sign']" 
         dataKey="id" 
         [(contextMenuSelection)]="contextSelectedRow" 
         [contextMenu]="contextMenu"
@@ -113,7 +120,7 @@
           <td #tt pTooltip="{{ birthday.lname }}" [tooltipDisabled]='false' style="text-overflow: ellipsis;overflow: hidden;">{{ birthday.lname }}</td>
           <td>{{ birthday.fname }}</td>
           <td>{{ birthday.dob | date: 'MM/dd/yyyy' }}</td>
-          <td>{{ birthday.additional }}</td>
+          <td>{{ birthday.sign }}</td>
           <td *ngIf="birthday.isAlive">Yes</td>
           <td *ngIf="!birthday.isAlive">No</td>
           <td>

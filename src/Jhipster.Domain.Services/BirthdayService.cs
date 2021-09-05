@@ -22,9 +22,9 @@ namespace Jhipster.Domain.Services
             return birthday;
         }
 
-        public virtual async Task<IPage<Birthday>> FindAll(IPageable pageable)
+        public virtual async Task<IPage<Birthday>> FindAll(IPageable pageable, string query)
         {
-            var page = await _birthdayRepository.GetPageAsync(pageable);
+            var page = await _birthdayRepository.GetPageFilteredAsync(pageable, query);
             return page;
         }
 

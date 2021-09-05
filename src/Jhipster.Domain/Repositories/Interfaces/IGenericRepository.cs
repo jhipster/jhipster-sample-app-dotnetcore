@@ -14,6 +14,7 @@ namespace Jhipster.Domain.Repositories.Interfaces
         Task<TEntity> GetOneAsync(object id);
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<IPage<TEntity>> GetPageAsync(IPageable pageable);
+        Task<IPage<TEntity>> GetPageFilteredAsync(IPageable pageable, string query);
         Task<bool> Exists(Expression<Func<TEntity, bool>> predicate);
         Task<int> CountAsync();
         Task<TEntity> CreateOrUpdateAsync(TEntity entity);

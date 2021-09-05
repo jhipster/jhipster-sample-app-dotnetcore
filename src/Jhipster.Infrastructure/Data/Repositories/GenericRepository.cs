@@ -33,6 +33,11 @@ namespace Jhipster.Infrastructure.Data.Repositories
             return await _dbSet.ToListAsync();
         }
 
+        public virtual async Task<IPage<TEntity>> GetPageFilteredAsync(IPageable pageable, string query)
+        {
+            return await _dbSet.UsePageableAsync(pageable);
+        }
+
         public virtual async Task<IPage<TEntity>> GetPageAsync(IPageable pageable)
         {
             return await _dbSet.UsePageableAsync(pageable);

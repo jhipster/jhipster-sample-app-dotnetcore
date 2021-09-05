@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Nest;
+using Microsoft.AspNetCore.Http.Extensions; 
 
 namespace Jhipster.Controllers
 {
@@ -79,8 +80,13 @@ namespace Jhipster.Controllers
                 Id = "abc",
                 Lname = "Eisner"
             };
+            var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(HttpContext.Request.QueryString.ToString());
+            String query = "";
+            if (queryDictionary.Keys.Contains("query")){
+                query = queryDictionary["query"];
+            }
             BirthdayDto birthdaydto = _mapper.Map<BirthdayDto>(birthday);
-            var result = await _birthdayService.FindAll(pageable);
+            var result = await _birthdayService.FindAll(pageable, query);
             var page = new Page<BirthdayDto>(result.Content.Select(entity => _mapper.Map<BirthdayDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<BirthdayDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
@@ -101,5 +107,8 @@ namespace Jhipster.Controllers
             await _birthdayService.Delete(id);
             return Ok().WithHeaders(HeaderUtil.CreateEntityDeletionAlert(EntityName, id.ToString()));
         }
+    }
+    public interface IBirthdayPageable : IPageable{
+        public String query { get; }
     }
 }

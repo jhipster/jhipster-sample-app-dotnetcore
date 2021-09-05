@@ -39,16 +39,15 @@ namespace Jhipster.Infrastructure.Data.Repositories
             }
             return birthday;
         }
+
         public override async Task<IPage<Birthday>> GetPageAsync(IPageable pageable){
+            return await GetPageFilteredAsync(pageable, "");
+        }
+        public override async Task<IPage<Birthday>> GetPageFilteredAsync(IPageable pageable, string query){
             var searchResponse = await elastic.SearchAsync<birthday>(s => s
                 .Size(10000)
                 .Query(q => q
                     .MatchAll()
-                    //.DateRange(r => r
-                    //    .Field(f => f.dob)
-                    //    .GreaterThanOrEquals(new DateTime(1940, 01, 01))
-                    //    .LessThan(new DateTime(1941, 01, 01))
-                    //)
                 )
             );
             List<Birthday> content = new List<Birthday>();

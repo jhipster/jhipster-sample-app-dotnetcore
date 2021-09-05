@@ -8,7 +8,7 @@ namespace Jhipster.Domain.Services.Interfaces
     {
         Task<Birthday> Save(Birthday birthday);
 
-        Task<IPage<Birthday>> FindAll(IPageable pageable);
+        Task<IPage<Birthday>> FindAll(IPageable pageable, string query);
 
         Task<Birthday> FindOne(string id);
 

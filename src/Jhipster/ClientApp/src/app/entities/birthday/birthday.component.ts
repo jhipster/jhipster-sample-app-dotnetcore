@@ -16,6 +16,7 @@ import { Table } from 'primeng/table';
 import { MenuItem, MessageService } from 'primeng/api';
 import { DomSanitizer } from "@angular/platform-browser";
 import { ConfirmationService, PrimeNGConfig} from "primeng/api";
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'jhi-birthday',
@@ -35,12 +36,13 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   ngbPaginationPage = 1;
   expandedRows = {};
   loading = true;
+  faCheck = faCheck;
   
   columnDefs = [
     { field: 'lname', sortable: true, filter: true },
     { field: 'fname', sortable: true, filter: true },
     { field: 'dob', sortable: true, filter: true/* , valueFormatter: (data: any) => this.formatMediumPipe.transform(dayjs(data.value)) */},
-    { field: 'additional', headerName: 'sign', sortable: true, filter: true },
+    { field: 'sign', headerName: 'sign', sortable: true, filter: true },
     { field: 'isAlive', sortable: true, filter: true },
   ];
 
@@ -61,6 +63,8 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   birthdayDialogTitle  = "";
 
   birthdayDialogId : any = "";
+
+  databaseQuery = "";
 
   constructor(
     protected birthdayService: BirthdayService,
@@ -83,6 +87,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
+        query: this.databaseQuery
       })
       .subscribe(
         (res: HttpResponse<IBirthday[]>) => this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate),
@@ -119,6 +124,15 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.bDisplaySearchDialog = true;
   }
 
+  cancelSearchDialog() : void {
+    this.bDisplaySearchDialog = false;
+  }
+
+  okSearchDialog(queryBuilder : any) : void {
+      this.databaseQuery = JSON.stringify(queryBuilder.query);
+      this.bDisplaySearchDialog = false;
+      this.refreshData();
+  }
   onCheckboxChange() : void {
     this.chipSelectedRows = [];
     if (this.checkboxSelectedRows.length < 3){
