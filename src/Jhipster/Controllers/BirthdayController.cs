@@ -85,6 +85,9 @@ namespace Jhipster.Controllers
             if (queryDictionary.Keys.Contains("query")){
                 query = queryDictionary["query"];
             }
+            if (query.StartsWith("{")){
+                query = TextTemplate.Runner.Interpolate("LuceneQueryBuilder", query);
+            }
             BirthdayDto birthdaydto = _mapper.Map<BirthdayDto>(birthday);
             var result = await _birthdayService.FindAll(pageable, query);
             var page = new Page<BirthdayDto>(result.Content.Select(entity => _mapper.Map<BirthdayDto>(entity)).ToList(), pageable, result.TotalElements);

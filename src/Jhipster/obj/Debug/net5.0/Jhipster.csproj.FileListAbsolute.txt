@@ -136,4 +136,9 @@ C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\ref\jhipster
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\jhipster.pdb
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\obj\Debug\net5.0\Jhipster.genruntimeconfig.cache
 C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.Certificate.dll
-C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\TextTemplateCSharp.exe
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Antlr4.Runtime.Standard.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\MomentSharp.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\TextTemplateCSharp.dll
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\TextTemplateCSharp.pdb
+C:\git\jhipster-sample-app-dotnetcore\src\Jhipster\bin\Debug\net5.0\Resources\Templates\LuceneQueryBuilder.template

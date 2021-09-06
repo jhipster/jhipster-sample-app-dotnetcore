@@ -1,0 +1,13 @@
+{'/data':#build.@MissingValue('')}
+Subtemplates:
+{#build:[{#condition}]}
+{#and:[{rules:[{field=>#operator,#condition}].Join( ' AND ')}]}
+{#or:[{rules:[{field=>#operator,#condition}].Join(' OR ')}]}
+{#operator:[{operator.Case('=',#equals,'>=',#gte,'<=',#lte,'>',#gt,'<',#lt,[{field} {operator} {value}])}]}
+{#condition:[({condition.Case('and',#and,'or',#or)})]}
+{#conditional:[>>{condition}<<]}
+{#equals:[{field}:{'"'}{value}{'"'}]}
+{#gte:[{field}:{'["'}{value}{'"'} TO *{']'}]}
+{#lte:[{field}:{'['}* TO {'"'}{value}{'"]'}]}
+{#gt:[{field}:{'{"'}{value}{'"'} TO *{'}'}]}
+{#lt:[{field}:{'{'}* TO {'"'}{value}{'"}'}]}
