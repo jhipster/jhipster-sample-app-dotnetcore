@@ -44,12 +44,21 @@ namespace Jhipster.Infrastructure.Data.Repositories
             return await GetPageFilteredAsync(pageable, "");
         }
         public override async Task<IPage<Birthday>> GetPageFilteredAsync(IPageable pageable, string query){
-            var searchResponse = await elastic.SearchAsync<birthday>(s => s
-                .Size(10000)
-                .Query(q => q
-                    .MatchAll()
-                )
-            );
+            ISearchResponse<birthday> searchResponse = null;
+            if (query == ""){
+                searchResponse = await elastic.SearchAsync<birthday>(s => s
+                    .Size(10000)
+                    .Query(q => q
+                        .MatchAll()
+                    )
+                );
+            } else {
+                searchResponse = await elastic.SearchAsync<birthday>(x => x	// use search method
+                    .Index("birthdays")
+                    .QueryOnQueryString(query)
+                    .Size(10000)
+                );				// limit to page size
+            }
             List<Birthday> content = new List<Birthday>();
             Console.WriteLine(searchResponse.Hits.Count + " hits");
             foreach (var hit in searchResponse.Hits)

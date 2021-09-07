@@ -38,16 +38,31 @@ export class BirthdayQueryBuilderComponent {
   public queryCtrl: FormControl;
 
   public query: RuleSet = {
-    condition: 'and',
-    rules: [
-      { field: 'age', operator: '>=', entity: 'physical', value: 18 },
-      { field: 'birthday', operator: '=', value: '2018-11-20', entity: 'nonphysical' },
+    "condition": "or",
+    "rules": [
       {
-        condition: 'or',
-        rules: [
-          { field: 'gender', operator: '=', entity: 'physical', value: 'm' },
-          { field: 'school', operator: 'is null', entity: 'nonphysical' },
-          { field: 'notes', operator: '=', entity: 'nonphysical', value: 'Hi' }
+        "condition": "and",
+        "rules": [
+          {
+            "field": "sign",
+            "operator": "=",
+            "value": "sagittarius"
+          },
+          {
+            "field": "dob",
+            "operator": ">",
+            "value": "1975-01-01"
+          }
+        ]
+      },
+      {
+        "condition": "and",
+        "rules": [
+          {
+            "field": "dob",
+            "operator": "<=",
+            "value": "1493-01-01"
+          }
         ]
       }
     ]
@@ -104,34 +119,31 @@ export class BirthdayQueryBuilderComponent {
     contains: 'contains',
   };
 
-
   public config: QueryBuilderConfig = {
     fields: {
-      age: { name: 'Age', type: 'number' },
-      gender: {
-        name: 'Gender',
-        type: 'category',
-        options: [
-          { name: 'Male', value: 'm' },
-          { name: 'Female', value: 'f' }
-        ]
-      },
-      name: { name: 'Name', type: 'string' },
-      notes: { name: 'Notes', type: 'string', operators: ['=', '!='] },
-      educated: { name: 'College Degree?', type: 'boolean' },
-      birthday: {
+      lname: { name: 'Last Name', type: 'string' },
+      fname: { name: 'First Name', type: 'string' },
+      isAlive: { name: 'Alive?', type: 'boolean' },
+      dob: {
         name: 'Birthday', type: 'date', operators: ['=', '<=', '>'],
         defaultValue: (() => new Date())
       },
-      school: { name: 'School', type: 'string', nullable: true },
-      occupation: {
-        name: 'Occupation',
+      sign: {
+        name: 'Astrological Sign',
         type: 'category',
         options: [
-          { name: 'Student', value: 'student' },
-          { name: 'Teacher', value: 'teacher' },
-          { name: 'Unemployed', value: 'unemployed' },
-          { name: 'Scientist', value: 'scientist' }
+          { name: 'Aries', value: 'aries' },
+          { name: 'Taurus', value: 'taurus' },
+          { name: 'Gemini', value: 'gemini' },
+          { name: 'Cancer', value: 'cancer' },
+          { name: 'Leo', value: 'leo' },
+          { name: 'Virgo', value: 'virgo' },
+          { name: 'Libra', value: 'libra' },
+          { name: 'Scorpio', value: 'scorpio' },
+          { name: 'Sagittarius', value: 'sagittarius' },
+          { name: 'Capricorn', value: 'capricorn' },
+          { name: 'Aquarius', value: 'aquarius' },
+          { name: 'Pisces    ', value: 'pisces' }      
         ]
       }
     }
