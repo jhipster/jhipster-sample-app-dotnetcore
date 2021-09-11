@@ -1,39 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { QueryBuilderConfig, RuleSet } from "angular2-query-builder";
-
-
+import { QueryBuilderConfig, RuleSet, QueryBuilderComponent } from "angular2-query-builder";
 
 @Component({
   selector: 'jhi-birhday-query-builder',
   templateUrl: './birthday-query-builder.component.html',
-  styles: [`p {
-    font-family: Lato;
-  }
-  
-  html {
-    font: 14px sans-serif;
-    margin: 30px;
-  }
-  
-  .text-input {
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  .text-area {
-    width: 300px;
-    height: 100px;
-  }
-  
-  .output {
-    width: 100%;
-    height: 150px;
-  }`]
+  styleUrls: ['./birthday-query-builder-component.scss']
 })
 
-export class BirthdayQueryBuilderComponent {
+export class BirthdayQueryBuilderComponent extends QueryBuilderComponent implements OnInit {
 
   public queryCtrl: FormControl;
 
@@ -151,13 +126,35 @@ export class BirthdayQueryBuilderComponent {
 
   private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
 
-  constructor(private formBuilder: FormBuilder) {
+   constructor(private formBuilder: FormBuilder, ref:ChangeDetectorRef) {
+    super(ref); 
     this.queryCtrl = this.formBuilder.control(this.query);
 
     this.queryCtrl.valueChanges.subscribe(ruleSet => {
       this.oDataFilter = `${this.BASE_URL}?$filter=${this.toODataString(ruleSet)}`;
     });
+  }
 
+  ngOnInit() : any{
+    super.ngOnInit();
+    this.ngOnChanges(null as any);
+  }
+
+  addRule() : any {
+    super.addRule();
+  }
+
+  addNotRuleSet(parent?: RuleSet) : any {
+    parent = parent || this.data;
+    this.addRuleSet();
+    if (parent.rules.length > 0){
+      const notRuleSet : any = parent;
+      notRuleSet.not = true;
+    }
+  }
+
+  toggleNot(el : any) : void{
+    el.checked = el.checked ? false : true;
   }
 
   private toODataString(ruleSet: RuleSet): string {
@@ -254,6 +251,7 @@ export class BirthdayQueryBuilderComponent {
     }
     return filter;
   }
+
   StringFormat= function (arg1 : string, arg2 : string, arg3 : string, arg4 : string) : any  {
     // The string containing the format items (e.g. "{0}")
     // will and always has to be the first argument.
