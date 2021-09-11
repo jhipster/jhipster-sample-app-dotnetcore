@@ -12,6 +12,25 @@
         content: '❌'
       }
     }
+  
+    .q-arrow-icon-button {
+      float: left;
+      margin: 4px 6px 4px 0;
+      transform: rotate(90deg);
+      transition: linear 0.25s transform;
+      cursor: pointer;
+  
+      &.q-collapsed {
+        transform: rotate(0);
+      }
+    }
+  
+    .q-arrow-icon {
+      &::before {
+        content: '▶'
+      }
+    }
+  
     .q-add-icon {
       color: #555;
       &::before {
@@ -21,6 +40,7 @@
   
     .q-remove-button {
       color: #B3415D;
+      width: 31px;
     }
   
     .q-switch-group, .q-button-group {
@@ -34,16 +54,21 @@
   
     .q-button {
       margin-left: 8px;
-      padding: 2px 8px;
+      padding: 0 8px;
       background-color: white;
+  
+      &:disabled {
+        display: none;
+      }
     }
   
     .q-control-size {
       display: inline-block;
       vertical-align: top;
+      padding-right: 10px;
     }
   
-    .q-input-control, .q-operator-control, .q-field-control {
+    .q-input-control, .q-operator-control, .q-field-control, .q-entity-control {
       display: inline-block;
       padding: 5px 8px;
       color: #555;
@@ -53,9 +78,13 @@
       border-radius: 4px;
       box-sizing: border-box;
       width: auto;
+  
+      &:disabled {
+        border-color: transparent;
+      }
     }
   
-    .q-operator-control, .q-field-control, .q-input-control:not([type='checkbox']) {
+    .q-operator-control, .q-field-control,.q-entity-control, .q-input-control:not([type='checkbox']) {
       min-height: 32px;
       -webkit-appearance: none;
     }
@@ -64,6 +93,7 @@
       float: left;
       margin-bottom: 0;
       font-size: 14px;
+      line-height: 30px;
       font-weight: normal;
       text-align: center;
       text-shadow: none;
@@ -78,7 +108,6 @@
   
     .q-switch-label {
       background-color: #e4e4e4;
-      line-height: 24px;
       padding: 0 8px;
     }
   
@@ -95,6 +124,17 @@
         background: white;
         color: rgb(49, 118, 179);
       }
+  
+      &:disabled + .q-switch-label {
+        display: none;
+      }
+  
+      &:checked:disabled + .q-switch-label {
+        display: initial;
+        color: initial;
+        cursor: default;
+        border-color: transparent;
+      }
     }
   
     .q-invalid-ruleset {
@@ -109,12 +149,6 @@
   
     .q-ruleset {
       border: 1px solid #CCC;
-      background: rgba(204, 204, 204, 0.2);
-  
-      &:hover {
-        border: 1px solid rgba(97, 158, 215, 0.5);
-        background: rgba(97, 158, 215, 0.1);
-      }
     }
   
     .q-rule {
@@ -130,14 +164,24 @@
       transition:         all 0.1s ease-in-out;
     }
   
+    .q-tree-container {
+      width: 100%;
+      overflow: hidden;
+      transition: ease-in 0.25s max-height;
+  
+      &.q-collapsed {
+        max-height: 0 !important;
+      }
+    }
+  
     .q-tree {
       list-style: none;
       margin: 4px 0 2px;
     }
   
     .q-row {
-      padding: 4px 6px;
-      margin-top: 4px;
+      padding: 6px 8px;
+      margin-top: 6px;
     }
   
     .q-connector {
@@ -167,7 +211,11 @@
         content: none;
       }
     }
-    
+  
+    .q-inline-block-display{
+      display: inline-block;
+      vertical-align: top;
+    }
   }
   
   p {

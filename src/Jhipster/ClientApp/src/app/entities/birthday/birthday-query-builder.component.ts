@@ -1,6 +1,14 @@
 import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { QueryBuilderConfig, RuleSet, QueryBuilderComponent } from "angular2-query-builder";
+import { QueryBuilderConfig, Rule, QueryBuilderComponent } from "angular2-query-builder";
+
+interface RuleSet {
+  condition: string;
+  rules: Array<RuleSet | Rule>;
+  collapsed?: boolean;
+  isChild?: boolean;
+  not?: boolean;
+}
 
 @Component({
   selector: 'jhi-birhday-query-builder',
@@ -9,14 +17,19 @@ import { QueryBuilderConfig, RuleSet, QueryBuilderComponent } from "angular2-que
 })
 
 export class BirthdayQueryBuilderComponent extends QueryBuilderComponent implements OnInit {
+  
+  public static firstTimeDiv : any = null;
 
   public queryCtrl: FormControl;
+
+  public allowCollapse = true;
 
   public query: RuleSet = {
     "condition": "or",
     "rules": [
       {
         "condition": "and",
+        "not": false,
         "rules": [
           {
             "field": "sign",
@@ -32,6 +45,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
       },
       {
         "condition": "and",
+        "not": false,
         "rules": [
           {
             "field": "dob",
@@ -126,35 +140,47 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
 
+  private localChangeDetectorRef? : ChangeDetectorRef;
+
    constructor(private formBuilder: FormBuilder, ref:ChangeDetectorRef) {
     super(ref); 
+    this.localChangeDetectorRef = ref;
     this.queryCtrl = this.formBuilder.control(this.query);
-
+    this.data = this.query;
     this.queryCtrl.valueChanges.subscribe(ruleSet => {
       this.oDataFilter = `${this.BASE_URL}?$filter=${this.toODataString(ruleSet)}`;
     });
   }
 
   ngOnInit() : any{
-    super.ngOnInit();
-    this.ngOnChanges(null as any);
-  }
-
-  addRule() : any {
-    super.addRule();
-  }
-
-  addNotRuleSet(parent?: RuleSet) : any {
-    parent = parent || this.data;
-    this.addRuleSet();
-    if (parent.rules.length > 0){
-      const notRuleSet : any = parent;
-      notRuleSet.not = true;
-    }
+    // super.ngOnInit();
+    this.ngOnChanges(null as any);  // needed to initialize fields
   }
 
   toggleNot(el : any) : void{
     el.checked = el.checked ? false : true;
+    const ruleset = this.data as RuleSet;
+    ruleset.not = el.checked;
+    this.localChangeDetectorRef?.markForCheck();
+    if (this.onChangeCallback) {
+      this.onChangeCallback();
+    }
+    if (this.parentChangeCallback) {
+      this.parentChangeCallback();
+    }
+    if (this.onTouchedCallback) {
+      this.onTouchedCallback();
+    }
+    if (this.parentTouchedCallback) {
+      this.parentTouchedCallback();
+    }
+  }
+
+  FirstInstance(el : HTMLElement) : boolean{
+    if (!BirthdayQueryBuilderComponent.firstTimeDiv){
+      BirthdayQueryBuilderComponent.firstTimeDiv = el;
+    }
+    return el.isSameNode(BirthdayQueryBuilderComponent.firstTimeDiv);
   }
 
   private toODataString(ruleSet: RuleSet): string {

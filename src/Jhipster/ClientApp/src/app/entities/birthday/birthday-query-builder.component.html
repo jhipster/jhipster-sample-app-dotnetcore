@@ -39,18 +39,15 @@
 
     <div [ngClass]="getClassNames('switchGroup', 'transition')" *ngIf="data">
       <div [ngClass]="getClassNames('switchControl')">
-        <input type="checkbox" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="$any(data).not" [disabled]=disabled
-          value="not" #notOption />
+        <input type="checkbox" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="$any(data).not" [disabled]=disabled value="not" #notOption />
         <label (click)="toggleNot(notOption)" [ngClass]="getClassNames('switchLabel')">NOT</label>
       </div>      
       <div [ngClass]="getClassNames('switchControl')">
-        <input type="radio" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="data.condition" [disabled]=disabled
-          value="and" #andOption />
+        <input type="radio" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="data.condition" [disabled]=disabled value="and" #andOption />
         <label (click)="changeCondition(andOption.value)" [ngClass]="getClassNames('switchLabel')">AND</label>
       </div>
       <div [ngClass]="getClassNames('switchControl')">
-        <input type="radio" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="data.condition" [disabled]=disabled
-          value="or" #orOption />
+        <input type="radio" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="data.condition" [disabled]=disabled value="or" #orOption />
         <label (click)="changeCondition(orOption.value)" [ngClass]="getClassNames('switchLabel')">OR</label>
       </div>
     </div>
@@ -160,15 +157,15 @@
             </ng-template>
 
           </ng-container>
-          <query-builder *ngIf="local.ruleset" [data]="rule" [disabled]="disabled" [parentTouchedCallback]="parentTouchedCallback || onTouchedCallback"
+          <jhi-birhday-query-builder *ngIf="local.ruleset" [data]="rule" [disabled]="disabled" [parentTouchedCallback]="parentTouchedCallback || onTouchedCallback"
             [parentChangeCallback]="parentChangeCallback || onChangeCallback" [parentInputTemplates]="parentInputTemplates || inputTemplates"
             [parentOperatorTemplate]="parentOperatorTemplate || operatorTemplate" [parentFieldTemplate]="parentFieldTemplate || fieldTemplate"
             [parentEntityTemplate]="parentEntityTemplate || entityTemplate" [parentSwitchGroupTemplate]="parentSwitchGroupTemplate || switchGroupTemplate"
             [parentButtonGroupTemplate]="parentButtonGroupTemplate || buttonGroupTemplate" [parentRemoveButtonTemplate]="parentRemoveButtonTemplate || removeButtonTemplate"
             [parentEmptyWarningTemplate]="parentEmptyWarningTemplate || emptyWarningTemplate" [parentArrowIconTemplate]="parentArrowIconTemplate || arrowIconTemplate"
-            [parentValue]="query" [classNames]="classNames" [config]="config" [allowRuleset]="allowRuleset"
+            [parentValue]="data" [classNames]="classNames" [config]="config" [allowRuleset]="allowRuleset"
             [allowCollapse]="allowCollapse" [emptyMessage]="emptyMessage" [operatorMap]="operatorMap">
-          </query-builder>
+          </jhi-birhday-query-builder>
 
           <ng-container *ngIf="getEmptyWarningTemplate() as template; else defaultEmptyWarning">
             <ng-container *ngIf="local.invalid">
@@ -187,9 +184,11 @@
   </ul>
 </div>
 <br>
-<div>
-  <textarea class="output">{{query | json}}</textarea>
-</div>
-<div>
-  <textarea class="output">{{oDataFilter}}</textarea>
+<div #ResultDiv>
+  <div *ngIf="FirstInstance(ResultDiv)">
+    <textarea class="output">{{query | json}}</textarea>
+  </div>
+  <div *ngIf="FirstInstance(ResultDiv)">
+    <textarea class="output">{{oDataFilter}}</textarea>
+  </div>
 </div>
