@@ -37,10 +37,10 @@
 
   <ng-template #defaultSwitchGroup>
 
-    <div [ngClass]="getClassNames('switchGroup', 'transition')" *ngIf="data">
+    <div #group [ngClass]="getClassNames('switchGroup', 'transition')" *ngIf="data" (mouseover)="hoveringOverButton=true" (mouseout)="hoveringOverButton=false">
       <div [ngClass]="getClassNames('switchControl')">
         <input type="checkbox" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="$any(data).not" [disabled]=disabled value="not" #notOption />
-        <label (click)="toggleNot(notOption)" [ngClass]="getClassNames('switchLabel')">NOT</label>
+        <label *ngIf="calcButtonDisplay(group)" (click)="toggleNot(notOption)" [ngClass]="getClassNames('switchLabel')">NOT</label>
       </div>      
       <div [ngClass]="getClassNames('switchControl')">
         <input type="radio" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="data.condition" [disabled]=disabled value="and" #andOption />
@@ -50,6 +50,10 @@
         <input type="radio" [ngClass]="getClassNames('switchRadio')" [(ngModel)]="data.condition" [disabled]=disabled value="or" #orOption />
         <label (click)="changeCondition(orOption.value)" [ngClass]="getClassNames('switchLabel')">OR</label>
       </div>
+      <div [ngClass]="getClassNames('switchControl')">
+        <input type="checkbox" [disabled]=disabled style="display:none;"/>
+        <label [ngClass]="getClassNames('switchLabel')">&nbsp;&nbsp;&nbsp;</label>
+      </div>      
     </div>
   </ng-template>
 </div>

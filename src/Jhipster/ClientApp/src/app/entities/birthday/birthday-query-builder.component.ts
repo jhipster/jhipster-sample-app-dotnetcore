@@ -1,4 +1,4 @@
-import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { QueryBuilderConfig, Rule, QueryBuilderComponent } from "angular2-query-builder";
 
@@ -21,8 +21,10 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   public static firstTimeDiv : any = null;
 
   public queryCtrl: FormControl;
-
+  
   public allowCollapse = true;
+
+  public hoveringOverButton = false;
 
   public query: RuleSet = {
     "condition": "or",
@@ -140,17 +142,15 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
 
-  private localChangeDetectorRef? : ChangeDetectorRef;
-
-   constructor(private formBuilder: FormBuilder, ref:ChangeDetectorRef) {
-    super(ref); 
-    this.localChangeDetectorRef = ref;
+  constructor(private formBuilder: FormBuilder, private localChangeDetectorRef:ChangeDetectorRef, private renderer : Renderer2) {
+    super(localChangeDetectorRef); 
     this.queryCtrl = this.formBuilder.control(this.query);
     this.data = this.query;
     this.queryCtrl.valueChanges.subscribe(ruleSet => {
       this.oDataFilter = `${this.BASE_URL}?$filter=${this.toODataString(ruleSet)}`;
     });
   }
+
 
   ngOnInit() : any{
     // super.ngOnInit();
@@ -161,7 +161,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     el.checked = el.checked ? false : true;
     const ruleset = this.data as RuleSet;
     ruleset.not = el.checked;
-    this.localChangeDetectorRef?.markForCheck();
+    this.localChangeDetectorRef.markForCheck();
     if (this.onChangeCallback) {
       this.onChangeCallback();
     }
@@ -174,6 +174,15 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     if (this.parentTouchedCallback) {
       this.parentTouchedCallback();
     }
+  }
+
+  calcButtonDisplay(el : HTMLElement) : boolean {
+    this.renderer.setStyle(el.children[0], 'display', (this.hoveringOverButton || (el.children[0].children[0] as any).checked) ? "block" : "none");
+    const multipleChildren = this.data.rules.length > 1;
+    this.renderer.setStyle(el.children[1], 'display', (this.hoveringOverButton || ((el.children[1].children[0] as any).checked && multipleChildren)) ? "block" : "none");
+    this.renderer.setStyle(el.children[2], 'display', (this.hoveringOverButton || ((el.children[2].children[0] as any).checked && multipleChildren)) ? "block" : "none");
+    this.renderer.setStyle(el.children[3], 'display', (this.hoveringOverButton || (el.children[0].children[0] as any).checked || multipleChildren) ? "none" : "block");
+    return true;
   }
 
   FirstInstance(el : HTMLElement) : boolean{
