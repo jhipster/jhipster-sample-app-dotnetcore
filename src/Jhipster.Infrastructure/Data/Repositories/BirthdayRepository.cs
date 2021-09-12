@@ -45,7 +45,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
         }
         public override async Task<IPage<Birthday>> GetPageFilteredAsync(IPageable pageable, string query){
             ISearchResponse<birthday> searchResponse = null;
-            if (query == ""){
+            if (query == "" || query == "()"){
                 searchResponse = await elastic.SearchAsync<birthday>(s => s
                     .Size(10000)
                     .Query(q => q

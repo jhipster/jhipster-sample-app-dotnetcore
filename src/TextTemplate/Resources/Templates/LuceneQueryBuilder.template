@@ -1,12 +1,13 @@
 {'/data':#build.@MissingValue('')}
 Subtemplates:
 {#build:[{#condition}]}
-{#condition:[({condition.Case('and',#and,'or',#or)})]}
+{#condition:[{not->[NOT ]}({condition.Case('and',#and,'or',#or)})]}
 {#and:[{rules:[{field=>#operator,#condition}].Join( ' AND ')}]}
 {#or:[{rules:[{field=>#operator,#condition}].Join(' OR ')}]}
-{#operator:[{operator.Case('=',#equals,'>=',#gte,'<=',#lte,'>',#gt,'<',#lt,[NOT HANDLED: {field} {operator} {value}])}]}
-{#equals:[{field}:{'"'}{value}{'"'}]}
+{#operator:[{operator.Case('=',#equals,'>=',#gte,'<=',#lte,'>',#gt,'<',#lt,'contains',#contains,[NOT HANDLED: {field} {operator} {value}])}]}
+{#equals:[{field}:({'"'}{value}{'"'} AND NOT /~({value})/)]}
 {#gte:[{field}:{'["'}{value}{'"'} TO *{']'}]}
 {#lte:[{field}:{'['}* TO {'"'}{value}{'"]'}]}
 {#gt:[{field}:{'{"'}{value}{'"'} TO *{'}'}]}
 {#lt:[{field}:{'{'}* TO {'"'}{value}{'"}'}]}
+{#contains:[{field != 'document'->[{field}:]}{value}]}

@@ -112,11 +112,12 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   public config: QueryBuilderConfig = {
     fields: {
+      document: { name: 'Document', type: 'string', operators: ["contains"]},
       lname: { name: 'Last Name', type: 'string' },
       fname: { name: 'First Name', type: 'string' },
       isAlive: { name: 'Alive?', type: 'boolean' },
       dob: {
-        name: 'Birthday', type: 'date', operators: ['=', '<=', '>'],
+        name: 'Birthday', type: 'date', operators: ['=', '<=', '>', '<', '<='],
         defaultValue: (() => new Date())
       },
       sign: {
