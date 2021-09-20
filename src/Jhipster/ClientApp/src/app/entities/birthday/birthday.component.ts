@@ -60,11 +60,18 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   bDisplayBirthday = false;
 
+  bDisplayCategories = false;
+
+
   birthdayDialogTitle  = "";
 
   birthdayDialogId : any = "";
 
   databaseQuery = "";
+
+  cities : any[] = [];
+
+  selectedCities : any[] = [];
 
   constructor(
     protected birthdayService: BirthdayService,
@@ -76,7 +83,20 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     public sanitizer:DomSanitizer,
     private confirmationService: ConfirmationService,
     private primeNGConfig : PrimeNGConfig
-  ) {}
+  ) {
+
+    this.cities = [
+      { name: 'New York', code: 'NY' },
+      { name: 'Rome', code: 'RM' },
+      { name: 'London', code: 'LDN' },
+      { name: 'Istanbul', code: 'IST' },
+      { name: 'Paris', code: 'PRS' },
+    ];
+    this.selectedCities.push(this.cities[1]);
+    this.selectedCities.push(this.cities[2]);
+  }
+
+
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;
@@ -255,7 +275,19 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.primeNGConfig.ripple = true;
     this.menuItems = [{
       label: 'Options',
-      items: [{
+      items: [
+        {
+          label: 'Categorize',
+          icon: 'pi pi-bookmark',
+          command: ()=>{
+            setTimeout(()=>{
+              this.birthdayDialogId = this.contextSelectedRow ? this.contextSelectedRow?.id?.toString() : "";
+              this.birthdayDialogTitle = this.contextSelectedRow ? this.contextSelectedRow?.lname as string : "";
+              this.bDisplayCategories = true;
+            }, 0);
+          }
+        },
+        {
           label: 'Display',
           icon: 'pi pi-book',
           command: ()=>{
@@ -264,12 +296,13 @@ export class BirthdayComponent implements OnInit, OnDestroy {
               this.birthdayDialogTitle = this.contextSelectedRow ? this.contextSelectedRow?.lname as string : "";
               this.bDisplayBirthday = true;
             }, 0);
-          }
-      },
-      {
-          label: 'Ingest',
-          icon: 'pi pi-upload',
-      }
+          },
+        },
+        {
+            label: 'Ingest',
+            icon: 'pi pi-upload',
+        },
+
       ]},
       {
           label: 'Relationship',
