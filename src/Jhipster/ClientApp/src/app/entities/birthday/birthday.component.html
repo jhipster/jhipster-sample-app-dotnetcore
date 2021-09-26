@@ -48,8 +48,7 @@
         <div class="p-d-flex">
           <button pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;" icon="pi pi-refresh" (click)="refreshData()"></button>
           &nbsp;
-          <button pButton label="Clear" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)">
-          </button>
+          <button pButton label="Clear" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)"></button>
           <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100; padding-top: 10px;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
           <span *ngIf="chipSelectedRows.length > 0">
             <p-menu #menu [popup]="true" [model]="menuItems" (onShow)="onMenuShow(menu, chips)" appendTo="body"></p-menu>
@@ -139,14 +138,19 @@
       </ng-template>
     </p-table>
     <p-dialog header="Categorize" [(visible)]="bDisplayCategories" >
-      <jhi-editable-multiselect  
+      <jhi-editable-multiselect *ngIf="bDisplayCategories"
         [options]="cities" 
         [(ngModel)]="selectedCities" 
         defaultLabel="Select a City" 
         optionLabel="name"
         ngDefaultControl
+        [virtualScroll]=true
       >
       </jhi-editable-multiselect>
+      <div class="modal-footer">
+        <button pButton label="Cancel" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-times" (click)="cancelCategorize()"></button>
+        <button pButton label="Ok" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-check" (click)="okCategorize()"></button>
+      </div>
     </p-dialog>
     <p-dialog header="{{ birthdayDialogTitle }}" [(visible)]="bDisplayBirthday" [style]="{width: '50vw'}" [baseZIndex]="10000">
       <iframe style="width:100%; height:100%;border-width: 0;" 

@@ -62,7 +62,6 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   bDisplayCategories = false;
 
-
   birthdayDialogTitle  = "";
 
   birthdayDialogId : any = "";
@@ -269,6 +268,12 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     return ret;
   }
 
+  okCategorize() : void{
+    this.bDisplayCategories = false;
+  }
+  cancelCategorize() : void {
+    this.bDisplayCategories = false;
+  }
   ngOnInit(): void {
     this.handleNavigation();
     this.registerChangeInBirthdays();
