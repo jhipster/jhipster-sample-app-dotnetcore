@@ -68,9 +68,9 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   databaseQuery = "";
 
-  cities : any[] = [];
+  categories : any[] = [];
 
-  selectedCities : any[] = [];
+  selectedCategories : any[] = [];
 
   constructor(
     protected birthdayService: BirthdayService,
@@ -84,18 +84,14 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     private primeNGConfig : PrimeNGConfig
   ) {
 
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' },
+    this.categories = [
+      { category: 'Younger'},
+      { category: 'Older'},
+      { category: 'Americans'},
+      { category: 'Favorites'},
+      { category: 'Interesting'},
     ];
-    this.selectedCities.push(this.cities[1]);
-    this.selectedCities.push(this.cities[2]);
   }
-
-
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;
@@ -274,6 +270,28 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   cancelCategorize() : void {
     this.bDisplayCategories = false;
   }
+  addToSelectedCategories(categoryInput : any) : void {
+    let category = categoryInput;
+    let categoryPresent = false;
+    this.categories.forEach(c=>{
+      if (c.category === category.category){
+        categoryPresent = true;
+        category = c;
+      }
+    });
+    if (!categoryPresent){
+      this.categories.push(category);
+    }
+    let selectedCategoryPresent = false;
+    this.selectedCategories.forEach(c=>{
+      if (c.category === category.category){
+        selectedCategoryPresent = true;
+      }
+    });
+    if (!selectedCategoryPresent){
+      this.selectedCategories.push(category);
+    }
+  }
   ngOnInit(): void {
     this.handleNavigation();
     this.registerChangeInBirthdays();
@@ -286,8 +304,14 @@ export class BirthdayComponent implements OnInit, OnDestroy {
           icon: 'pi pi-bookmark',
           command: ()=>{
             setTimeout(()=>{
-              this.birthdayDialogId = this.contextSelectedRow ? this.contextSelectedRow?.id?.toString() : "";
-              this.birthdayDialogTitle = this.contextSelectedRow ? this.contextSelectedRow?.lname as string : "";
+              this.selectedCategories.length = 0;
+              const selectedRow = this.contextSelectedRow;
+              const rowCategory = {category: selectedRow?.fname};
+              if (selectedRow?.fname){
+                this.addToSelectedCategories(rowCategory);
+              }
+              this.birthdayDialogId = selectedRow ? selectedRow?.id?.toString() : "";
+              this.birthdayDialogTitle = selectedRow ? selectedRow?.fname + " " + selectedRow?.lname : "";
               this.bDisplayCategories = true;
             }, 0);
           }

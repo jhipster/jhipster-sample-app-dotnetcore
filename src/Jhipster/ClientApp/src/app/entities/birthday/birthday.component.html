@@ -137,12 +137,12 @@
         </td>
       </ng-template>
     </p-table>
-    <p-dialog header="Categorize" [(visible)]="bDisplayCategories" >
+    <p-dialog header="Categorize {{birthdayDialogTitle}}" [(visible)]="bDisplayCategories" >
       <jhi-editable-multiselect *ngIf="bDisplayCategories"
-        [options]="cities" 
-        [(ngModel)]="selectedCities" 
-        defaultLabel="Select a City" 
-        optionLabel="name"
+        [options]="categories" 
+        [(ngModel)]="selectedCategories" 
+        defaultLabel="Select or enter a new Category" 
+        optionLabel="category"
         ngDefaultControl
         [virtualScroll]=true
       >
