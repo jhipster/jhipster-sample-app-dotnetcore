@@ -85,11 +85,11 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   ) {
 
     this.categories = [
-      { category: 'Younger'},
-      { category: 'Older'},
-      { category: 'Americans'},
-      { category: 'Favorites'},
-      { category: 'Interesting'},
+      { categoryName: 'Younger'},
+      { categoryName: 'Older'},
+      { categoryName: 'Americans'},
+      { categoryName: 'Favorites'},
+      { categoryName: 'Interesting'},
     ];
   }
 
@@ -274,7 +274,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     let category = categoryInput;
     let categoryPresent = false;
     this.categories.forEach(c=>{
-      if (c.category === category.category){
+      if (c.categoryName === category.categoryName){
         categoryPresent = true;
         category = c;
       }
@@ -284,7 +284,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     }
     let selectedCategoryPresent = false;
     this.selectedCategories.forEach(c=>{
-      if (c.category === category.category){
+      if (c.categoryName === category.categoryName){
         selectedCategoryPresent = true;
       }
     });
@@ -306,7 +306,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
             setTimeout(()=>{
               this.selectedCategories.length = 0;
               const selectedRow = this.contextSelectedRow;
-              const rowCategory = {category: selectedRow?.fname};
+              const rowCategory = {categoryName: selectedRow?.fname};
               if (selectedRow?.fname){
                 this.addToSelectedCategories(rowCategory);
               }
