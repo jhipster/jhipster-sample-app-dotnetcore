@@ -16,7 +16,8 @@
       "detail": {
         "title": "Category"
       },
-      "categoryName": "Category Name"
+      "categoryName": "Category Name",
+      "selected": "selected"
     }
   }
 }

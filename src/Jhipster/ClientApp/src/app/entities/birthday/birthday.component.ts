@@ -9,6 +9,7 @@ import { IBirthday } from 'app/shared/model/birthday.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { BirthdayService } from './birthday.service';
+import { CategoryService } from './../category/category.service';
 // import { BirthdayDeleteDialogComponent } from './birthday-delete-dialog.component';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
@@ -17,6 +18,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { DomSanitizer } from "@angular/platform-browser";
 import { ConfirmationService, PrimeNGConfig} from "primeng/api";
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { ICategory } from 'app/shared/model/category.model';
 
 @Component({
   selector: 'jhi-birthday',
@@ -74,6 +76,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   constructor(
     protected birthdayService: BirthdayService,
+    protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
@@ -81,7 +84,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     protected messageService: MessageService,
     public sanitizer:DomSanitizer,
     private confirmationService: ConfirmationService,
-    private primeNGConfig : PrimeNGConfig
+    private primeNGConfig : PrimeNGConfig,
   ) {
 
     this.categories = [
@@ -263,7 +266,6 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     });
     return ret;
   }
-
   okCategorize() : void{
     this.bDisplayCategories = false;
   }
@@ -312,7 +314,17 @@ export class BirthdayComponent implements OnInit, OnDestroy {
               }
               this.birthdayDialogId = selectedRow ? selectedRow?.id?.toString() : "";
               this.birthdayDialogTitle = selectedRow ? selectedRow?.fname + " " + selectedRow?.lname : "";
-              this.bDisplayCategories = true;
+              this.categoryService
+              .query({
+                page: 0,
+                size: 10000,
+                sort: this.sort(),
+                query: this.birthdayDialogId
+              })
+              .subscribe(
+                (res: HttpResponse<IBirthday[]>) => this.onCategorySuccess(res.body, res.headers),
+                () => this.onError()
+              );
             }, 0);
           }
         },
@@ -354,7 +366,20 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       ]}
     ];
   }
-
+  onCategorySuccess(data: ICategory[] | null, headers: HttpHeaders) : void{
+    const totalItems = Number(headers.get('X-Total-Count'));
+    this.selectedCategories.length = 0;
+    this.categories.length = 0;
+    if (totalItems > 0){
+      data?.forEach(r=>{
+        this.categories.push(r);
+        if (r.selected){
+          this.selectedCategories.push(r);
+        }
+      });
+    }
+    this.bDisplayCategories = true;
+  }
   doMenuView(selectedRow: any) : void {
     const selected : IBirthday = selectedRow;
     // const count = this.checkboxSelectedRows.length;

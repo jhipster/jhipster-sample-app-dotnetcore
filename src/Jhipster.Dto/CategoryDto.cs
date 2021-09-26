@@ -11,6 +11,7 @@ namespace Jhipster.Dto
         public long Id { get; set; }
 
         public string CategoryName { get; set; }
+        public bool selected { get; set; }
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove
     }

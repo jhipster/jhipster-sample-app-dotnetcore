@@ -13,6 +13,7 @@ namespace Jhipster.Domain
         public long Id { get; set; }
 
         public string CategoryName { get; set; }
+        public bool selected {get; set;} 
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
@@ -35,6 +36,7 @@ namespace Jhipster.Domain
             return "Category{" +
                     $"ID='{Id}'" +
                     $", CategoryName='{CategoryName}'" +
+                    $", selected = {selected}" +
                     "}";
         }
     }

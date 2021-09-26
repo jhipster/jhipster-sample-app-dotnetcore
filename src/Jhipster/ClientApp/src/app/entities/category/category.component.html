@@ -24,6 +24,7 @@
                 <tr>
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
                     <th scope="col" ><span jhiTranslate="jhipsterApp.category.categoryName">Category Name</span></th>
+                    <th scope="col" ><span jhiTranslate="jhipsterApp.category.selected">Selected</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -31,6 +32,7 @@
                 <tr *ngFor="let category of categories ;trackBy: trackId">
                     <td><a [routerLink]="['/category', category.id, 'view']">{{ category.id }}</a></td>
                     <td>{{ category.categoryName }}</td>
+                    <td>{{ category.selected }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
