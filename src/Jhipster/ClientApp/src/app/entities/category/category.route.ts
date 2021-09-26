@@ -6,23 +6,23 @@ import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IRegion, Region } from 'app/shared/model/region.model';
-import { RegionService } from './region.service';
-import { RegionComponent } from './region.component';
-import { RegionDetailComponent } from './region-detail.component';
-import { RegionUpdateComponent } from './region-update.component';
+import { ICategory, Category } from 'app/shared/model/category.model';
+import { CategoryService } from './category.service';
+import { CategoryComponent } from './category.component';
+import { CategoryDetailComponent } from './category-detail.component';
+import { CategoryUpdateComponent } from './category-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class RegionResolve implements Resolve<IRegion> {
-  constructor(private service: RegionService, private router: Router) {}
+export class CategoryResolve implements Resolve<ICategory> {
+  constructor(private service: CategoryService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IRegion> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<ICategory> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        flatMap((region: HttpResponse<Region>) => {
-          if (region.body) {
-            return of(region.body);
+        flatMap((category: HttpResponse<Category>) => {
+          if (category.body) {
+            return of(category.body);
           } else {
             this.router.navigate(['404']);
             return EMPTY;
@@ -30,53 +30,53 @@ export class RegionResolve implements Resolve<IRegion> {
         })
       );
     }
-    return of(new Region());
+    return of(new Category());
   }
 }
 
-export const regionRoute: Routes = [
+export const categoryRoute: Routes = [
   {
     path: '',
-    component: RegionComponent,
+    component: CategoryComponent,
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'jhipsterApp.region.home.title',
+      pageTitle: 'jhipsterApp.category.home.title',
     },
     canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
-    component: RegionDetailComponent,
+    component: CategoryDetailComponent,
     resolve: {
-      region: RegionResolve,
+      category: CategoryResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'jhipsterApp.region.home.title',
+      pageTitle: 'jhipsterApp.category.home.title',
     },
     canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
-    component: RegionUpdateComponent,
+    component: CategoryUpdateComponent,
     resolve: {
-      region: RegionResolve,
+      category: CategoryResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'jhipsterApp.region.home.title',
+      pageTitle: 'jhipsterApp.category.home.title',
     },
     canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
-    component: RegionUpdateComponent,
+    component: CategoryUpdateComponent,
     resolve: {
-      region: RegionResolve,
+      category: CategoryResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'jhipsterApp.region.home.title',
+      pageTitle: 'jhipsterApp.category.home.title',
     },
     canActivate: [UserRouteAccessService],
   },

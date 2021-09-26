@@ -6,27 +6,27 @@ import { JhiEventManager } from 'ng-jhipster';
 import { JhipsterTestModule } from '../../../test.module';
 import { MockEventManager } from '../../../helpers/mock-event-manager.service';
 import { MockActiveModal } from '../../../helpers/mock-active-modal.service';
-import { RegionDeleteDialogComponent } from 'app/entities/region/region-delete-dialog.component';
-import { RegionService } from 'app/entities/region/region.service';
+import { CategoryDeleteDialogComponent } from 'app/entities/category/category-delete-dialog.component';
+import { CategoryService } from 'app/entities/category/category.service';
 
 describe('Component Tests', () => {
-  describe('Region Management Delete Component', () => {
-    let comp: RegionDeleteDialogComponent;
-    let fixture: ComponentFixture<RegionDeleteDialogComponent>;
-    let service: RegionService;
+  describe('Category Management Delete Component', () => {
+    let comp: CategoryDeleteDialogComponent;
+    let fixture: ComponentFixture<CategoryDeleteDialogComponent>;
+    let service: CategoryService;
     let mockEventManager: MockEventManager;
     let mockActiveModal: MockActiveModal;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [JhipsterTestModule],
-        declarations: [RegionDeleteDialogComponent],
+        declarations: [CategoryDeleteDialogComponent],
       })
-        .overrideTemplate(RegionDeleteDialogComponent, '')
+        .overrideTemplate(CategoryDeleteDialogComponent, '')
         .compileComponents();
-      fixture = TestBed.createComponent(RegionDeleteDialogComponent);
+      fixture = TestBed.createComponent(CategoryDeleteDialogComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(RegionService);
+      service = fixture.debugElement.injector.get(CategoryService);
       mockEventManager = TestBed.get(JhiEventManager);
       mockActiveModal = TestBed.get(NgbActiveModal);
     });

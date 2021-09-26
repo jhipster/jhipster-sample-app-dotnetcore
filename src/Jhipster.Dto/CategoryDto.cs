@@ -5,12 +5,12 @@ using System.ComponentModel.DataAnnotations;
 namespace Jhipster.Dto
 {
 
-    public class RegionDto
+    public class CategoryDto
     {
 
         public long Id { get; set; }
 
-        public string RegionName { get; set; }
+        public string CategoryName { get; set; }
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove
     }

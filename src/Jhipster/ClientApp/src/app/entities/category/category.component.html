@@ -1,11 +1,11 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="jhipsterApp.region.home.title">Regions</span>
+        <span jhiTranslate="jhipsterApp.category.home.title">Categories</span>
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-region" [routerLink]="['/region/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-category" [routerLink]="['/category/new']">
             <fa-icon icon="plus"></fa-icon>
-            <span  jhiTranslate="jhipsterApp.region.home.createLabel">
-            Create a new Region
+            <span  jhiTranslate="jhipsterApp.category.home.createLabel">
+            Create a new Category
             </span>
         </button>
     </h2>
@@ -14,40 +14,40 @@
 
     <jhi-alert></jhi-alert>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="regions?.length === 0">
-        <span jhiTranslate="jhipsterApp.region.home.notFound">No regions found</span>
+    <div class="alert alert-warning" id="no-result" *ngIf="categories?.length === 0">
+        <span jhiTranslate="jhipsterApp.category.home.notFound">No categories found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="regions && regions.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="categories && categories.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="jhipsterApp.region.regionName">Region Name</span></th>
+                    <th scope="col" ><span jhiTranslate="jhipsterApp.category.categoryName">Category Name</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let region of regions ;trackBy: trackId">
-                    <td><a [routerLink]="['/region', region.id, 'view']">{{ region.id }}</a></td>
-                    <td>{{ region.regionName }}</td>
+                <tr *ngFor="let category of categories ;trackBy: trackId">
+                    <td><a [routerLink]="['/category', category.id, 'view']">{{ category.id }}</a></td>
+                    <td>{{ category.categoryName }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
-                                    [routerLink]="['/region', region.id, 'view']"
+                                    [routerLink]="['/category', category.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
                             <button type="submit"
-                                    [routerLink]="['/region', region.id, 'edit']"
+                                    [routerLink]="['/category', category.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
-                            <button type="submit" (click)="delete(region)"
+                            <button type="submit" (click)="delete(category)"
                                     class="btn btn-danger btn-sm">
                                 <fa-icon icon="times"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

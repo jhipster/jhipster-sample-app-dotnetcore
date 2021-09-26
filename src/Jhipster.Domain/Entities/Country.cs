@@ -13,9 +13,9 @@ namespace Jhipster.Domain
         public long Id { get; set; }
 
         public string CountryName { get; set; }
-        public long? RegionId { get; set; }
+        public long? CategoryId { get; set; }
 
-        public Region Region { get; set; }
+        public Category Category { get; set; }
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 

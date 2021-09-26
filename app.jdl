@@ -1,5 +1,5 @@
-entity Region {
-	regionName String
+entity Category {
+	categoryName String
 }
 
 entity Country {
@@ -63,7 +63,7 @@ enum Language {
 
 
 relationship OneToOne {
-	Country{region} to Region
+	Country{category} to Category
 }
 
 relationship OneToOne {

@@ -8,8 +8,8 @@ import { map } from 'rxjs/operators';
 
 import { ICountry, Country } from 'app/shared/model/country.model';
 import { CountryService } from './country.service';
-import { IRegion } from 'app/shared/model/region.model';
-import { RegionService } from 'app/entities/region/region.service';
+import { ICategory } from 'app/shared/model/category.model';
+import { CategoryService } from 'app/entities/category/category.service';
 
 @Component({
   selector: 'jhi-country-update',
@@ -17,17 +17,17 @@ import { RegionService } from 'app/entities/region/region.service';
 })
 export class CountryUpdateComponent implements OnInit {
   isSaving = false;
-  regions: IRegion[] = [];
+  categories: ICategory[] = [];
 
   editForm = this.fb.group({
     id: [],
     countryName: [],
-    regionId: [],
+    categoryId: [],
   });
 
   constructor(
     protected countryService: CountryService,
-    protected regionService: RegionService,
+    protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -36,25 +36,25 @@ export class CountryUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ country }) => {
       this.updateForm(country);
 
-      this.regionService
+      this.categoryService
         .query({ filter: 'country-is-null' })
         .pipe(
-          map((res: HttpResponse<IRegion[]>) => {
+          map((res: HttpResponse<ICategory[]>) => {
             return res.body || [];
           })
         )
-        .subscribe((resBody: IRegion[]) => {
-          if (!country.regionId) {
-            this.regions = resBody;
+        .subscribe((resBody: ICategory[]) => {
+          if (!country.categoryId) {
+            this.categories = resBody;
           } else {
-            this.regionService
-              .find(country.regionId)
+            this.categoryService
+              .find(country.categoryId)
               .pipe(
-                map((subRes: HttpResponse<IRegion>) => {
+                map((subRes: HttpResponse<ICategory>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: IRegion[]) => (this.regions = concatRes));
+              .subscribe((concatRes: ICategory[]) => (this.categories = concatRes));
           }
         });
     });
@@ -64,7 +64,7 @@ export class CountryUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: country.id,
       countryName: country.countryName,
-      regionId: country.regionId,
+      categoryId: country.categoryId,
     });
   }
 
@@ -87,7 +87,7 @@ export class CountryUpdateComponent implements OnInit {
       ...new Country(),
       id: this.editForm.get(['id'])!.value,
       countryName: this.editForm.get(['countryName'])!.value,
-      regionId: this.editForm.get(['regionId'])!.value,
+      categoryId: this.editForm.get(['categoryId'])!.value,
     };
   }
 
@@ -107,7 +107,7 @@ export class CountryUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IRegion): any {
+  trackById(index: number, item: ICategory): any {
     return item.id;
   }
 }

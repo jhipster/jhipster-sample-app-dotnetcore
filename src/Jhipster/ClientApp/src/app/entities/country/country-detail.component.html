@@ -12,10 +12,10 @@
                 <dd>
                     <span>{{ country.countryName }}</span>
                 </dd>
-                <dt><span jhiTranslate="jhipsterApp.country.region">Region</span></dt>
+                <dt><span jhiTranslate="jhipsterApp.country.category">Category</span></dt>
                 <dd>
-                    <div *ngIf="country.regionId">
-                        <a [routerLink]="['/region', country.regionId, 'view']">{{ country.regionId }}</a>
+                    <div *ngIf="country.categoryId">
+                        <a [routerLink]="['/category', country.categoryId, 'view']">{{ country.categoryId }}</a>
                     </div>
                 </dd>
             </dl>

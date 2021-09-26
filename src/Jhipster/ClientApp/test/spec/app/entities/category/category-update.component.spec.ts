@@ -4,34 +4,34 @@ import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { JhipsterTestModule } from '../../../test.module';
-import { RegionUpdateComponent } from 'app/entities/region/region-update.component';
-import { RegionService } from 'app/entities/region/region.service';
-import { Region } from 'app/shared/model/region.model';
+import { CategoryUpdateComponent } from 'app/entities/category/category-update.component';
+import { CategoryService } from 'app/entities/category/category.service';
+import { Category } from 'app/shared/model/category.model';
 
 describe('Component Tests', () => {
-  describe('Region Management Update Component', () => {
-    let comp: RegionUpdateComponent;
-    let fixture: ComponentFixture<RegionUpdateComponent>;
-    let service: RegionService;
+  describe('Category Management Update Component', () => {
+    let comp: CategoryUpdateComponent;
+    let fixture: ComponentFixture<CategoryUpdateComponent>;
+    let service: CategoryService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [JhipsterTestModule],
-        declarations: [RegionUpdateComponent],
+        declarations: [CategoryUpdateComponent],
         providers: [FormBuilder],
       })
-        .overrideTemplate(RegionUpdateComponent, '')
+        .overrideTemplate(CategoryUpdateComponent, '')
         .compileComponents();
 
-      fixture = TestBed.createComponent(RegionUpdateComponent);
+      fixture = TestBed.createComponent(CategoryUpdateComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(RegionService);
+      service = fixture.debugElement.injector.get(CategoryService);
     });
 
     describe('save', () => {
       it('Should call update service on save for existing entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Region(123);
+        const entity = new Category(123);
         spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN
@@ -45,7 +45,7 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Region();
+        const entity = new Category();
         spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN

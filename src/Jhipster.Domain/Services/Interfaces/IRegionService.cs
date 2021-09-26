@@ -4,13 +4,13 @@ using Jhipster.Domain;
 
 namespace Jhipster.Domain.Services.Interfaces
 {
-    public interface IRegionService
+    public interface ICategoryService
     {
-        Task<Region> Save(Region region);
+        Task<Category> Save(Category category);
 
-        Task<IPage<Region>> FindAll(IPageable pageable);
+        Task<IPage<Category>> FindAll(IPageable pageable);
 
-        Task<Region> FindOne(long id);
+        Task<Category> FindOne(long id);
 
         Task Delete(long id);
     }

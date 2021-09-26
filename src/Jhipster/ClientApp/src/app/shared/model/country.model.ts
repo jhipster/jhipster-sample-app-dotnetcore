@@ -1,9 +1,9 @@
 export interface ICountry {
   id?: number;
   countryName?: string;
-  regionId?: number;
+  categoryId?: number;
 }
 
 export class Country implements ICountry {
-  constructor(public id?: number, public countryName?: string, public regionId?: number) {}
+  constructor(public id?: number, public countryName?: string, public categoryId?: number) {}
 }

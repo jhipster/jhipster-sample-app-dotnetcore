@@ -1,15 +1,15 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { RegionService } from 'app/entities/region/region.service';
-import { IRegion, Region } from 'app/shared/model/region.model';
+import { CategoryService } from 'app/entities/category/category.service';
+import { ICategory, Category } from 'app/shared/model/category.model';
 
 describe('Service Tests', () => {
-  describe('Region Service', () => {
+  describe('Category Service', () => {
     let injector: TestBed;
-    let service: RegionService;
+    let service: CategoryService;
     let httpMock: HttpTestingController;
-    let elemDefault: IRegion;
-    let expectedResult: IRegion | IRegion[] | boolean | null;
+    let elemDefault: ICategory;
+    let expectedResult: ICategory | ICategory[] | boolean | null;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -17,10 +17,10 @@ describe('Service Tests', () => {
       });
       expectedResult = null;
       injector = getTestBed();
-      service = injector.get(RegionService);
+      service = injector.get(CategoryService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Region(0, 'AAAAAAA');
+      elemDefault = new Category(0, 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -34,7 +34,7 @@ describe('Service Tests', () => {
         expect(expectedResult).toMatchObject(elemDefault);
       });
 
-      it('should create a Region', () => {
+      it('should create a Category', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
@@ -44,17 +44,17 @@ describe('Service Tests', () => {
 
         const expected = Object.assign({}, returnedFromService);
 
-        service.create(new Region()).subscribe(resp => (expectedResult = resp.body));
+        service.create(new Category()).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
         expect(expectedResult).toMatchObject(expected);
       });
 
-      it('should update a Region', () => {
+      it('should update a Category', () => {
         const returnedFromService = Object.assign(
           {
-            regionName: 'BBBBBB',
+            categoryName: 'BBBBBB',
           },
           elemDefault
         );
@@ -68,10 +68,10 @@ describe('Service Tests', () => {
         expect(expectedResult).toMatchObject(expected);
       });
 
-      it('should return a list of Region', () => {
+      it('should return a list of Category', () => {
         const returnedFromService = Object.assign(
           {
-            regionName: 'BBBBBB',
+            categoryName: 'BBBBBB',
           },
           elemDefault
         );
@@ -86,7 +86,7 @@ describe('Service Tests', () => {
         expect(expectedResult).toContainEqual(expected);
       });
 
-      it('should delete a Region', () => {
+      it('should delete a Category', () => {
         service.delete(123).subscribe(resp => (expectedResult = resp.ok));
 
         const req = httpMock.expectOne({ method: 'DELETE' });

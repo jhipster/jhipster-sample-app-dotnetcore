@@ -1,6 +1,6 @@
 namespace Jhipster.Domain.Repositories.Interfaces
 {
-    public interface IRegionRepository : IGenericRepository<Region>
+    public interface ICategoryRepository : IGenericRepository<Category>
     {
     }
 }

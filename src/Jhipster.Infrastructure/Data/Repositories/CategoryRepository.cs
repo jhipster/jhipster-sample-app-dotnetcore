@@ -9,25 +9,25 @@ using Jhipster.Infrastructure.Data.Extensions;
 
 namespace Jhipster.Infrastructure.Data.Repositories
 {
-    public class RegionRepository : GenericRepository<Region>, IRegionRepository
+    public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
-        public RegionRepository(IUnitOfWork context) : base(context)
+        public CategoryRepository(IUnitOfWork context) : base(context)
         {
         }
 
-        public override async Task<Region> CreateOrUpdateAsync(Region region)
+        public override async Task<Category> CreateOrUpdateAsync(Category category)
         {
-            bool exists = await Exists(x => x.Id == region.Id);
+            bool exists = await Exists(x => x.Id == category.Id);
 
-            if (region.Id != 0 && exists)
+            if (category.Id != 0 && exists)
             {
-                Update(region);
+                Update(category);
             }
             else
             {
-                _context.AddOrUpdateGraph(region);
+                _context.AddOrUpdateGraph(category);
             }
-            return region;
+            return category;
         }
     }
 }

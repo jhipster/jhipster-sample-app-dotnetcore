@@ -7,7 +7,7 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "region": "Region",
+        "category": "Category",
         "country": "Country",
         "location": "Location",
         "department": "Department",

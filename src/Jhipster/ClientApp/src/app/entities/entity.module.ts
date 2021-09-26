@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
-        path: 'region',
-        loadChildren: () => import('./region/region.module').then(m => m.JhipsterRegionModule),
+        path: 'category',
+        loadChildren: () => import('./category/category.module').then(m => m.JhipsterCategoryModule),
       },
       {
         path: 'country',
