@@ -318,7 +318,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
               .query({
                 page: 0,
                 size: 10000,
-                sort: this.sort(),
+                sort: this.sortCategory(),
                 query: this.birthdayDialogId
               })
               .subscribe(
@@ -370,7 +370,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     const totalItems = Number(headers.get('X-Total-Count'));
     this.selectedCategories.length = 0;
     this.categories.length = 0;
-    if (totalItems > 0){
+    if (totalItems > 0 || (data && data?.length > 0)){
       data?.forEach(r=>{
         this.categories.push(r);
         if (r.selected){
@@ -433,6 +433,13 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     }
     return result;
   }
+
+  sortCategory(): string[] {
+    const result = ['categoryName,asc'];
+    result.push('id');
+    return result;
+  }
+
 
   protected onSuccess(data: IBirthday[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
