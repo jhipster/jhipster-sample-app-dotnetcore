@@ -17,7 +17,7 @@ namespace Jhipster.Domain
         public string Sign { get; set; }
         public bool IsAlive { get; set; }
 
-        public List<string> Categories { get; set; }
+        public List<Category> Categories { get; set; }
         
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -39,7 +39,13 @@ namespace Jhipster.Domain
 
         public override string ToString()
         {
-            string categories = Categories != null ? "[" + String.Join(", ", Categories) + "]" : null;
+            List<string> categoryList = new List<string>();
+            if (Categories != null){
+                Categories.ForEach(c=>{
+                    categoryList.Add(c.ToString());
+                });
+            }
+            string categories = Categories != null ? "[" + String.Join(", ", categoryList) + "]" : null;
             return "Birthday{" +
                     $"Lname='{Lname}'" +
                     $", Fname='{Fname}'" +

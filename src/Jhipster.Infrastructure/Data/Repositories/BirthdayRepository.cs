@@ -63,6 +63,11 @@ namespace Jhipster.Infrastructure.Data.Repositories
             Console.WriteLine(searchResponse.Hits.Count + " hits");
             foreach (var hit in searchResponse.Hits)
             {
+                List<Category> listCategory = new List<Category>();
+                listCategory.Add(new Category());
+                listCategory.Add(new Category());
+                listCategory[0].CategoryName = "Category1";
+                listCategory[1].CategoryName = "Category2";
                 content.Add(new Birthday{
                     Id = hit.Id,
                     Lname = hit.Source.lname,
@@ -70,7 +75,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
                     Dob = hit.Source.dob,
                     Sign = hit.Source.sign,
                     IsAlive = hit.Source.isAlive,
-                    Categories = "Category1,Category2".Split(',').ToList()
+                    Categories = listCategory
                 });
             }
             return new Page<Birthday>(content, pageable, content.Count);

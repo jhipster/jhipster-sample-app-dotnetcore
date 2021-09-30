@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { ICategory } from './category.model';
 
 export interface IBirthday {
   id?: number;
@@ -6,7 +7,7 @@ export interface IBirthday {
   fname?: string;
   sign?: string;
   dob?: Moment;
-  categories?: string[];
+  categories?: ICategory[];
 }
 
 export class Birthday implements IBirthday {
@@ -16,6 +17,6 @@ export class Birthday implements IBirthday {
     public fname?: string,
     public sign?: string,
     public dob?: Moment,
-    public categories? : string[]
+    public categories? : ICategory[]
   ) {}
 }

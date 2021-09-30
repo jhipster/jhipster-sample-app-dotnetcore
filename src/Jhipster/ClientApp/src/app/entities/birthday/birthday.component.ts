@@ -270,11 +270,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   }
   okCategorize() : void{
     if (this.selectedCategories.join(",") !== this.initialSelectedCategories){
-      const selectedCategories : string[] = [];
-      this.selectedCategories.forEach(c=>{
-        selectedCategories.push(c.categoryName as string);
-      });
-      (this.contextSelectedRow as IBirthday).categories = selectedCategories;
+      (this.contextSelectedRow as IBirthday).categories = this.selectedCategories;
       this.subscribeToSaveResponse(this.birthdayService.update(this.contextSelectedRow as IBirthday));
     }
     this.bDisplayCategories = false;
@@ -394,9 +390,20 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     if (totalItems > 0 || (data && data?.length > 0)){
       data?.forEach(r=>{
         this.categories.push(r);
-        if (r.selected){
-          this.selectedCategories.push(r);
-        }
+      });
+    }
+    if (this.contextSelectedRow?.categories != null){
+      this.contextSelectedRow.categories.forEach(c=>{
+        this.selectedCategories.push(c);
+        let categoryPresent = false;
+        this.categories.forEach(s=>{
+          if (s.categoryName === c.categoryName){
+            categoryPresent = true;
+          }
+        });
+        if (!categoryPresent){
+          this.categories.unshift(c);
+        }        
       });
     }
     this.initialSelectedCategories = this.selectedCategories.join(",");
