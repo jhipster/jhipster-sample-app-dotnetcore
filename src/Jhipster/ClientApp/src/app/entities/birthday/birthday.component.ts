@@ -72,7 +72,9 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   categories : any[] = [];
 
-  selectedCategories : any[] = [];
+  selectedCategories : ICategory[] = [];
+
+  initialSelectedCategories = "";
 
   constructor(
     protected birthdayService: BirthdayService,
@@ -267,8 +269,27 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     return ret;
   }
   okCategorize() : void{
+    if (this.selectedCategories.join(",") !== this.initialSelectedCategories){
+      const selectedCategories : string[] = [];
+      this.selectedCategories.forEach(c=>{
+        selectedCategories.push(c.categoryName as string);
+      });
+      (this.contextSelectedRow as IBirthday).categories = selectedCategories;
+      this.subscribeToSaveResponse(this.birthdayService.update(this.contextSelectedRow as IBirthday));
+    }
     this.bDisplayCategories = false;
   }
+  subscribeToSaveResponse(result: Observable<HttpResponse<IBirthday>>): void {
+    result.subscribe(
+      () => {
+        this.bDisplayCategories = false;
+      },
+      () => {
+        // how to provide error
+        this.bDisplayCategories = false;
+      }
+    );
+  }  
   cancelCategorize() : void {
     this.bDisplayCategories = false;
   }
@@ -378,6 +399,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
         }
       });
     }
+    this.initialSelectedCategories = this.selectedCategories.join(",");
     this.bDisplayCategories = true;
   }
   doMenuView(selectedRow: any) : void {

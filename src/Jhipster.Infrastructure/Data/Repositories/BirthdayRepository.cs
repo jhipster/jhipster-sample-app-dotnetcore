@@ -69,7 +69,8 @@ namespace Jhipster.Infrastructure.Data.Repositories
                     Fname = hit.Source.fname,
                     Dob = hit.Source.dob,
                     Sign = hit.Source.sign,
-                    IsAlive = hit.Source.isAlive 
+                    IsAlive = hit.Source.isAlive,
+                    Categories = "Category1,Category2".Split(',').ToList()
                 });
             }
             return new Page<Birthday>(content, pageable, content.Count);
@@ -83,6 +84,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
             public DateTime dob{ get; set; }
             public string sign { get; set; }
             public bool isAlive { get; set; }
+            public List<string> categories { get; set;}
         }
 
         public override async Task<Birthday> GetOneAsync(object id)

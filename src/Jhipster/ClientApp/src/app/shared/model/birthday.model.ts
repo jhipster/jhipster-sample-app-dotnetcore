@@ -6,6 +6,7 @@ export interface IBirthday {
   fname?: string;
   sign?: string;
   dob?: Moment;
+  categories?: string[];
 }
 
 export class Birthday implements IBirthday {
@@ -14,6 +15,7 @@ export class Birthday implements IBirthday {
     public lname?: string,
     public fname?: string,
     public sign?: string,
-    public dob?: Moment
+    public dob?: Moment,
+    public categories? : string[]
   ) {}
 }

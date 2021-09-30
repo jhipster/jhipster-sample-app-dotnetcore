@@ -17,6 +17,9 @@ namespace Jhipster.Domain
         public string Sign { get; set; }
         public bool IsAlive { get; set; }
 
+        public List<string> Categories { get; set; }
+        
+
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
         public override bool Equals(object obj)
@@ -36,12 +39,14 @@ namespace Jhipster.Domain
 
         public override string ToString()
         {
+            string categories = Categories != null ? "[" + String.Join(", ", Categories) + "]" : null;
             return "Birthday{" +
                     $"Lname='{Lname}'" +
                     $", Fname='{Fname}'" +
                     $", Dob={Dob.ToString("d")}" +
                     $", Sign='{Sign}'" +
                     $", IsAlive={(IsAlive ? "true" : "false")}" +
+                    $", Categories={categories}" +
                 "}";
         }
     }   

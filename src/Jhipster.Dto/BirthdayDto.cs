@@ -14,6 +14,7 @@ namespace Jhipster.Dto
         public DateTime Dob{ get; set; }
         public string Sign { get; set; }
         public bool IsAlive { get; set; }
+        public List<string> Categories { get; set; }
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove
     }
