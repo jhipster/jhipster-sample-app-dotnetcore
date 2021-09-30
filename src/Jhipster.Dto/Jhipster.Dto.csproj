@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Jhipster.Dto</RootNamespace>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection"  />
+        <PackageReference Include="Newtonsoft.Json"  />
+        <PackageReference Include="System.ComponentModel.Annotations"  />
+        <PackageReference Include="System.Text.Json"  />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Jhipster.Crosscutting\Jhipster.Crosscutting.csproj" />
+   </ItemGroup>
+
+</Project>

@@ -1,0 +1,69 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="jhipsterApp.birthday.home.title">Birthdays</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-birthday" [routerLink]="['/birthday/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="jhipsterApp.birthday.home.createLabel">
+            Create a new Birthday
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="birthdays?.length === 0">
+        <span jhiTranslate="jhipsterApp.birthday.home.notFound">No birthdays found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="birthdays && birthdays.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr>
+                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+                    <th scope="col" ><span jhiTranslate="jhipsterApp.birthday.lname">Lname</span></th>
+                    <th scope="col" ><span jhiTranslate="jhipsterApp.birthday.fname">Fname</span></th>
+                    <th scope="col" ><span jhiTranslate="jhipsterApp.birthday.dob">Dob</span></th>
+                    <th scope="col" ><span jhiTranslate="jhipsterApp.birthday.isAlive">Is Alive</span></th>
+                    <th scope="col" ><span jhiTranslate="jhipsterApp.birthday.optional">Optional</span></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let birthday of birthdays ;trackBy: trackId">
+                    <td><a [routerLink]="['/birthday', birthday.id, 'view']">{{ birthday.id }}</a></td>
+                    <td>{{ birthday.lname }}</td>
+                    <td>{{ birthday.fname }}</td>
+                    <td>{{ birthday.dob | date:'mediumDate' }}</td>
+                    <td>{{ birthday.isAlive }}</td>
+                    <td>{{ birthday.optional }}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/birthday', birthday.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/birthday', birthday.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(birthday)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
