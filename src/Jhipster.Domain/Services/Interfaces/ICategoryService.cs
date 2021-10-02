@@ -8,7 +8,7 @@ namespace Jhipster.Domain.Services.Interfaces
     {
         Task<Category> Save(Category category);
 
-        Task<IPage<Category>> FindAll(IPageable pageable);
+        Task<IPage<Category>> FindAll(IPageable pageable, string query);
 
         Task<Category> FindOne(long id);
 

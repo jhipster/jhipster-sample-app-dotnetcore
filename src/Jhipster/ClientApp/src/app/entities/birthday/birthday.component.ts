@@ -325,10 +325,6 @@ export class BirthdayComponent implements OnInit, OnDestroy {
             setTimeout(()=>{
               this.selectedCategories.length = 0;
               const selectedRow = this.contextSelectedRow;
-              const rowCategory = {categoryName: selectedRow?.fname};
-              if (selectedRow?.fname){
-                this.addToSelectedCategories(rowCategory);
-              }
               this.birthdayDialogId = selectedRow ? selectedRow?.id?.toString() : "";
               this.birthdayDialogTitle = selectedRow ? selectedRow?.fname + " " + selectedRow?.lname : "";
               this.categoryService
@@ -389,21 +385,20 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.categories.length = 0;
     if (totalItems > 0 || (data && data?.length > 0)){
       data?.forEach(r=>{
-        this.categories.push(r);
-      });
-    }
-    if (this.contextSelectedRow?.categories != null){
-      this.contextSelectedRow.categories.forEach(c=>{
-        this.selectedCategories.push(c);
+        let category = r;
         let categoryPresent = false;
-        this.categories.forEach(s=>{
-          if (s.categoryName === c.categoryName){
+        this.categories.forEach(c=>{
+          if (c.categoryName === category.categoryName){
             categoryPresent = true;
+            category = c;
           }
         });
-        if (!categoryPresent){
-          this.categories.unshift(c);
-        }        
+        if (!categoryPresent){        
+          this.categories.push(category);
+        }
+        if (r.selected){
+          this.selectedCategories.push(category);
+        }
       });
     }
     this.initialSelectedCategories = this.selectedCategories.join(",");

@@ -22,10 +22,9 @@ namespace Jhipster.Domain.Services
             return category;
         }
 
-        public virtual async Task<IPage<Category>> FindAll(IPageable pageable)
+        public virtual async Task<IPage<Category>> FindAll(IPageable pageable, string query)
         {
-            var page = await _categoryRepository.QueryHelper()
-                .GetPageAsync(pageable);
+            var page = await _categoryRepository.GetPageFilteredAsync(pageable, query);
             return page;
         }
 

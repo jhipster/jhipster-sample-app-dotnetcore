@@ -75,11 +75,6 @@ namespace Jhipster.Controllers
         public async Task<ActionResult<IEnumerable<BirthdayDto>>> GetAllBirthdays(IPageable pageable)
         {
             _log.LogDebug("REST request to get a page of Birthdays");
-            Birthday birthday = new Birthday
-            {
-                Id = "abc",
-                Lname = "Eisner"
-            };
             var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(HttpContext.Request.QueryString.ToString());
             String query = "";
             if (queryDictionary.Keys.Contains("query")){
@@ -88,7 +83,7 @@ namespace Jhipster.Controllers
             if (query.StartsWith("{")){
                 query = TextTemplate.Runner.Interpolate("LuceneQueryBuilder", query);
             }
-            BirthdayDto birthdaydto = _mapper.Map<BirthdayDto>(birthday);
+            BirthdayDto birthdaydto = _mapper.Map<BirthdayDto>(new Birthday());
             var result = await _birthdayService.FindAll(pageable, query);
             var page = new Page<BirthdayDto>(result.Content.Select(entity => _mapper.Map<BirthdayDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<BirthdayDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());

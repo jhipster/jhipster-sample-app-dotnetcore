@@ -119,7 +119,8 @@ export const MULTISELECT_VALUE_ACCESSOR: any = {
   encapsulation: ViewEncapsulation.None,
 })
 export class EditableMultiSelectComponent extends MultiSelect implements OnInit{
-  selected : string[] = []
+  selected : string[] = [];
+  newOption = '';
 
   get toggleAllDisabled():boolean{
     if (this.value.length === 0 && !this._filterValue){
@@ -131,9 +132,39 @@ export class EditableMultiSelectComponent extends MultiSelect implements OnInit{
     super(el, renderer, cd, filterService, config);
 
   }
-  // the following is necessary to preven a type mismatch on event
+  // the following is necessary to prevent a type mismatch on event
   onFilterInputChange(event : any): void{
+    const previousValue = this._filterValue;
     super.onFilterInputChange(event);
+    if (this.newOption){
+      this.value.length--;
+      this.newOption = "";
+    }
+    if (this._filterValue !== previousValue && this._filterValue.length > 0){
+      const searchFields = (this.filterBy || this.optionLabel || 'label').split(',');
+      const matched = this.filterService.filter(this.options, searchFields, this._filterValue, 'equals', this.filterLocale);
+      if (matched.length !== 1){
+        let label = '';        
+        for (let i = 0; i < this.value.length; i++) {
+          const itemLabel = this.findLabelByValue(this.value[i]);
+          if (itemLabel) {
+            if (label.length > 0) {
+                label = label + ', ';
+            }
+            label = label + itemLabel;
+          }
+        }          
+        this.newOption = this._filterValue;
+        const option = {};
+        option[this.optionLabel] = this._filterValue;        
+        this.value.push(option);
+        this.valuesAsString =  label + (label === "" ? "" : ", ") + this.newOption;
+      } else {
+        this.updateLabel();
+      }
+    }
+    this.onModelChange(this.value);
+    this.onChange.emit({ originalEvent: event, value: this.value });
   }
   onKeydown(event : any) : void {
     if (event.which === 13) {
@@ -150,6 +181,26 @@ export class EditableMultiSelectComponent extends MultiSelect implements OnInit{
       }
     }
     super.onKeydown(event);
+    return;
+    const previousValue = this.filterValue;
+    const alias = {
+      _this: this
+    }
+    setTimeout(function() : void{
+      const _this = alias._this;
+      if (_this._filterValue !== previousValue){
+        const value = {};
+        value[_this.optionLabel] = _this._filterValue;        
+        if (_this.value.length === 0 || _this.value[_this.value.length - 1] !== previousValue){
+          _this.value.push(value);
+        } else {
+          _this.value[_this.value.length - 1] = value;
+        }
+        _this.onModelChange(_this.value);
+        _this.onChange.emit({ originalEvent: event, value: _this.value });
+        _this.valuesAsString += (", " + _this._filterValue);
+      }
+    }, 0);
   }
   toggleAll(event : any): void{
     // toggleAllDisabled is overloaded to add values
@@ -199,6 +250,11 @@ export class EditableMultiSelectComponent extends MultiSelect implements OnInit{
     this._filterValue = "";
     this.activateFilter();
     input.focus();
+    if (this.newOption){
+      this.value.length--;
+      this.newOption = "";
+      this.updateLabel();
+    }
   }
 }
 @Component({

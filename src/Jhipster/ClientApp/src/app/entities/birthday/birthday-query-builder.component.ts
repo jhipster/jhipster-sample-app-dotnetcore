@@ -116,6 +116,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
       lname: { name: 'Last Name', type: 'string' },
       fname: { name: 'First Name', type: 'string' },
       isAlive: { name: 'Alive?', type: 'boolean' },
+      categories: { name: 'Category', type: 'string', operators: ["contains", "is null", "is not null"]},
       dob: {
         name: 'Birthday', type: 'date', operators: ['=', '<=', '>', '<', '<='],
         defaultValue: (() => new Date())

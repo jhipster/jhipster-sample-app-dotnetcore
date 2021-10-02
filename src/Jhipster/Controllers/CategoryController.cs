@@ -14,6 +14,7 @@ using Jhipster.Web.Rest.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jhipster.Controllers
@@ -66,8 +67,17 @@ namespace Jhipster.Controllers
         [HttpGet("categories")]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetAllCategories(IPageable pageable)
         {
-            _log.LogDebug("REST request to get a page of Categories");
-            var result = await _categoryService.FindAll(pageable);
+            _log.LogDebug("REST request to get a page of Cateogries");
+            var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(HttpContext.Request.QueryString.ToString());
+            String query = "";
+            if (queryDictionary.Keys.Contains("query")){
+                query = queryDictionary["query"];
+            }
+            if (query.StartsWith("{")){
+                query = TextTemplate.Runner.Interpolate("LuceneQueryBuilder", query);
+            }
+            CategoryDto categorydto = _mapper.Map<CategoryDto>(new Category());
+            var result = await _categoryService.FindAll(pageable, query);
             var page = new Page<CategoryDto>(result.Content.Select(entity => _mapper.Map<CategoryDto>(entity)).ToList(), pageable, result.TotalElements);
             return Ok(((IPage<CategoryDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }

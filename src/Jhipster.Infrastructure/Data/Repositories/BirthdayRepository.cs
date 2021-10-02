@@ -8,7 +8,7 @@ using Jhipster.Domain.Repositories.Interfaces;
 using Jhipster.Infrastructure.Data.Extensions;
 using System;
 using Nest;
-using Jhipster.Dto;
+
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
@@ -25,35 +25,44 @@ namespace Jhipster.Infrastructure.Data.Repositories
         {
         }
 
-        public override async Task<Birthday> CreateOrUpdateAsync(Birthday birthday)
-        {
-            bool exists = await Exists(x => x.Id == birthday.Id);
-
-            if (birthday.Id != "" && exists)
-            {
-                Update(birthday);
+        public override async Task<Birthday> CreateOrUpdateAsync(Birthday birthday){
+            List<string> categoryStrings = new List<string>();
+            birthday.Categories.ForEach(c=>{
+                categoryStrings.Add(c.CategoryName);
+            });
+            ElasticBirthday  elasticBirthday = new ElasticBirthday{
+                dob = birthday.Dob,
+                fname = birthday.Fname,
+                Id = birthday.Id,
+                lname = birthday.Lname,
+                sign = birthday.Sign,
+                isAlive = birthday.IsAlive,
+                categories = categoryStrings.ToArray<string>()
+            };
+            await elastic.UpdateAsync<ElasticBirthday>(new DocumentPath<ElasticBirthday>(elasticBirthday.Id), u => 
+                u.Index("birthdays").Doc(elasticBirthday)
+            );
+            if (categoryStrings.Count == 0){
+                await elastic.UpdateAsync<ElasticBirthday>(new DocumentPath<ElasticBirthday>(elasticBirthday.Id), u => 
+                    u.Script(s => s.Source("ctx._source.remove('categories')"))
+                );                
             }
-            else
-            {
-                _context.AddOrUpdateGraph(birthday);
-            }
-            return birthday;
+            return birthday; 
         }
-
         public override async Task<IPage<Birthday>> GetPageAsync(IPageable pageable){
             return await GetPageFilteredAsync(pageable, "");
         }
         public override async Task<IPage<Birthday>> GetPageFilteredAsync(IPageable pageable, string query){
-            ISearchResponse<birthday> searchResponse = null;
+            ISearchResponse<ElasticBirthday> searchResponse = null;
             if (query == "" || query == "()"){
-                searchResponse = await elastic.SearchAsync<birthday>(s => s
+                searchResponse = await elastic.SearchAsync<ElasticBirthday>(s => s
                     .Size(10000)
                     .Query(q => q
                         .MatchAll()
                     )
                 );
             } else {
-                searchResponse = await elastic.SearchAsync<birthday>(x => x	// use search method
+                searchResponse = await elastic.SearchAsync<ElasticBirthday>(x => x	// use search method
                     .Index("birthdays")
                     .QueryOnQueryString(query)
                     .Size(10000)
@@ -64,10 +73,13 @@ namespace Jhipster.Infrastructure.Data.Repositories
             foreach (var hit in searchResponse.Hits)
             {
                 List<Category> listCategory = new List<Category>();
-                listCategory.Add(new Category());
-                listCategory.Add(new Category());
-                listCategory[0].CategoryName = "Category1";
-                listCategory[1].CategoryName = "Category2";
+                if (hit.Source.categories != null){
+                    hit.Source.categories.ToList().ForEach(c=>{
+                        listCategory.Add(new Category{
+                            CategoryName = c
+                        });
+                    });
+                }
                 content.Add(new Birthday{
                     Id = hit.Id,
                     Lname = hit.Source.lname,
@@ -80,8 +92,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
             }
             return new Page<Birthday>(content, pageable, content.Count);
         }
-        // the lower-case birthday class is needed to characterize the elastic data, which should be changed
-        private class birthday
+        private class ElasticBirthday
         {
             public string Id { get; set; }
             public string lname { get; set; }
@@ -89,12 +100,12 @@ namespace Jhipster.Infrastructure.Data.Repositories
             public DateTime dob{ get; set; }
             public string sign { get; set; }
             public bool isAlive { get; set; }
-            public List<string> categories { get; set;}
+            public string[] categories {get; set; }
         }
 
         public override async Task<Birthday> GetOneAsync(object id)
         {
-            var hit = await elastic.GetAsync<birthday>((string)id);
+            var hit = await elastic.GetAsync<ElasticBirthday>((string)id);
             Birthday birthday = new Birthday{
                 Id = hit.Id,
                 Lname = hit.Source.lname,
