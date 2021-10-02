@@ -161,7 +161,7 @@
             </ng-template>
 
           </ng-container>
-          <jhi-birhday-query-builder *ngIf="local.ruleset" [data]="rule" [disabled]="disabled" [parentTouchedCallback]="parentTouchedCallback || onTouchedCallback"
+          <jhi-birthday-query-builder *ngIf="local.ruleset" [data]="rule" [disabled]="disabled" [parentTouchedCallback]="parentTouchedCallback || onTouchedCallback"
             [parentChangeCallback]="parentChangeCallback || onChangeCallback" [parentInputTemplates]="parentInputTemplates || inputTemplates"
             [parentOperatorTemplate]="parentOperatorTemplate || operatorTemplate" [parentFieldTemplate]="parentFieldTemplate || fieldTemplate"
             [parentEntityTemplate]="parentEntityTemplate || entityTemplate" [parentSwitchGroupTemplate]="parentSwitchGroupTemplate || switchGroupTemplate"
@@ -169,7 +169,7 @@
             [parentEmptyWarningTemplate]="parentEmptyWarningTemplate || emptyWarningTemplate" [parentArrowIconTemplate]="parentArrowIconTemplate || arrowIconTemplate"
             [parentValue]="data" [classNames]="classNames" [config]="config" [allowRuleset]="allowRuleset"
             [allowCollapse]="allowCollapse" [emptyMessage]="emptyMessage" [operatorMap]="operatorMap">
-          </jhi-birhday-query-builder>
+          </jhi-birthday-query-builder>
 
           <ng-container *ngIf="getEmptyWarningTemplate() as template; else defaultEmptyWarning">
             <ng-container *ngIf="local.invalid">

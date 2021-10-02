@@ -385,19 +385,9 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.categories.length = 0;
     if (totalItems > 0 || (data && data?.length > 0)){
       data?.forEach(r=>{
-        let category = r;
-        let categoryPresent = false;
-        this.categories.forEach(c=>{
-          if (c.categoryName === category.categoryName){
-            categoryPresent = true;
-            category = c;
-          }
-        });
-        if (!categoryPresent){        
-          this.categories.push(category);
-        }
+        this.categories.push(r);
         if (r.selected){
-          this.selectedCategories.push(category);
+          this.selectedCategories.push(r);
         }
       });
     }

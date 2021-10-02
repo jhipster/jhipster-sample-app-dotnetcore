@@ -10,7 +10,6 @@ import { ICategory, Category } from 'app/shared/model/category.model';
 import { CategoryService } from './category.service';
 import { CategoryComponent } from './category.component';
 import { CategoryDetailComponent } from './category-detail.component';
-import { CategoryUpdateComponent } from './category-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryResolve implements Resolve<ICategory> {
@@ -47,30 +46,6 @@ export const categoryRoute: Routes = [
   {
     path: ':id/view',
     component: CategoryDetailComponent,
-    resolve: {
-      category: CategoryResolve,
-    },
-    data: {
-      authorities: [Authority.USER],
-      pageTitle: 'jhipsterApp.category.home.title',
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    component: CategoryUpdateComponent,
-    resolve: {
-      category: CategoryResolve,
-    },
-    data: {
-      authorities: [Authority.USER],
-      pageTitle: 'jhipsterApp.category.home.title',
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    component: CategoryUpdateComponent,
     resolve: {
       category: CategoryResolve,
     },

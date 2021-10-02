@@ -11,7 +11,7 @@ interface RuleSet {
 }
 
 @Component({
-  selector: 'jhi-birhday-query-builder',
+  selector: 'jhi-birthday-query-builder',
   templateUrl: './birthday-query-builder.component.html',
   styleUrls: ['./birthday-query-builder-component.scss']
 })

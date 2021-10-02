@@ -3,7 +3,7 @@
       <span jhiTranslate="jhipsterApp.birthday.home.title">filled in by translate</span><span style="font-size: 16px;font-weight: 700;">... </span><span (click)="showSearchDialog()"><span class="pi pi-external-link" style="cursor:pointer;"></span></span>
       <p-dialog header="Enter Search Criteria" [(visible)]="bDisplaySearchDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
         [draggable]="true" [resizable]="false">
-            <jhi-birhday-query-builder #queryBuilder></jhi-birhday-query-builder>
+            <jhi-birthday-query-builder #queryBuilder></jhi-birthday-query-builder>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelSearchDialog()">
                   <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
