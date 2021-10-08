@@ -8,7 +8,7 @@ import { CategoryDetailComponent } from './category-detail.component';
 // import { CategoryDeleteDialogComponent } from './category-delete-dialog.component';
 import { categoryRoute } from './category.route';
 /* import { AgGridModule } from 'ag-grid-angular'; */
-import { TableModule } from 'primeng/table';
+import { SuperTableModule } from '../birthday/super-table';
 import { CalendarModule } from 'primeng/calendar';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MessagesModule } from 'primeng/messages';
@@ -20,7 +20,7 @@ import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
-  imports: [JhipsterSharedModule, RouterModule.forChild(categoryRoute), TableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule, MenuModule, DialogModule],
+  imports: [JhipsterSharedModule, RouterModule.forChild(categoryRoute), SuperTableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule, MenuModule, DialogModule],
 declarations: [CategoryComponent, CategoryDetailComponent /* , CategoryUpdateComponent, CategoryDeleteDialogComponent*/],
   entryComponents: [/* CategoryDeleteDialogComponent*/],
 })

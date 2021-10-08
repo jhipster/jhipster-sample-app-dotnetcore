@@ -8,7 +8,7 @@ import { BirthdayDetailComponent } from './birthday-detail.component';
 // import { BirthdayDeleteDialogComponent } from './birthday-delete-dialog.component';
 import { birthdayRoute } from './birthday.route';
 /* import { AgGridModule } from 'ag-grid-angular'; */
-import { TableModule } from 'primeng/table';
+import { SuperTableModule } from './super-table';
 import { CalendarModule } from 'primeng/calendar';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MessagesModule } from 'primeng/messages';
@@ -22,7 +22,7 @@ import { BirthdayQueryBuilderModule } from './birthday-query-builder.module';
 import { EditableMultiSelectModule } from './editable-multi-select.module';
 
 @NgModule({
-  imports: [JhipsterSharedModule, RouterModule.forChild(birthdayRoute), TableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule, MenuModule, DialogModule, BirthdayQueryBuilderModule, EditableMultiSelectModule],
+  imports: [JhipsterSharedModule, RouterModule.forChild(birthdayRoute), SuperTableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule, MenuModule, DialogModule, BirthdayQueryBuilderModule, EditableMultiSelectModule],
 declarations: [BirthdayComponent, BirthdayDetailComponent /* , BirthdayUpdateComponent, BirthdayDeleteDialogComponent*/],
   entryComponents: [/* BirthdayDeleteDialogComponent*/],
 })

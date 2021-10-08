@@ -11,7 +11,7 @@
         <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>
         <p-confirmPopup></p-confirmPopup>
         <p-messages></p-messages>
-        <p-table #categories [value]="category" 
+        <super-table #categories [value]="category" 
             [resizableColumns]="true" 
             [globalFilterFields]="['categoryName']" 
             dataKey="id" 
@@ -87,7 +87,7 @@
               </iframe>
             </td>
           </ng-template>
-        </p-table>
+        </super-table>
         <div class="alert alert-light" id="no-result" *ngIf="loading">
           <span >loading ...</span>
         </div>

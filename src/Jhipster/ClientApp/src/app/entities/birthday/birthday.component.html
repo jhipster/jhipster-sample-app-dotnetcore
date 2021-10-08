@@ -30,7 +30,7 @@
     <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>
     <p-confirmPopup></p-confirmPopup>
     <p-messages></p-messages>
-    <p-table #birthdays [value]="birthday" 
+    <super-table #birthdays [value]="birthday" 
       [resizableColumns]="true" 
       [globalFilterFields]="['lname', 'fname', 'sign']" 
       dataKey="id" 
@@ -136,7 +136,7 @@
           </iframe>
         </td>
       </ng-template>
-    </p-table>
+    </super-table>
     <p-dialog header="Categorize {{birthdayDialogTitle}}" [(visible)]="bDisplayCategories" >
       <jhi-editable-multiselect *ngIf="bDisplayCategories"
         [options]="categories" 

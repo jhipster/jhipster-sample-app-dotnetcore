@@ -13,7 +13,7 @@ import { CategoryService } from './../category/category.service';
 // import { BirthdayDeleteDialogComponent } from './birthday-delete-dialog.component';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
-import { Table } from 'primeng/table';
+import { SuperTable } from './super-table';
 import { MenuItem, MessageService } from 'primeng/api';
 import { DomSanitizer } from "@angular/platform-browser";
 import { ConfirmationService, PrimeNGConfig} from "primeng/api";
@@ -121,7 +121,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     this.loadPage();
   }
 
-  clearFilters(table: Table, searchInput: any): void{
+  clearFilters(table: SuperTable, searchInput: any): void{
     searchInput.value = ""; // should clear filter
     // table.clear();
     table.reset();
