@@ -12,6 +12,8 @@ namespace Jhipster.Domain.Services.Interfaces
 
         Task<Birthday> FindOne(string id);
 
+        Task<string> FindOneText(string id);
+
         Task Delete(string id);
     }
 }

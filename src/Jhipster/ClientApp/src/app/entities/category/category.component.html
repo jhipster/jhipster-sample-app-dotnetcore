@@ -60,20 +60,20 @@
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 2rem">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                <super-tableHeaderCheckbox></super-tableHeaderCheckbox>
               </th>
-              <th pResizableColumn [pSortableColumn]="'categoryName'">
+              <th super-ResizableColumn [super-SortableColumn]="'categoryName'">
                 <div class="p-d-flex p-jc-between p-ai-center">
                   Name
-                  <p-sortIcon [field]="'categoryName'"></p-sortIcon>
-                  <p-columnFilter type="text" field="categoryName" display="menu"></p-columnFilter>
+                  <super-sortIcon [field]="'categoryName'"></super-sortIcon>
+                  <super-columnFilter type="text" field="categoryName" display="menu"></super-columnFilter>
                 </div>
               </th>
           </ng-template>
           <ng-template pTemplate="body" let-category let-expanded="expanded">
-            <tr [pContextMenuRow]="category">
+            <tr [super-ContextMenuRow]="category">
                 <td>
-                    <button type="button" pButton pRipple [pRowToggler]="category" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    <button type="button" pButton pRipple [super-RowToggler]="category" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                 </td>          
                 <td #tt pTooltip="{{ category.categoryName }}" [tooltipDisabled]='false' style="text-overflow: ellipsis;overflow: hidden;">{{ category.categoryName }}</td>
             </tr>

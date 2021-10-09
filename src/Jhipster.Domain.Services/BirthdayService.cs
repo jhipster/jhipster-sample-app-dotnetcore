@@ -42,6 +42,20 @@ namespace Jhipster.Domain.Services
             .GetOneAsync(id);
             return result;
         }
+        public virtual async Task<string> FindOneText(string id)
+        {
+            var result = await _birthdayRepository
+            /* .QueryHelper()
+                .Include(birthday => birthday.Lname)
+                .Include(birthday => birthday.Fname)
+                .Include(birthday => birthday.Dob)
+                .Include(birthday => birthday.Sign)
+                .Include(birthday => birthday.IsAlive)
+                ._birthdayRepository
+            */
+            .GetOneTextAsync(id);
+            return result;
+        }
 
         public virtual async Task Delete(string id)
         {

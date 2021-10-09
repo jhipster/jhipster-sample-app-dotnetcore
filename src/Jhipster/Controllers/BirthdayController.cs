@@ -89,6 +89,19 @@ namespace Jhipster.Controllers
             return Ok(((IPage<BirthdayDto>)page).Content).WithHeaders(page.GeneratePaginationHttpHeaders());
         }
 
+        [AllowAnonymous]
+        [HttpGet("birthdays/text/{id}")]
+        public async Task<IActionResult> GetBirthdayText([FromRoute] string id)
+        {
+            _log.LogDebug($"REST request to get text from Birthday : {id}");
+            string ret = await _birthdayService.FindOneText(id);
+            return new ContentResult()
+            {
+                Content = ret,
+                ContentType = "text/html",
+            };        
+        }
+
         [HttpGet("birthdays/{id}")]
         public async Task<IActionResult> GetBirthday([FromRoute] string id)
         {

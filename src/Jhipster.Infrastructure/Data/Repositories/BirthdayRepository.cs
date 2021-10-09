@@ -8,7 +8,6 @@ using Jhipster.Domain.Repositories.Interfaces;
 using Jhipster.Infrastructure.Data.Extensions;
 using System;
 using Nest;
-
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
@@ -101,6 +100,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
             public string sign { get; set; }
             public bool isAlive { get; set; }
             public string[] categories {get; set; }
+            public string wikipedia {get; set; } 
         }
 
         public override async Task<Birthday> GetOneAsync(object id)
@@ -115,6 +115,10 @@ namespace Jhipster.Infrastructure.Data.Repositories
                 IsAlive = hit.Source.isAlive 
             };
             return birthday;
+        }
+        public async Task<string> GetOneTextAsync(object id){
+            var hit = await elastic.GetAsync<ElasticBirthday>((string)id);
+            return hit.Source.wikipedia;
         }
     }
 }
