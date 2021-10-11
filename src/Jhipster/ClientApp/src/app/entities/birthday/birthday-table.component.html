@@ -1,4 +1,4 @@
-<div style="height: calc(100vh - 174px);overflow: auto;">
+<div style="overflow: auto;">
   <ng-container *ngIf="rowData | async as birthday">
     <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>
     <p-confirmPopup></p-confirmPopup>
