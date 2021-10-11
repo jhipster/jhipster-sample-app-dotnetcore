@@ -118,6 +118,7 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
         (res: HttpResponse<IBirthday[]>) => this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate),
         () => this.onError()
       );
+      this.rowData = of([]); // trigger showing the 'loading...'
   }
 
   refreshData(): void {
