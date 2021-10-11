@@ -16,6 +16,7 @@
       (onRowCollapse)="onExpandChange(false)"
       (selectionChange)="onCheckboxChange()" 
       (onContextMenuSelect)="setMenu(contextSelectedRow)"
+      [parent] = "parent"
     >
       <ng-template pTemplate="header">
         <tr [style.visibility]="hideHeader ? 'collapse' : 'visible'">
