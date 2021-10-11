@@ -37,6 +37,7 @@ import { ReorderableColumn } from 'primeng/table';
 import { TableRadioButton } from 'primeng/table';
 import { TableCheckbox } from 'primeng/table';
 import { TableHeaderCheckbox } from 'primeng/table';
+import { TableState } from 'primeng/api';
 
 @Injectable()
 
@@ -419,6 +420,8 @@ import { TableHeaderCheckbox } from 'primeng/table';
 })
 export class SuperTable extends Table implements OnInit, AfterViewInit, AfterContentInit, BlockableUI, OnChanges {
 
+    @Input() parent: SuperTable | null = null;
+    
     @Input() frozenColumns = [];
 
     @Input() rowTrackBy = (index: number, item: any):any => item;
@@ -426,6 +429,8 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
     @Input() get columns(): any {
         return this._columns;
     }
+
+    children: SuperTable[] = [];
 
     set columns(cols: any) {
         this._columns = cols;
@@ -437,6 +442,27 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
 
     ngOnInit(): any {
         super.ngOnInit();
+        if (this.parent !== null){
+            this.parent.children.push(this);
+            const child = this;
+            const parent = this.parent;
+            setTimeout(function() : void{
+                let state: TableState = {};
+                parent.saveColumnWidths(state);
+                (child.columnWidthsState as any) = state.columnWidths;
+                child.restoreColumnWidths();
+            }, 0);
+        }
+    }
+
+    onColumnResizeEnd(event:any, column:any) {
+        super.onColumnResizeEnd(event, column);
+        let state: TableState = {};
+        this.saveColumnWidths(state);
+        this.children.forEach(child=>{
+            (child.columnWidthsState as any) = state.columnWidths;
+            child.restoreColumnWidths();
+        });
     }
 }
 

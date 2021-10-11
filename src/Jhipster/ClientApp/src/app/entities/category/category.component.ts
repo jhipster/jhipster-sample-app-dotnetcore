@@ -66,10 +66,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   databaseQuery = "";
 
-  selectedCategories : ICategory[] = [];
-
-  initialSelectedCategories = "";
-
   constructor(
     protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
@@ -78,7 +74,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     protected modalService: NgbModal,
     protected messageService: MessageService,
     public sanitizer:DomSanitizer,
-    private confirmationService: ConfirmationService,
     private primeNGConfig : PrimeNGConfig,
   ) {}
 

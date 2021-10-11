@@ -132,6 +132,10 @@ export class EditableMultiSelectComponent extends MultiSelect implements OnInit{
     super(el, renderer, cd, filterService, config);
 
   }
+  ngOnInit(): void{
+    super.ngOnInit();
+  }
+
   // the following is necessary to prevent a type mismatch on event
   onFilterInputChange(event : any): void{
     const previousValue = this._filterValue;

@@ -62,29 +62,54 @@
               <th style="width: 2rem">
                 <super-tableHeaderCheckbox></super-tableHeaderCheckbox>
               </th>
-              <th super-ResizableColumn [super-SortableColumn]="'categoryName'">
+              <th super-ResizableColumn [super-SortableColumn]="'lname'">
                 <div class="p-d-flex p-jc-between p-ai-center">
                   Name
-                  <super-sortIcon [field]="'categoryName'"></super-sortIcon>
-                  <super-columnFilter type="text" field="categoryName" display="menu"></super-columnFilter>
+                  <super-sortIcon [field]="'lname'"></super-sortIcon>
+                  <super-columnFilter type="text" field="lname" display="menu"></super-columnFilter>
                 </div>
               </th>
+              <th super-ResizableColumn [super-SortableColumn]="'fname'">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  First
+                  <super-sortIcon [field]="'fname'"></super-sortIcon>
+                  <super-columnFilter type="text" field="fname" display="menu"></super-columnFilter>
+                </div>
+              </th>
+              <th super-ResizableColumn [super-SortableColumn]="'dob'">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Date of Birth
+                  <super-sortIcon [field]="'dob'"></super-sortIcon>
+                  <super-columnFilter type="date" field="dob" display="menu"></super-columnFilter>
+                </div>
+              </th>
+              <th super-ResizableColumn [super-SortableColumn]="'additional'">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Sign
+                  <super-sortIcon [field]="'additional'"></super-sortIcon>
+                  <super-columnFilter type="text" field="additional" display="menu"></super-columnFilter>
+                </div>
+              </th>
+              <th>Alive?</th>
+              <th></th>
+            </tr>
           </ng-template>
           <ng-template pTemplate="body" let-category let-expanded="expanded">
             <tr [super-ContextMenuRow]="category">
                 <td>
                     <button type="button" pButton pRipple [super-RowToggler]="category" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                 </td>          
-                <td #tt pTooltip="{{ category.categoryName }}" [tooltipDisabled]='false' style="text-overflow: ellipsis;overflow: hidden;">{{ category.categoryName }}</td>
+                <td #tt pTooltip="{{ category.categoryName }}" [tooltipDisabled]='false' style="text-overflow: ellipsis;overflow: hidden; border:none;font-weight: 700; ">{{ category.categoryName }}</td>
             </tr>
           </ng-template>
           <ng-template pTemplate="rowexpansion" let-category>
-            <td></td>
-            <td colspan="6">
-              <h1>{{ category.categoryName }} whose last name is {{category.lname}} </h1>
-              <iframe style="width:100%; height:100%;" 
-                [src]= "sanitizer.bypassSecurityTrustResourceUrl('https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/categories/_doc/'+category.id)">
-              </iframe>
+            <td colspan="7">
+              <jhi-birthday-table 
+                firstColumnIndent="&nbsp;&nbsp;&nbsp;" 
+                [hideHeader]=true
+                [parent] = "categories"
+              >
+              </jhi-birthday-table>
             </td>
           </ng-template>
         </super-table>
