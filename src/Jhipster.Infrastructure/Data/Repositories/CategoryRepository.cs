@@ -6,6 +6,8 @@ using JHipsterNet.Core.Pagination.Extensions;
 using Jhipster.Domain;
 using Jhipster.Domain.Repositories.Interfaces;
 using Jhipster.Infrastructure.Data.Extensions;
+using System;
+using Nest;
 using Jhipster.Infrastructure.Data;
 using System.Collections.Generic;
 
@@ -35,7 +37,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
             return category;
         }
         public override async Task<IPage<Category>> GetPageFilteredAsync(IPageable pageable, string query){
-            IPage<Birthday> birthdayPage = await _birthdayRepository.GetPageFilteredAsync(pageable, "categories:*");
+            IPage<Birthday> birthdayPage = await _birthdayRepository.GetPageFilteredAsync(pageable, query);
             List<Category> content = new List<Category>();
             Dictionary<string, bool> encountered = new Dictionary<string, bool>();
             long id = 0;
@@ -52,6 +54,11 @@ namespace Jhipster.Infrastructure.Data.Repositories
                         }
                     });
                 }
+            });
+            content.Add(new Category{
+                CategoryName = "(Uncategorized)",
+                selected = false,
+                notCategorized = true
             });
             return new Page<Category>(content, pageable, content.Count);
         }

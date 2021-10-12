@@ -87,16 +87,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     public sanitizer:DomSanitizer,
     private confirmationService: ConfirmationService,
     private primeNGConfig : PrimeNGConfig,
-  ) {
-
-    this.categories = [
-      { categoryName: 'Younger'},
-      { categoryName: 'Older'},
-      { categoryName: 'Americans'},
-      { categoryName: 'Favorites'},
-      { categoryName: 'Interesting'},
-    ];
-  }
+  ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;

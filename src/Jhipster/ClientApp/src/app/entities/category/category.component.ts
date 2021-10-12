@@ -28,6 +28,9 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export class CategoryComponent implements OnInit, OnDestroy {
   categories?: ICategory[];
+  
+  selectableCategories: ICategory[] = [];
+  
   categoriesMap : {} = {};
   eventSubscriber?: Subscription;
   totalItems = 0;
@@ -66,6 +69,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   databaseQuery = "";
 
+  refresh:any = null;
+
   constructor(
     protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
@@ -75,7 +80,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
     protected messageService: MessageService,
     public sanitizer:DomSanitizer,
     private primeNGConfig : PrimeNGConfig,
-  ) {}
+  ) {
+    this.selectableCategories = []; // For some reason, selectableCategories is not visible in the html without this
+    this.refresh = this.refreshData.bind(this);
+  }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;
@@ -96,6 +104,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   refreshData(): void {
     this.categories =[];
+    this.selectableCategories =[];
     this.rowData = of(this.categories);
     this.loadPage();
   }
@@ -117,7 +126,24 @@ export class CategoryComponent implements OnInit, OnDestroy {
     const tolerance = 3;
     return element.offsetWidth + tolerance < element.scrollWidth
   }
+  showSearchDialog() : void {
+    // initialize dialog here
+    this.bDisplaySearchDialog = true;
+  }
 
+  cancelSearchDialog() : void {
+    this.bDisplaySearchDialog = false;
+  }
+
+  okSearchDialog(queryBuilder : any) : void {
+    if (queryBuilder.query.rules && queryBuilder.query.rules.length === 0){
+      this.databaseQuery = "";
+    } else {
+      this.databaseQuery = JSON.stringify(queryBuilder.query);
+    }
+    this.bDisplaySearchDialog = false;
+    this.refreshData();
+  }
 
   onChipClick(event: Event) : Event {
     return event;
@@ -266,6 +292,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.categories = data || [];
     this.categories.forEach((category)=>{
       this.categoriesMap[category.id as number] = category;
+      if (!category.notCategorized){
+        this.selectableCategories?.push(category);
+      }
     });
     this.ngbPaginationPage = this.page;
     

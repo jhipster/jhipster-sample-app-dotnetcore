@@ -12,7 +12,7 @@ import { BirthdayService } from './birthday.service';
 import { CategoryService } from '../category/category.service';
 // import { BirthdayDeleteDialogComponent } from './birthday-delete-dialog.component';
 import { Observable } from 'rxjs';
-import { of } from 'rxjs';
+import { of } from 'rxjs';  
 import { SuperTable } from './super-table';
 import { MenuItem, MessageService } from 'primeng/api';
 import { DomSanitizer } from "@angular/platform-browser";
@@ -40,6 +40,7 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
   loading = true;
   faCheck = faCheck;
   @Input() parent: SuperTable | null = null;
+  @Input() refresh: any = null;
   
   columnDefs = [
     { field: 'lname', sortable: true, filter: true },
@@ -73,9 +74,13 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
 
   birthdayDialogId : any = "";
 
-  databaseQuery = "";
+  @Input() databaseQuery = "";
 
-  categories : any[] = [];
+  @Input() category: ICategory | null = null;
+
+  @Input() categories : any = [];
+
+  @Input() passedCategories: any | null = null;
 
   selectedCategories : ICategory[] = [];
 
@@ -92,27 +97,29 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
     public sanitizer:DomSanitizer,
     private confirmationService: ConfirmationService,
     private primeNGConfig : PrimeNGConfig,
-  ) {
-
-    this.categories = [
-      { categoryName: 'Younger'},
-      { categoryName: 'Older'},
-      { categoryName: 'Americans'},
-      { categoryName: 'Favorites'},
-      { categoryName: 'Interesting'},
-    ];
-  }
+  ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;
 
     this.loading = true;
+    let workingQuery = this.databaseQuery;
+    if (this.category !== null){
+      const parsedDatabaseQuery = JSON.parse('{"condition":"and","rules":[{"field":"categories","operator":"contains","value":"' + "\\\"" + this.category.categoryName + "\\\"" + '"}]}')
+      if (this.category.notCategorized){
+        parsedDatabaseQuery.rules[0] = JSON.parse('{"field":"categories","operator":"is null"}')
+      }
+      if (this.databaseQuery !== ""){
+        parsedDatabaseQuery.rules.push(JSON.parse(this.databaseQuery));
+      }
+      workingQuery = JSON.stringify(parsedDatabaseQuery);
+    }
     this.birthdayService
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
-        query: this.databaseQuery
+        query: workingQuery
       })
       .subscribe(
         (res: HttpResponse<IBirthday[]>) => this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate),
@@ -145,20 +152,6 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
     return element.offsetWidth + tolerance < element.scrollWidth
   }
 
-  showSearchDialog() : void {
-    // initialize dialog here
-    this.bDisplaySearchDialog = true;
-  }
-
-  cancelSearchDialog() : void {
-    this.bDisplaySearchDialog = false;
-  }
-
-  okSearchDialog(queryBuilder : any) : void {
-      this.databaseQuery = JSON.stringify(queryBuilder.query);
-      this.bDisplaySearchDialog = false;
-      this.refreshData();
-  }
   onCheckboxChange() : void {
     this.chipSelectedRows = [];
     if (this.checkboxSelectedRows.length < 3){
@@ -280,6 +273,12 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
       this.subscribeToSaveResponse(this.birthdayService.update(this.contextSelectedRow as IBirthday));
     }
     this.bDisplayCategories = false;
+    if (this.refresh != null){
+      const refresh: any = this.refresh;
+      setTimeout(function() : void{
+        refresh();
+      }, 0);
+    }
   }
   subscribeToSaveResponse(result: Observable<HttpResponse<IBirthday>>): void {
     result.subscribe(
@@ -298,7 +297,7 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
   addToSelectedCategories(categoryInput : any) : void {
     let category = categoryInput;
     let categoryPresent = false;
-    this.categories.forEach(c=>{
+    (this.categories as any[]).forEach(c=>{
       if (c.categoryName === category.categoryName){
         categoryPresent = true;
         category = c;
@@ -387,12 +386,20 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
   }
   onCategorySuccess(data: ICategory[] | null, headers: HttpHeaders) : void{
     const totalItems = Number(headers.get('X-Total-Count'));
-    this.categories = [];
+    this.selectedCategories = [];
     if (totalItems > 0 || (data && data?.length > 0)){
       data?.forEach(r=>{
-        this.categories.push(r);
-        if (r.selected){
-          this.selectedCategories.push(r);
+        if (this.parent == null){
+          this.categories.push(r);
+          if (r.selected){
+            this.selectedCategories.push(r);
+          }
+        } else {
+          (this.passedCategories as ICategory[]).forEach(p=>{
+            if (p.categoryName === r.categoryName){
+              this.selectedCategories.push(p);
+            }
+          });
         }
       });
     }

@@ -14,6 +14,7 @@ namespace Jhipster.Domain
 
         public string CategoryName { get; set; }
         public bool selected {get; set;} 
+        public bool notCategorized {get; set;}
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
@@ -37,6 +38,7 @@ namespace Jhipster.Domain
                     $"ID='{Id}'" +
                     $", CategoryName='{CategoryName}'" +
                     $", selected = {selected}" +
+                    $", notCategorized = {notCategorized}" +
                     "}";
         }
     }

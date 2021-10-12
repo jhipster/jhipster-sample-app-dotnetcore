@@ -73,7 +73,10 @@ namespace Jhipster.Controllers
             if (queryDictionary.Keys.Contains("query")){
                 query = queryDictionary["query"];
             }
-            if (query.StartsWith("{")){
+            if (query == ""){
+                query = "categories:*";
+            }
+            else if (query.StartsWith("{")){
                 query = TextTemplate.Runner.Interpolate("LuceneQueryBuilder", query);
             }
             CategoryDto categorydto = _mapper.Map<CategoryDto>(new Category());

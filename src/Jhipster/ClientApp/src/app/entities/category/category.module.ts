@@ -19,9 +19,10 @@ import {ScrollTopModule} from 'primeng/scrolltop';
 import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
 import { BirthdayTableModule } from '../birthday/birthday-table.module';
+import { BirthdayQueryBuilderModule } from '../birthday/birthday-query-builder.module';
 
 @NgModule({
-  imports: [JhipsterSharedModule, RouterModule.forChild(categoryRoute), SuperTableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule, MenuModule, DialogModule, BirthdayTableModule],
+  imports: [JhipsterSharedModule, RouterModule.forChild(categoryRoute), SuperTableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule, MenuModule, DialogModule, BirthdayTableModule, BirthdayQueryBuilderModule],
 declarations: [CategoryComponent, CategoryDetailComponent /* , CategoryUpdateComponent, CategoryDeleteDialogComponent*/],
   entryComponents: [/* CategoryDeleteDialogComponent*/],
 })

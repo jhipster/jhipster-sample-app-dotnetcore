@@ -12,6 +12,7 @@ namespace Jhipster.Dto
 
         public string CategoryName { get; set; }
         public bool selected { get; set; }
+        public bool notCategorized { get; set; }
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove
     }

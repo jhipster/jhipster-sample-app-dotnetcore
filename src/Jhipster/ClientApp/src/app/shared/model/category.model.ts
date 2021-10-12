@@ -2,6 +2,7 @@ export interface ICategory {
   id?: number;
   categoryName?: string;
   selected?: boolean;
+  notCategorized?: boolean;
 }
 
 export class Category implements ICategory {
