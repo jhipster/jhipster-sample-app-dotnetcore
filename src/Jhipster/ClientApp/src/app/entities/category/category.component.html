@@ -27,22 +27,18 @@
   <jhi-alert></jhi-alert>
 
   <ng-container *ngIf="rowData | async as category">
-      <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>
       <p-confirmPopup></p-confirmPopup>
       <p-messages></p-messages>
       <super-table #categoriesTable [value]="category" 
           [resizableColumns]="true" 
           [globalFilterFields]="['categoryName']" 
           dataKey="id" 
-          [(contextMenuSelection)]="contextSelectedRow" 
-          [contextMenu]="contextMenu"
           selectionMode="multiple" 
           [(selection)]="checkboxSelectedRows"
           [expandedRowKeys]="expandedRows"
           (onRowExpand)="onExpandChange(true)" 
           (onRowCollapse)="onExpandChange(false)"
-          (selectionChange)="onSelectionChange()" 
-          (onContextMenuSelect)="setMenu(contextSelectedRow)"
+          (selectionChange)="onCheckboxChange()" 
         >
         <ng-template pTemplate="caption">
           <div class="p-d-flex">
@@ -136,6 +132,28 @@
           </td>
         </ng-template>
       </super-table>
+      <p-dialog header="Categorize {{birthdayDialogTitle}}" [(visible)]="bDisplayCategories" >
+        <jhi-editable-multiselect *ngIf="bDisplayCategories"
+          [options]="selectableCategories" 
+          [(ngModel)]="selectedCategories" 
+          defaultLabel="Select or enter a new Category" 
+          optionLabel="categoryName"
+          ngDefaultControl
+          [virtualScroll]=true
+        >
+        </jhi-editable-multiselect>
+        <div class="modal-footer">
+          <button pButton label="Cancel" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-times" (click)="cancelCategorize()"></button>
+          <button pButton label="Ok" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-check" (click)="okCategorize()"></button>
+        </div>
+      </p-dialog>
+      <p-dialog header="{{ birthdayDialogTitle }}" [(visible)]="bDisplayBirthday" [style]="{width: '50vw'}" [baseZIndex]="10000">
+        <iframe style="width:100%; height:100%;border-width: 0;" 
+          [src]= "sanitizer.bypassSecurityTrustResourceUrl('https://localhost:5001/api/birthdays/text/'+birthdayDialogId)">"
+        </iframe>
+        <ng-template pTemplate="footer">
+        </ng-template>      
+      </p-dialog>
       <div class="alert alert-light" id="no-result" *ngIf="loading">
         <span >loading ...</span>
       </div>

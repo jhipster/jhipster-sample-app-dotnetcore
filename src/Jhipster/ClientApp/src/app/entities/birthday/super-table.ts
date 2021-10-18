@@ -38,6 +38,7 @@ import { TableRadioButton } from 'primeng/table';
 import { TableCheckbox } from 'primeng/table';
 import { TableHeaderCheckbox } from 'primeng/table';
 import { TableState } from 'primeng/api';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Injectable()
 
@@ -392,7 +393,7 @@ import { TableState } from 'primeng/api';
     }
     
     .p-column-filter-add-button .p-button-label,
-    .p-column-filter-remove-button .p-button-label {
+    .p-column-filter-remove-button .p-button-label {f
         flex-grow: 0;
     }
     
@@ -421,7 +422,7 @@ import { TableState } from 'primeng/api';
 export class SuperTable extends Table implements OnInit, AfterViewInit, AfterContentInit, BlockableUI, OnChanges {
 
     @Input() parent: SuperTable | null = null;
-    
+
     @Input() frozenColumns = [];
 
     @Input() rowTrackBy = (index: number, item: any):any => item;
@@ -430,11 +431,25 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
         return this._columns;
     }
 
-    children: SuperTable[] = [];
-
     set columns(cols: any) {
         this._columns = cols;
     }
+
+    @Input() get selection(): any {
+        return this._selection;
+    }
+
+    set selection(val: any) {
+        this._selection = val;
+        if (this.children.length > 0){
+            this.children.forEach(c=>{
+                c.selection = val;
+                c.selectionChange.emit(c.selection);
+            });
+        }
+    }
+
+    children: SuperTable[] = [];    
 
     constructor(public el: ElementRef, public zone: NgZone, public tableService: TableService, public cd: ChangeDetectorRef, public filterService: FilterService) {
         super(el, zone, tableService, cd, filterService);
@@ -452,6 +467,14 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
                 (child.columnWidthsState as any) = state.columnWidths;
                 child.restoreColumnWidths();
             }, 0);
+        }
+    }
+
+    ngOnChanges(simpleChange: any): any{
+        super.ngOnChanges(simpleChange);
+        if (this.parent !== null){
+            this._selection = this.parent?._selection;
+            this.selectionKeys = this.parent?.selectionKeys;
         }
     }
 
@@ -866,6 +889,34 @@ export class SuperTableCheckbox extends TableCheckbox  {
 
     constructor(public dt: SuperTable, public tableService: TableService, public cd: ChangeDetectorRef) {
         super(dt, tableService, cd);
+    }
+
+    onClick(event: Event) {
+        const dt = this.dt;
+        if (dt.parent !== null){
+            // perform the change using rows selected in the parent
+            dt.selection = dt.parent.selection;
+            dt.selectionKeys = dt.parent.selectionKeys;
+        }
+        super.onClick(event);
+        if (dt.parent !== null){
+            // insure the parent sees the change
+            dt.parent.selection = dt.selection;
+            dt.parent.selectionKeys = dt.selectionKeys;
+        }
+        if (dt.parent !== null){
+            dt.parent.children.forEach(c=>{
+                if (c !== dt){
+                    // insure each child has the same selection
+                    c.selection = dt.selection;
+                    c.selectionKeys = dt.selectionKeys;
+                    // chanage the visual checkboxes
+                    c.tableService.onSelectionChange();
+                }
+            });
+            // notify the component's owner
+            dt.parent?.selectionChange.emit(dt.parent.selection);
+        }
     }
 }
 

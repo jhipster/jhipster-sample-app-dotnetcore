@@ -273,17 +273,17 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
       this.subscribeToSaveResponse(this.birthdayService.update(this.contextSelectedRow as IBirthday));
     }
     this.bDisplayCategories = false;
-    if (this.refresh != null){
-      const refresh: any = this.refresh;
-      setTimeout(function() : void{
-        refresh();
-      }, 0);
-    }
   }
   subscribeToSaveResponse(result: Observable<HttpResponse<IBirthday>>): void {
+    const refresh: any = this.refresh;
     result.subscribe(
       () => {
         this.bDisplayCategories = false;
+        if (this.refresh != null){
+          setTimeout(()=>{
+            refresh();
+          },1500); // seems to require some time for elastic to catch up
+        }
       },
       () => {
         // how to provide error

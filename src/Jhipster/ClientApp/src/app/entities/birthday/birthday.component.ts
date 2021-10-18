@@ -366,8 +366,8 @@ export class BirthdayComponent implements OnInit, OnDestroy {
           {
               label: 'Revision',
               icon: 'pi pi-pencil'
-          }
-      ]}
+          }]
+      }
     ];
   }
   onCategorySuccess(data: ICategory[] | null, headers: HttpHeaders) : void{

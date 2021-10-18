@@ -3,38 +3,6 @@
     <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>
     <p-confirmPopup></p-confirmPopup>
     <p-messages></p-messages>
-    <ng-template pTemplate="caption">
-      <div class="p-d-flex">
-        <button pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;" icon="pi pi-refresh" (click)="refreshData()"></button>
-        &nbsp;
-        <button pButton label="Clear" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)"></button>
-        <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100; padding-top: 10px;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
-        <span *ngIf="chipSelectedRows.length > 0">
-          <p-menu #menu [popup]="true" [model]="menuItems" (onShow)="onMenuShow(menu, chips)" appendTo="body"></p-menu>
-          <p-chips #chips pRipple
-            [(ngModel)]="chipSelectedRows" 
-            (onRemove)="onRemoveChip($event.value)" 
-            (onChipClick)="onChipClick($event.originalEvent)" 
-          >
-            <ng-template let-item pTemplate="item">
-              <span  (mouseover)="setMenu(item);menu.show($event)" >
-                {{item.fname}} {{item.lname}}<span style="display: none;">{{item.id}}</span>
-              </span>
-            </ng-template>
-          </p-chips>
-        </span>
-        <span class="p-input-icon-left p-ml-auto">
-          <i class="pi pi-search"></i>
-          <input
-            #searchInput
-            pInputText
-            type="text"
-            (input)="birthdays.filterGlobal($any($event.target).value, 'contains')"
-            placeholder="Search keyword"
-          />
-        </span>
-      </div>
-    </ng-template>
     <super-table #birthdays [value]="birthday" 
       [resizableColumns]="true" 
       [globalFilterFields]="['lname', 'fname', 'sign']" 

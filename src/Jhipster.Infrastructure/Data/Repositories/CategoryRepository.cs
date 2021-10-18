@@ -55,6 +55,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
                     });
                 }
             });
+            content = content.OrderBy(cat => cat.CategoryName).ToList();
             content.Add(new Category{
                 CategoryName = "(Uncategorized)",
                 selected = false,
