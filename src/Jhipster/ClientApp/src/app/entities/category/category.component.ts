@@ -5,9 +5,12 @@ import { Subscription, combineLatest } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { IBirthday } from 'app/shared/model/birthday.model';
+
 import { ICategory } from 'app/shared/model/category.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { BirthdayService } from '../birthday/birthday.service';
 import { CategoryService } from './category.service';
 
 // import { CategoryDeleteDialogComponent } from './category-delete-dialog.component';
@@ -51,28 +54,33 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   menuItems: MenuItem[] = [];
 
-  contextSelectedRow: ICategory | null = null;
+  contextSelectedRow: IBirthday | null = null;
 
-  checkboxSelectedRows : ICategory[] = [];
+  checkboxSelectedRows : IBirthday[] = [];
 
   chipSelectedRows : object[] = [];
 
   bDisplaySearchDialog = false;
 
-  bDisplayCategory = false;
+  bDisplayBirthday = false;
 
   bDisplayCategories = false;
 
-  categoryDialogTitle  = "";
+  birthdayDialogTitle  = "";
 
-  categoryDialogId : any = "";
+  birthdayDialogId : any = "";
 
   databaseQuery = "";
 
   refresh:any = null;
 
+  selectedCategories : ICategory[] = [];
+
+  initialSelectedCategories = "";
+
   constructor(
     protected categoryService: CategoryService,
+    protected birthdayService: BirthdayService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
@@ -144,6 +152,58 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.bDisplaySearchDialog = false;
     this.refreshData();
   }
+  onCheckboxChange() : void {
+    this.chipSelectedRows = [];
+    if (this.checkboxSelectedRows.length < 3){
+      this.checkboxSelectedRows.forEach((row)=>{
+        this.chipSelectedRows.push(row);
+      });
+    }
+  }
+
+  setMenu(birthday : any):void{
+    this.menuItems[0].label = `Select action for ${birthday.fname} ${birthday.lname}`;
+    let alternate : any = null;
+    this.chipSelectedRows.forEach((selectedRow)=>{
+      if ((selectedRow as IBirthday).id !== birthday.id){
+        alternate = selectedRow as IBirthday;
+      }
+    });
+    if (alternate != null){
+      this.menuItems[1].label = `Relate to ${alternate.fname} ${alternate.lname}`;
+    } else {
+      this.menuItems[1].label = `Select another birthday to relate`;
+    }
+    this.contextSelectedRow = birthday;
+  }
+
+  onMenuShow(menu : any, chips : any): void{
+    // this shouldn't be necessary, but the p-menu menuleave is not firing
+    const menuEl = menu.el.nativeElement.children[0];
+    const chipsEl = chips.el.nativeElement.parentElement;
+    let mouseOver : any = null;
+    let chipsMouseOut : any = null;
+    let bMouseOnMenu = false;
+    const hideMenu = ()=>{
+      menu.hide();
+      chipsEl.removeEventListener('mouseout', chipsMouseOut);
+      menuEl.removeEventListener('mouseleave', hideMenu);
+      menuEl.removeEventListener('mouseover', mouseOver);
+    }
+    mouseOver = ()=>{
+      bMouseOnMenu = true;
+    }
+    chipsMouseOut = ()=>{
+      setTimeout(function() : void{
+        if (!bMouseOnMenu){
+          hideMenu();
+        }
+      }, 0);
+    }       
+    menuEl.addEventListener('mouseover', mouseOver);
+    menuEl.addEventListener('mouseleave', hideMenu);
+    chipsEl.addEventListener('mouseout', chipsMouseOut);
+  }
 
   onChipClick(event: Event) : Event {
     return event;
@@ -158,7 +218,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     if (this.expandedRows[chip.id]){
       this.expandedRows[chip.id] = false;
     }
-    const newSelection : ICategory[] = [];
+    const newSelection : IBirthday[] = [];
     this.checkboxSelectedRows.forEach((row)=>{
       if (row.id !== chip.id){
         newSelection.push(row)
@@ -176,6 +236,55 @@ export class CategoryComponent implements OnInit, OnDestroy {
     });
     return ret;
   }
+  okCategorize() : void{
+    if (this.selectedCategories.join(",") !== this.initialSelectedCategories){
+      (this.contextSelectedRow as IBirthday).categories = this.selectedCategories;
+      this.subscribeToSaveResponse(this.birthdayService.update(this.contextSelectedRow as IBirthday));
+    }
+    this.bDisplayCategories = false;
+  }
+  subscribeToSaveResponse(result: Observable<HttpResponse<IBirthday>>): void {
+    const refresh: any = this.refresh;
+    result.subscribe(
+      () => {
+        this.bDisplayCategories = false;
+        if (this.refresh != null){
+          setTimeout(()=>{
+            refresh();
+          },1500); // seems to require some time for elastic to catch up
+        }
+      },
+      () => {
+        // how to provide error
+        this.bDisplayCategories = false;
+      }
+    );
+  }  
+  cancelCategorize() : void {
+    this.bDisplayCategories = false;
+  }
+  addToSelectedCategories(categoryInput : any) : void {
+    let category = categoryInput;
+    let categoryPresent = false;
+    (this.categories as any[]).forEach(c=>{
+      if (c.categoryName === category.categoryName){
+        categoryPresent = true;
+        category = c;
+      }
+    });
+    if (!categoryPresent){
+      this.categories?.push(category);
+    }
+    let selectedCategoryPresent = false;
+    this.selectedCategories.forEach(c=>{
+      if (c.categoryName === category.categoryName){
+        selectedCategoryPresent = true;
+      }
+    });
+    if (!selectedCategoryPresent){
+      this.selectedCategories.push(category);
+    } 
+  }
   ngOnInit(): void {
     this.handleNavigation();
     this.registerChangeInCategories();
@@ -184,13 +293,36 @@ export class CategoryComponent implements OnInit, OnDestroy {
       label: 'Options',
       items: [
         {
+          label: 'Categorize',
+          icon: 'pi pi-bookmark',
+          command: ()=>{
+            setTimeout(()=>{
+              this.selectedCategories = [];
+              const selectedRow = this.contextSelectedRow;
+              this.birthdayDialogId = selectedRow ? selectedRow?.id?.toString() : "";
+              this.birthdayDialogTitle = selectedRow ? selectedRow?.fname + " " + selectedRow?.lname : "";
+              this.categoryService
+              .query({
+                page: 0,
+                size: 10000,
+                sort: this.sortCategory(),
+                query: this.birthdayDialogId
+              })
+              .subscribe(
+                (res: HttpResponse<IBirthday[]>) => this.onCategorySuccess(res.body, res.headers),
+                () => this.onError()
+              );
+            }, 0);
+          }
+        },
+        {
           label: 'Display',
           icon: 'pi pi-book',
           command: ()=>{
             setTimeout(()=>{
-              this.categoryDialogId = this.contextSelectedRow ? this.contextSelectedRow?.id?.toString() : "";
-              this.categoryDialogTitle = this.contextSelectedRow ? this.contextSelectedRow?.categoryName as string : "";
-              this.bDisplayCategory = true;
+              this.birthdayDialogId = this.contextSelectedRow ? this.contextSelectedRow?.id?.toString() : "";
+              this.birthdayDialogTitle = this.contextSelectedRow ? this.contextSelectedRow?.lname as string : "";
+              this.bDisplayBirthday = true;
             }, 0);
           },
         },
@@ -200,12 +332,46 @@ export class CategoryComponent implements OnInit, OnDestroy {
         },
 
       ]},
+      {
+        label: 'Relationship',
+        items: [{
+            label: 'Favorable',
+            icon: 'pi pi-thumbs-up'
+        },
+        {
+            label: 'Unfavorable',
+            icon: 'pi pi-thumbs-down'
+        },
+        {
+            label: 'Iden',
+            icon: 'pi pi-id-card'
+        },
+        {
+            label: 'Revision',
+            icon: 'pi pi-pencil'
+        }]
+      }
     ];
   }
+  onCategorySuccess(data: ICategory[] | null, headers: HttpHeaders) : void{
+    const totalItems = Number(headers.get('X-Total-Count'));
+    this.selectedCategories = [];
+    if (totalItems > 0 || (data && data?.length > 0)){
+      data?.forEach(r=>{
+          this.selectableCategories.forEach(p=>{
+            if (p.categoryName === r.categoryName){
+              this.selectedCategories.push(p);
+            }
+          });
+      });
+    }
+    this.initialSelectedCategories = this.selectedCategories.join(",");
+    this.bDisplayCategories = true;
+  }
   doMenuView(selectedRow: any) : void {
-    const selected : ICategory = selectedRow;
+    const selected : IBirthday = selectedRow;
     // const count = this.checkboxSelectedRows.length;
-    this.messageService.add({severity: 'success', summary: 'Row Viewed', detail: selected.categoryName });
+    this.messageService.add({severity: 'success', summary: 'Row Viewed', detail: selected.lname });
   }
 
   doMenuDelete(selectedRow: any) : void {
@@ -228,19 +394,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.loadPage(pageNumber, true);
       // }
     }).subscribe();
-  }
-  onMenuShow(arg1: any, arg2: any):void{
-    if (arg1 && !arg2){
-      // ignore
-    }
-  }
-  onSelectionChange(): void{
-
-  }
-  setMenu( element: any): void{
-    if (!element){
-      // ignore
-    }
   }
   ngOnDestroy(): void {
     if (this.eventSubscriber) {
