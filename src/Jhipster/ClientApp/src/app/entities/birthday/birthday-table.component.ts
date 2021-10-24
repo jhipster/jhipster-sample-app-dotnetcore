@@ -396,7 +396,7 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
           }
         } else {
           (this.passedCategories as ICategory[]).forEach(p=>{
-            if (p.categoryName === r.categoryName){
+            if (p.categoryName === r.categoryName && !this.selectedCategories.includes(p)){
               this.selectedCategories.push(p);
             }
           });
@@ -474,6 +474,10 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
       this.rowData = of(this.birthdays);
     }
     this.loading = false;
+    if (this.parent){
+      this.parent.doFilter();
+      this.parent.sortSingle();
+    }
   }
 
   protected onError(): void {

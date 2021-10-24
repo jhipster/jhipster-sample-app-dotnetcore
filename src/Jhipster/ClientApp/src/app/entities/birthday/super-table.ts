@@ -38,7 +38,6 @@ import { TableRadioButton } from 'primeng/table';
 import { TableCheckbox } from 'primeng/table';
 import { TableHeaderCheckbox } from 'primeng/table';
 import { TableState } from 'primeng/api';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Injectable()
 
@@ -486,6 +485,58 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
             (child.columnWidthsState as any) = state.columnWidths;
             child.restoreColumnWidths();
         });
+    }
+
+    filter(value: any, field: string, matchMode: string) {
+        if (this.parent === null){
+            if (!this.isFilterBlank(value)) {
+                this.filters[field] = { value: value, matchMode: matchMode };
+            } else if (this.filters[field]) {
+                delete this.filters[field];
+            }
+            this.children.forEach(c=>{
+                c.filter(value, field, matchMode);
+            });
+        } else {
+            super.filter(value, field, matchMode);
+        }
+    }
+
+    doFilter(){
+        this.children.forEach(c=>{
+            c.filters = this.filters;
+            c._filter();
+        });
+    }
+
+    _filter(){
+        if (this.parent === null){
+            this.children.forEach(c=>{
+                c.filters = this.filters
+                c._filter();
+            });
+        } else {
+            super._filter();
+        }
+    }
+
+    sortSingle(){
+        if (this.parent === null){
+            this.children.forEach(c=>{
+                c.sortField = this.sortField;
+                c.sortOrder = this.sortOrder;
+                c.sortSingle();
+            });
+            let sortMeta: any = {
+                field: this.sortField,
+                order: this.sortOrder
+            };
+
+            this.onSort.emit(sortMeta);
+            this.tableService.onSort(sortMeta);            
+        } else {
+            super.sortSingle();
+        }
     }
 }
 
