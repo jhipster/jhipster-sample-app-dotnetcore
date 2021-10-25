@@ -22,6 +22,11 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { ConfirmationService, PrimeNGConfig} from "primeng/api";
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
+interface IView {
+  name: string,
+  aggregation: string,
+  field: string
+}
 
 @Component({
   selector: 'jhi-category',
@@ -78,6 +83,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   initialSelectedCategories = "";
 
+  selectedView: IView | null = null ;
+
+  views: IView[] = [
+    {name:"Category", field: "categories", aggregation: "categories.keyword"}
+    ,{name:"Date", field: "dob", aggregation: "dob"}
+    ,{name:"Sign", field: "sign", aggregation: "sign.keyword"}
+    ,{name: "First Name", field: "fname", aggregation: "fname.keyword"}
+  ];
+
   constructor(
     protected categoryService: CategoryService,
     protected birthdayService: BirthdayService,
@@ -95,14 +109,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;
-
     this.loading = true;
+    const viewQuery: any = this.selectedView === null ? {view: null} : {view:this.selectedView};
+    viewQuery.query = this.databaseQuery;
     this.categoryService
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
-        query: this.databaseQuery
+        query: JSON.stringify(viewQuery)
       })
       .subscribe(
         (res: HttpResponse<ICategory[]>) => this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate),
@@ -158,6 +173,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
       this.checkboxSelectedRows.forEach((row)=>{
         this.chipSelectedRows.push(row);
       });
+    }
+  }
+
+  onViewChange(event: Event): void{
+    if (event){
+      Object.keys(this.expandedRows).forEach((key)=>{
+        this.expandedRows[key] = false;
+      });      
+      this.refreshData();
     }
   }
 

@@ -21,9 +21,10 @@ import { DialogModule } from 'primeng/dialog';
 import { BirthdayTableModule } from '../birthday/birthday-table.module';
 import { EditableMultiSelectModule } from '../birthday/editable-multi-select.module';
 import { BirthdayQueryBuilderModule } from '../birthday/birthday-query-builder.module';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
-  imports: [JhipsterSharedModule, RouterModule.forChild(categoryRoute), SuperTableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule, MenuModule, DialogModule, BirthdayTableModule, BirthdayQueryBuilderModule, EditableMultiSelectModule],
+  imports: [JhipsterSharedModule, RouterModule.forChild(categoryRoute), SuperTableModule, CalendarModule, ContextMenuModule, MessagesModule, ChipsModule, ConfirmPopupModule, TooltipModule, ScrollTopModule, MenuModule, DialogModule, BirthdayTableModule, BirthdayQueryBuilderModule, EditableMultiSelectModule, DropdownModule],
 declarations: [CategoryComponent, CategoryDetailComponent /* , CategoryUpdateComponent, CategoryDeleteDialogComponent*/],
   entryComponents: [/* CategoryDeleteDialogComponent*/],
 })

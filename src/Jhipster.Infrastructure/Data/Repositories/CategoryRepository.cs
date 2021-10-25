@@ -10,11 +10,16 @@ using System;
 using Nest;
 using Jhipster.Infrastructure.Data;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Jhipster.Infrastructure.Data.Repositories
 {
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
+        private static Uri node = new Uri("https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/");
+        private static Nest.ConnectionSettings setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9","4cdkz0o14").DefaultIndex("birthdays");
+        private static ElasticClient elastic = new ElasticClient(setting);        
         protected readonly IBirthdayRepository _birthdayRepository;   
         public CategoryRepository(IUnitOfWork context, IBirthdayRepository birthdayRepository) : base(context)
         {
@@ -37,10 +42,49 @@ namespace Jhipster.Infrastructure.Data.Repositories
             return category;
         }
         public override async Task<IPage<Category>> GetPageFilteredAsync(IPageable pageable, string query){
-            IPage<Birthday> birthdayPage = await _birthdayRepository.GetPageFilteredAsync(pageable, query);
-            List<Category> content = new List<Category>();
-            Dictionary<string, bool> encountered = new Dictionary<string, bool>();
+            var categoryRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(query);
+            query = (string)categoryRequest["query"];
+            string aggregationKey = "categories.keyword";
+            if (categoryRequest["view"] != null){
+                var view = JsonConvert.DeserializeObject<Dictionary<string,string>>(categoryRequest["view"].ToString());
+                aggregationKey = view["aggregation" ];
+                if (query == ""){
+                    query = view["field"] + ":*";
+                }
+            }
+            if (query == ""){
+                query = "categories:*";
+            }
+            var result = await elastic.SearchAsync<Aggregation>(q => q
+                .Size(0)
+                .Index("birthdays")
+                .Aggregations(agg => agg.Terms(
+                    "distinct", e => 
+                        e.Field(aggregationKey)                        
+                        .Size(10000)
+                    )
+                )
+                .QueryOnQueryString(query)
+            );
             long id = 0;
+            List<Category> content = new List<Category>();            
+            ((BucketAggregate)result.Aggregations.ToList()[0].Value).Items.ToList().ForEach(it=>{
+                KeyedBucket<Object> kb = (KeyedBucket<Object>)it;
+                string categoryName = kb.KeyAsString != null ? kb.KeyAsString : (string)kb.Key;
+                if (Regex.IsMatch(categoryName, @"\d{4,4}-\d{2,2}-\d{2,2}T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z")){
+                    categoryName = Regex.Replace(categoryName, @"(\d{4,4})-(\d{2,2})-(\d{2,2})T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z","$1-$2-$3");
+                }
+                content.Add(new Category{
+                    CategoryName = categoryName,
+                    Id = ++id
+                });
+
+                var x = kb.Key;
+            });
+            /*
+            IPage<Birthday> birthdayPage = await _birthdayRepository.GetPageFilteredAsync(pageable, query);
+
+            Dictionary<string, bool> encountered = new Dictionary<string, bool>();
             ((List<Birthday>)birthdayPage.Content).ForEach(b=>{
                 if (b.Categories != null){
                     b.Categories.ForEach(c =>{
@@ -55,6 +99,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
                     });
                 }
             });
+            */
             content = content.OrderBy(cat => cat.CategoryName).ToList();
             content.Add(new Category{
                 CategoryName = "(Uncategorized)",
@@ -62,6 +107,11 @@ namespace Jhipster.Infrastructure.Data.Repositories
                 notCategorized = true
             });
             return new Page<Category>(content, pageable, content.Count);
+        }
+        class Aggregation{
+            string key {get; set;}
+            int doc_count {get; set;}
+            object[] distinct {get; set;}
         }
     }
 }
