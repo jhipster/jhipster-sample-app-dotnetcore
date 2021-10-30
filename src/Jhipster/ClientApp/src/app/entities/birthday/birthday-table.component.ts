@@ -104,8 +104,12 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     let workingQuery = this.databaseQuery;
+    let selectedViewField = "categories";
+    if (this.parent && this.parent.selectedView){
+      selectedViewField = this.parent.selectedView.field;
+    }
     if (this.category !== null){
-      const parsedDatabaseQuery = JSON.parse('{"condition":"and","rules":[{"field":"categories","operator":"contains","value":"' + "\\\"" + this.category.categoryName + "\\\"" + '"}]}')
+      const parsedDatabaseQuery = JSON.parse('{"condition":"and","rules":[{"field":"' + selectedViewField + '","operator":"contains","value":"' + "\\\"" + this.category.categoryName + "\\\"" + '"}]}')
       if (this.category.notCategorized){
         parsedDatabaseQuery.rules[0] = JSON.parse('{"field":"categories","operator":"is null"}')
       }

@@ -438,6 +438,8 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
         return this._selection;
     }
 
+    @Input() selectedView: any = null;
+
     set selection(val: any) {
         this._selection = val;
         if (this.children.length > 0){
