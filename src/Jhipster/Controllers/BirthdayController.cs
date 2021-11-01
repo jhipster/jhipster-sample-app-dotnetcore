@@ -15,10 +15,9 @@ using Jhipster.Web.Rest.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using System;
-using Nest;
-using Microsoft.AspNetCore.Http.Extensions; 
+using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jhipster.Controllers
 {
@@ -31,10 +30,6 @@ namespace Jhipster.Controllers
         private readonly IMapper _mapper;
         private readonly IBirthdayService _birthdayService;
         private readonly ILogger<BirthdayController> _log;
-
-        private static Uri node = new Uri("https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/");
-        private static Nest.ConnectionSettings setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9","4cdkz0o14").DefaultIndex("birthdays");
-        private static ElasticClient elastic = new ElasticClient(setting);
 
         public BirthdayController(ILogger<BirthdayController> log,
             IMapper mapper,
@@ -81,7 +76,13 @@ namespace Jhipster.Controllers
                 query = queryDictionary["query"];
             }
             if (query.StartsWith("{")){
-                query = TextTemplate.Runner.Interpolate("LuceneQueryBuilder", query);
+                var birthdayRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(query);
+                string birthdayQuery = (string)birthdayRequest["query"];
+                if (birthdayQuery != ""){
+                    birthdayQuery = TextTemplate.Runner.Interpolate("LuceneQueryBuilder", birthdayQuery);
+                }
+                birthdayRequest["query"] = birthdayQuery;
+                query = JsonConvert.SerializeObject(birthdayRequest);
             }
             BirthdayDto birthdaydto = _mapper.Map<BirthdayDto>(new Birthday());
             var result = await _birthdayService.FindAll(pageable, query);
@@ -119,6 +120,7 @@ namespace Jhipster.Controllers
             return Ok().WithHeaders(HeaderUtil.CreateEntityDeletionAlert(EntityName, id.ToString()));
         }
     }
+
     public interface IBirthdayPageable : IPageable{
         public String query { get; }
     }

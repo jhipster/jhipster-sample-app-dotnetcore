@@ -25,7 +25,10 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 interface IView {
   name: string,
   aggregation: string,
-  field: string
+  field: string,
+  query: string,
+  script?: string,
+  categoryQuery? : string
 }
 
 @Component({
@@ -86,10 +89,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
   selectedView: IView | null = null ;
 
   views: IView[] = [
-    {name:"Category", field: "categories", aggregation: "categories.keyword"}
-    ,{name:"Date", field: "dob", aggregation: "dob"}
-    ,{name:"Sign", field: "sign", aggregation: "sign.keyword"}
-    ,{name: "First Name", field: "fname", aggregation: "fname.keyword"}
+    {name:"Category", field: "categories", aggregation: "categories.keyword", query: "categories:*"}
+    ,{name:"Year of Birth", field: "dob", aggregation: "dob", query: "*", categoryQuery: "dob:[{}-01-01 TO {}-12-31]", script: "\n            String st = doc['dob'].value.getYear().toString();\n            if (st==null){\n              return \"\";\n            } else {\n              return st.substring(0, 4);\n            }\n          "}
+    ,{name:"Sign", field: "sign", aggregation: "sign.keyword", query: "sign:*"}
+    ,{name: "First Name", field: "fname", aggregation: "fname.keyword", query: "fname:*"}
   ];
 
   constructor(

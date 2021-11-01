@@ -103,27 +103,16 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
     const pageToLoad: number = page || this.page || 1;
 
     this.loading = true;
-    let workingQuery = this.databaseQuery;
-    let selectedViewField = "categories";
-    if (this.parent && this.parent.selectedView){
-      selectedViewField = this.parent.selectedView.field;
-    }
-    if (this.category !== null){
-      const parsedDatabaseQuery = JSON.parse('{"condition":"and","rules":[{"field":"' + selectedViewField + '","operator":"contains","value":"' + "\\\"" + this.category.categoryName + "\\\"" + '"}]}')
-      if (this.category.notCategorized){
-        parsedDatabaseQuery.rules[0] = JSON.parse('{"field":"categories","operator":"is null"}')
-      }
-      if (this.databaseQuery !== ""){
-        parsedDatabaseQuery.rules.push(JSON.parse(this.databaseQuery));
-      }
-      workingQuery = JSON.stringify(parsedDatabaseQuery);
-    }
+
+    const viewQuery: any = !this.parent || this.parent.selectedView === null ? {view: null} : {view:this.parent.selectedView};
+    viewQuery.query = this.databaseQuery;
+    viewQuery.category = this.category?.notCategorized ? "-" : this.category?.categoryName;
     this.birthdayService
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
-        query: workingQuery
+        query: JSON.stringify(viewQuery)
       })
       .subscribe(
         (res: HttpResponse<IBirthday[]>) => this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate),

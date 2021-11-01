@@ -38,7 +38,8 @@
           [expandedRowKeys]="expandedRows"
           (onRowExpand)="onExpandChange(true)" 
           (onRowCollapse)="onExpandChange(false)"
-          (selectionChange)="onCheckboxChange()" 
+          (selectionChange)="onCheckboxChange()"
+          [selectedView]="selectedView"
         >
         <ng-template pTemplate="caption">
           <div class="p-d-flex">

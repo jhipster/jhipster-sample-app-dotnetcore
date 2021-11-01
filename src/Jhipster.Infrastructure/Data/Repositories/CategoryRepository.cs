@@ -41,26 +41,30 @@ namespace Jhipster.Infrastructure.Data.Repositories
             }
             return category;
         }
-        public override async Task<IPage<Category>> GetPageFilteredAsync(IPageable pageable, string query){
-            var categoryRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(query);
-            query = (string)categoryRequest["query"];
-            string aggregationKey = "categories.keyword";
-            if (categoryRequest["view"] != null){
-                var view = JsonConvert.DeserializeObject<Dictionary<string,string>>(categoryRequest["view"].ToString());
-                aggregationKey = view["aggregation" ];
-                if (query == ""){
-                    query = view["field"] + ":*";
-                }
+        public override async Task<IPage<Category>> GetPageFilteredAsync(IPageable pageable, string queryJson){
+            var categoryRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(queryJson);
+            Dictionary<string, string> view = new Dictionary<string, string>();
+            string aggregationKey = "";
+            string query = "";  
+            if (categoryRequest["view"] == null){
+                // default
+                view["aggregation"] = "categories.keyword";
+                view["query"] = "categories:*";
+                view["field"] = "categories";
+            } else {
+                view = JsonConvert.DeserializeObject<Dictionary<string,string>>(categoryRequest["view"].ToString());
             }
-            if (query == ""){
-                query = "categories:*";
-            }
+            aggregationKey = view["aggregation" ];
+            query = view["query"] + ((string)categoryRequest["query"] != "" ? " AND " + categoryRequest["query"] : "");
             var result = await elastic.SearchAsync<Aggregation>(q => q
                 .Size(0)
                 .Index("birthdays")
                 .Aggregations(agg => agg.Terms(
-                    "distinct", e => 
-                        e.Field(aggregationKey)                        
+                    "distinct", e =>
+                        (view != null && view.Keys.Contains("script") 
+                            ? e.Script(view["script"]) 
+                            : e.Field(aggregationKey)
+                        )                   
                         .Size(10000)
                     )
                 )
@@ -101,11 +105,18 @@ namespace Jhipster.Infrastructure.Data.Repositories
             });
             */
             content = content.OrderBy(cat => cat.CategoryName).ToList();
-            content.Add(new Category{
-                CategoryName = "(Uncategorized)",
-                selected = false,
-                notCategorized = true
-            });
+            result = await elastic.SearchAsync<Aggregation>(q => q
+                .Size(0)
+                .Index("birthdays")
+                .QueryOnQueryString("-" + view["query"])
+            );
+            if (result.Total > 0){
+                content.Add(new Category{
+                    CategoryName = "(Uncategorized)",
+                    selected = false,
+                    notCategorized = true
+                });
+            }
             return new Page<Category>(content, pageable, content.Count);
         }
         class Aggregation{

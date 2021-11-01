@@ -8,7 +8,11 @@ using Jhipster.Domain.Repositories.Interfaces;
 using Jhipster.Infrastructure.Data.Extensions;
 using System;
 using Nest;
+using Jhipster.Infrastructure.Data;
+using System.Linq.Expressions;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 
@@ -51,7 +55,27 @@ namespace Jhipster.Infrastructure.Data.Repositories
         public override async Task<IPage<Birthday>> GetPageAsync(IPageable pageable){
             return await GetPageFilteredAsync(pageable, "");
         }
-        public override async Task<IPage<Birthday>> GetPageFilteredAsync(IPageable pageable, string query){
+        public override async Task<IPage<Birthday>> GetPageFilteredAsync(IPageable pageable, string queryJson){
+            var birthdayRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(queryJson);
+            Dictionary<string, string> view = new Dictionary<string, string>();
+            string query = birthdayRequest.ContainsKey("query") ? (string)birthdayRequest["query"] : "";
+            if (birthdayRequest["view"] == null){
+                // default
+                view["aggregation"] = "categories.keyword";
+                view["query"] = "categories:*";
+                view["field"] = "categories";
+            } else {
+                view = JsonConvert.DeserializeObject<Dictionary<string,string>>(birthdayRequest["view"].ToString());
+            }
+            string categoryClause = "";
+            if (birthdayRequest.ContainsKey("category")){
+                if (view.ContainsKey("categoryQuery")){
+                    categoryClause = view["categoryQuery"].Replace("{}", (string)birthdayRequest["category"]);
+                } else {
+                    categoryClause = (string)birthdayRequest["category"] == "-" ? "-" + view["field"] + ":*" : view["field"] + ":\"" + birthdayRequest["category"]  + "\"";
+                }
+                query = categoryClause + (query != "" ? " AND (" + query + ")" : "");
+            }
             ISearchResponse<ElasticBirthday> searchResponse = null;
             if (query == "" || query == "()"){
                 searchResponse = await elastic.SearchAsync<ElasticBirthday>(s => s
