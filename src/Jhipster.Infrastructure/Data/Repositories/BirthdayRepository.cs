@@ -56,19 +56,21 @@ namespace Jhipster.Infrastructure.Data.Repositories
             return await GetPageFilteredAsync(pageable, "");
         }
         public override async Task<IPage<Birthday>> GetPageFilteredAsync(IPageable pageable, string queryJson){
+            if (!queryJson.StartsWith("{")){
+                // backwards compatibility
+                Dictionary<string,object> queryObject = new Dictionary<string, object>();
+                queryObject["query"] = queryJson;
+                queryObject["view"] = null;
+                queryJson = JsonConvert.SerializeObject(queryObject);
+            }
             var birthdayRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(queryJson);
             Dictionary<string, string> view = new Dictionary<string, string>();
             string query = birthdayRequest.ContainsKey("query") ? (string)birthdayRequest["query"] : "";
-            if (birthdayRequest["view"] == null){
-                // default
-                view["aggregation"] = "categories.keyword";
-                view["query"] = "categories:*";
-                view["field"] = "categories";
-            } else {
+            if (birthdayRequest["view"] != null){
                 view = JsonConvert.DeserializeObject<Dictionary<string,string>>(birthdayRequest["view"].ToString());
             }
             string categoryClause = "";
-            if (birthdayRequest.ContainsKey("category")){
+            if (birthdayRequest.ContainsKey("category") && view.ContainsKey("field")){
                 if (view.ContainsKey("categoryQuery")){
                     categoryClause = view["categoryQuery"].Replace("{}", (string)birthdayRequest["category"]);
                 } else {
@@ -113,6 +115,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
                     Categories = listCategory
                 });
             }
+            content = content.OrderBy(b => b.Dob).ToList();
             return new Page<Birthday>(content, pageable, content.Count);
         }
         private class ElasticBirthday

@@ -45,77 +45,60 @@ namespace Jhipster.Infrastructure.Data.Repositories
             var categoryRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(queryJson);
             Dictionary<string, string> view = new Dictionary<string, string>();
             string aggregationKey = "";
-            string query = "";  
+            string query = "";
+            long id = 0;
+            List<Category> content = new List<Category>();               
             if (categoryRequest["view"] == null){
                 // default
-                view["aggregation"] = "categories.keyword";
-                view["query"] = "categories:*";
-                view["field"] = "categories";
-            } else {
-                view = JsonConvert.DeserializeObject<Dictionary<string,string>>(categoryRequest["view"].ToString());
-            }
-            aggregationKey = view["aggregation" ];
-            query = view["query"] + ((string)categoryRequest["query"] != "" ? " AND " + categoryRequest["query"] : "");
-            var result = await elastic.SearchAsync<Aggregation>(q => q
-                .Size(0)
-                .Index("birthdays")
-                .Aggregations(agg => agg.Terms(
-                    "distinct", e =>
-                        (view != null && view.Keys.Contains("script") 
-                            ? e.Script(view["script"]) 
-                            : e.Field(aggregationKey)
-                        )                   
-                        .Size(10000)
-                    )
-                )
-                .QueryOnQueryString(query)
-            );
-            long id = 0;
-            List<Category> content = new List<Category>();            
-            ((BucketAggregate)result.Aggregations.ToList()[0].Value).Items.ToList().ForEach(it=>{
-                KeyedBucket<Object> kb = (KeyedBucket<Object>)it;
-                string categoryName = kb.KeyAsString != null ? kb.KeyAsString : (string)kb.Key;
-                if (Regex.IsMatch(categoryName, @"\d{4,4}-\d{2,2}-\d{2,2}T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z")){
-                    categoryName = Regex.Replace(categoryName, @"(\d{4,4})-(\d{2,2})-(\d{2,2})T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z","$1-$2-$3");
-                }
-                content.Add(new Category{
-                    CategoryName = categoryName,
-                    Id = ++id
-                });
-
-                var x = kb.Key;
-            });
-            /*
-            IPage<Birthday> birthdayPage = await _birthdayRepository.GetPageFilteredAsync(pageable, query);
-
-            Dictionary<string, bool> encountered = new Dictionary<string, bool>();
-            ((List<Birthday>)birthdayPage.Content).ForEach(b=>{
-                if (b.Categories != null){
-                    b.Categories.ForEach(c =>{
-                        if (!encountered.ContainsKey(c.CategoryName)){
-                            content.Add(new Category{
-                                CategoryName = c.CategoryName,
-                                selected = b.Id == query,
-                                Id = ++id // arbitrary id to distinguish rows
-                            });
-                            encountered[c.CategoryName] = true;
-                        }
-                    });
-                }
-            });
-            */
-            content = content.OrderBy(cat => cat.CategoryName).ToList();
-            result = await elastic.SearchAsync<Aggregation>(q => q
-                .Size(0)
-                .Index("birthdays")
-                .QueryOnQueryString("-" + view["query"])
-            );
-            if (result.Total > 0){
                 content.Add(new Category{
                     CategoryName = "(Uncategorized)",
                     selected = false,
                     notCategorized = true
                 });
+            } else {
+                view = JsonConvert.DeserializeObject<Dictionary<string,string>>(categoryRequest["view"].ToString());
+                aggregationKey = view["aggregation" ];
+                query = view["query"] + ((string)categoryRequest["query"] != "" ? " AND " + categoryRequest["query"] : "");
+                var result = await elastic.SearchAsync<Aggregation>(q => q
+                    .Size(0)
+                    .Index("birthdays")
+                    .Aggregations(agg => agg.Terms(
+                        "distinct", e =>
+                            (view != null && view.Keys.Contains("script") 
+                                ? e.Script(view["script"]) 
+                                : e.Field(aggregationKey)
+                            )                   
+                            .Size(10000)
+                        )
+                    )
+                    .QueryOnQueryString(query)
+                );
+                ((BucketAggregate)result.Aggregations.ToList()[0].Value).Items.ToList().ForEach(it=>{
+                    KeyedBucket<Object> kb = (KeyedBucket<Object>)it;
+                    string categoryName = kb.KeyAsString != null ? kb.KeyAsString : (string)kb.Key;
+                    if (Regex.IsMatch(categoryName, @"\d{4,4}-\d{2,2}-\d{2,2}T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z")){
+                        categoryName = Regex.Replace(categoryName, @"(\d{4,4})-(\d{2,2})-(\d{2,2})T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z","$1-$2-$3");
+                    }
+                    content.Add(new Category{
+                        CategoryName = categoryName,
+                        Id = ++id
+                    });
+
+                    var x = kb.Key;
+                });
+                content = content.OrderBy(cat => cat.CategoryName).ToList();
+                result = await elastic.SearchAsync<Aggregation>(q => q
+                    .Size(0)
+                    .Index("birthdays")
+                    .QueryOnQueryString("-" + view["query"])
+                );
+                if (result.Total > 0){
+                    content.Add(new Category{
+                        CategoryName = "(Uncategorized)",
+                        selected = false,
+                        notCategorized = true
+                    });
+                }
             }
             return new Page<Category>(content, pageable, content.Count);
         }

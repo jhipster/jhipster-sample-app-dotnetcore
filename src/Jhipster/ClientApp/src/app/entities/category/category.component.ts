@@ -52,6 +52,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   ngbPaginationPage = 1;
   expandedRows = {};
   loading = true;
+  displayAsCategories = true;
   faCheck = faCheck;
   
   columnDefs = [
@@ -481,6 +482,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     if (data) {
       this.rowData = of(this.categories);
     }
+    this.displayAsCategories = this.categories?.length !== 1;
     this.loading = false;
   }
 
