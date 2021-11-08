@@ -123,7 +123,7 @@
           <td *ngIf="birthday.isAlive">Yes</td>
           <td *ngIf="!birthday.isAlive">No</td>
           <td>
-            <button type="button" pButton pRipple [super-RowToggler]="birthday" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            <button type="button" style="width:2rem" pButton pRipple [super-RowToggler]="birthday" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
           </td>          
         </tr>
       </ng-template>
