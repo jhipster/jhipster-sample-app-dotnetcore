@@ -64,7 +64,7 @@ import { TableState } from 'primeng/api';
                 [templateLeft]="paginatorLeftTemplate" [templateRight]="paginatorRightTemplate" [dropdownAppendTo]="paginatorDropdownAppendTo" [dropdownScrollHeight]="paginatorDropdownScrollHeight"
                 [currentPageReportTemplate]="currentPageReportTemplate" [showFirstLastIcon]="showFirstLastIcon" [dropdownItemTemplate]="paginatorDropdownItemTemplate" [showCurrentPageReport]="showCurrentPageReport" [showJumpToPageDropdown]="showJumpToPageDropdown" [showPageLinks]="showPageLinks"></p-paginator>
 
-            <div class="p-datatable-wrapper" *ngIf="!scrollable">
+            <div class="p-datatable-wrapper" style="overflow: hidden;" *ngIf="!scrollable">
                 <table role="grid" #table [ngClass]="tableStyleClass" [ngStyle]="tableStyle">
                     <ng-container *ngTemplateOutlet="colGroupTemplate; context {$implicit: columns}"></ng-container>
                     <thead class="p-datatable-thead">
@@ -104,10 +104,10 @@ import { TableState } from 'primeng/api';
         position: relative;
     }
     
-    .p-datatable table {
-        border-collapse: collapse;
-        min-width: 100%;
-        table-layout: fixed;
+    .p-datatable table{
+        border-collapse:collapse;
+        table-layout:fixed;
+        width:100%
     }
     
     .p-datatable .p-sortable-column {
