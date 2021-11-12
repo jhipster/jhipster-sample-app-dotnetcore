@@ -440,6 +440,8 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
 
     @Input() selectedView: any = null;
 
+    @Input() displayingAsCategories = false;
+
     set selection(val: any) {
         this._selection = val;
         if (this.children.length > 0){
@@ -450,7 +452,9 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
         }
     }
 
-    children: SuperTable[] = [];    
+    children: SuperTable[] = [];
+
+    filteringGlobal = false;
 
     constructor(public el: ElementRef, public zone: NgZone, public tableService: TableService, public cd: ChangeDetectorRef, public filterService: FilterService) {
         super(el, zone, tableService, cd, filterService);
@@ -490,7 +494,7 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
     }
 
     filter(value: any, field: string, matchMode: string) {
-        if (this.parent === null){
+        if (this.parent === null && !(field === "global" || this.displayingAsCategories)){
             if (!this.isFilterBlank(value)) {
                 this.filters[field] = { value: value, matchMode: matchMode };
             } else if (this.filters[field]) {
@@ -500,6 +504,9 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
                 c.filter(value, field, matchMode);
             });
         } else {
+            if (field === "global" && this.displayingAsCategories){
+                this.filteringGlobal = true;
+            }
             super.filter(value, field, matchMode);
         }
     }
@@ -512,13 +519,19 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
     }
 
     _filter(){
-        if (this.parent === null){
+        if (this.parent === null && !this.filteringGlobal){
             this.children.forEach(c=>{
                 c.filters = this.filters
                 c._filter();
             });
         } else {
+            if (this.parent !== null && this.parent.displayingAsCategories && this.filters.global){
+                (this.filters.global as any).value = ""; // insure that a child is not global filtering
+            }
             super._filter();
+            if (this.filteringGlobal){
+                this.filteringGlobal = false;
+            }
         }
     }
 

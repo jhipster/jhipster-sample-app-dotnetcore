@@ -21,6 +21,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { DomSanitizer } from "@angular/platform-browser";
 import { ConfirmationService, PrimeNGConfig} from "primeng/api";
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { SuperTable } from '../birthday/super-table';
 
 interface IView {
   name: string,
@@ -54,6 +55,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   loading = true;
   displayAsCategories = true;
   faCheck = faCheck;
+  categoriesTable: SuperTable | null = null;
   
   columnDefs = [
     { field: 'categoryName', sortable: true, filter: true },
@@ -153,8 +155,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
     const tolerance = 3;
     return element.offsetWidth + tolerance < element.scrollWidth
   }
-  showSearchDialog() : void {
+  showSearchDialog(categoriesTable: SuperTable) : void {
     // initialize dialog here
+    this.categoriesTable = categoriesTable;  // allows search to run the filter after the search
     this.bDisplaySearchDialog = true;
   }
 
@@ -169,6 +172,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
       this.databaseQuery = JSON.stringify(queryBuilder.query);
     }
     this.bDisplaySearchDialog = false;
+    if (this.categoriesTable?.displayingAsCategories){
+      delete this.categories;
+      this.categoriesTable?.doFilter();
+    }
     this.refreshData();
   }
   onCheckboxChange() : void {
@@ -180,8 +187,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
     }
   }
 
-  onViewChange(event: Event): void{
+  onViewChange(event: Event, searchInput: any, categoriesTable : SuperTable): void{
     if (event){
+      searchInput.value = ""; // global search must be cleared to prevent odd behavior
+      categoriesTable.filter("", "global", "contains"); // reset the global filter
       Object.keys(this.expandedRows).forEach((key)=>{
         this.expandedRows[key] = false;
       });      
