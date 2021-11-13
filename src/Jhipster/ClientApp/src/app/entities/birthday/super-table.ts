@@ -1,7 +1,7 @@
 /* eslint-disable */ 
 
 import { NgModule, Component, HostListener, OnInit, OnDestroy, AfterViewInit, Directive, Optional, AfterContentInit,
-    Input, ElementRef, NgZone, ChangeDetectorRef, OnChanges, ChangeDetectionStrategy, ViewEncapsulation, Renderer2} from '@angular/core';
+    Input, Output, EventEmitter, ElementRef, NgZone, ChangeDetectorRef, OnChanges, ChangeDetectionStrategy, ViewEncapsulation, Renderer2} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SharedModule, PrimeNGConfig, FilterService } from 'primeng/api';
@@ -441,6 +441,7 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
     @Input() selectedView: any = null;
 
     @Input() displayingAsCategories = false;
+    @Output() setTableReference: EventEmitter<any> = new EventEmitter();
 
     set selection(val: any) {
         this._selection = val;
@@ -473,6 +474,7 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
                 child.restoreColumnWidths();
             }, 0);
         }
+        this.setTableReference.emit(this); // used to provide controller a reference to the table        
     }
 
     ngOnChanges(simpleChange: any): any{
@@ -512,22 +514,31 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
     }
 
     doFilter(){
-        this.children.forEach(c=>{
-            c.filters = this.filters;
-            c._filter();
+        let childFilters = {};
+        Object.keys(this.filters).forEach(k=>{
+            if (k !== "global" || !this.displayingAsCategories){
+                childFilters[k] = this.filters[k];
+            }
         });
+        this.children.forEach(c=>{
+            c.filters = childFilters;
+            c._filter();
+        }); 
     }
 
     _filter(){
-        if (this.parent === null && !this.filteringGlobal){
+        if (this.children.length > 0 && !this.filteringGlobal){
+            let childFilters = {};
+            Object.keys(this.filters).forEach(k=>{
+                if (k !== "global" || !this.displayingAsCategories){
+                    childFilters[k] = this.filters[k];
+                }
+            });
             this.children.forEach(c=>{
-                c.filters = this.filters
+                c.filters = childFilters;
                 c._filter();
             });
         } else {
-            if (this.parent !== null && this.parent.displayingAsCategories && this.filters.global){
-                (this.filters.global as any).value = ""; // insure that a child is not global filtering
-            }
             super._filter();
             if (this.filteringGlobal){
                 this.filteringGlobal = false;
@@ -536,7 +547,7 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
     }
 
     sortSingle(){
-        if (this.parent === null){
+        if (this.children.length > 0){
             this.children.forEach(c=>{
                 c.sortField = this.sortField;
                 c.sortOrder = this.sortOrder;

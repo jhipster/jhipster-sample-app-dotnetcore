@@ -1,6 +1,13 @@
 <div>
   <h2 id="page-heading">
-      <span jhiTranslate="jhipsterApp.category.home.title">Categories</span><span style="font-size: 16px;font-weight: 700;">... </span><span (click)="showSearchDialog(categoriesTable!)"><span class="pi pi-search" style="cursor:pointer;"></span></span>
+      <span jhiTranslate="jhipsterApp.category.home.title">Categories</span><span style="font-size: 16px;font-weight: 700;">... </span>
+      <span (click)="showSearchDialog()">
+        <span class="pi pi-search" style="cursor:pointer;"></span>
+      </span>
+      <span *ngIf="searchQueryAsString.length > 0" style="font-size: 16px;font-weight: 200;">
+        {{searchQueryAsString}}
+        <span class="pi pi-times" style="cursor:pointer;" (click)="clearSearch()"></span>
+      </span>
       <p-dialog 
       header="Enter Search Criteria" 
       [(visible)]="bDisplaySearchDialog" 
@@ -41,6 +48,7 @@
           (selectionChange)="onCheckboxChange()"
           [selectedView]="selectedView"
           [displayingAsCategories]="displayAsCategories"
+          (setTableReference)="setCategoriesTable($event)"
         >
         <ng-template pTemplate="caption">
           <div class="p-d-flex">
