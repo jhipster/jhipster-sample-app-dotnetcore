@@ -487,6 +487,10 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
 
     onColumnResizeEnd(event:any, column:any) {
         super.onColumnResizeEnd(event, column);
+        this.setChildWidths();
+    }
+
+    setChildWidths(): void{
         let state: TableState = {};
         this.saveColumnWidths(state);
         this.children.forEach(child=>{
@@ -494,6 +498,7 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
             child.restoreColumnWidths();
         });
     }
+
 
     filter(value: any, field: string, matchMode: string) {
         if (this.parent === null && !(field === "global" || this.displayingAsCategories)){

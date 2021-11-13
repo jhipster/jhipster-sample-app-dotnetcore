@@ -468,8 +468,13 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
     }
     this.loading = false;
     if (this.parent){
-      this.parent.doFilter();
-      this.parent.sortSingle();
+      const parent = this.parent;
+      parent.doFilter();
+      parent.sortSingle();
+
+      setTimeout(function() : void{
+        parent.setChildWidths();
+      }, 0);
     }
   }
 

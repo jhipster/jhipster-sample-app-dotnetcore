@@ -2,11 +2,11 @@
   <h2 id="page-heading">
       <span jhiTranslate="jhipsterApp.category.home.title">Categories</span><span style="font-size: 16px;font-weight: 700;">... </span>
       <span (click)="showSearchDialog()">
-        <span class="pi pi-search" style="cursor:pointer;"></span>
+        <span aria-label="Search" class="pi pi-search" style="cursor:pointer;"></span>
       </span>
       <span *ngIf="searchQueryAsString.length > 0" style="font-size: 16px;font-weight: 200;">
         {{searchQueryAsString}}
-        <span class="pi pi-times" style="cursor:pointer;" (click)="clearSearch()"></span>
+        <span aria-label="Cancel Search" class="pi pi-times" style="cursor:pointer;" (click)="clearSearch()"></span>
       </span>
       <p-dialog 
       header="Enter Search Criteria" 
@@ -18,11 +18,11 @@
     >
       <jhi-birthday-query-builder #queryBuilder></jhi-birthday-query-builder>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelSearchDialog()">
+        <button aria-label="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelSearchDialog()">
             <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 
-        <button type="submit" class="btn btn-primary" [disabled]="queryBuilder.queryCtrl.errors">
+        <button type="Submit" aria-label="submit" class="btn btn-primary" [disabled]="queryBuilder.queryCtrl.errors">
           <fa-icon [icon]="faCheck"></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok" (click)="okSearchDialog(queryBuilder)"></span>
         </button>
       </div>
@@ -52,9 +52,9 @@
         >
         <ng-template pTemplate="caption">
           <div class="p-d-flex">
-            <button pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;" icon="pi pi-refresh" (click)="refreshData()"></button>
+            <button aria-label="Refresh" pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;" icon="pi pi-refresh" (click)="refreshData()"></button>
             &nbsp;
-            <button pButton label="Clear" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(categoriesTable, searchInput)"></button>
+            <button aria-label="Clear" pButton label="Clear" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(categoriesTable, searchInput)"></button>
             &nbsp;
             <p-dropdown [options]="views" [(ngModel)]="selectedView" placeholder="Select a view" optionLabel="name" [showClear]="true" (onChange)="onViewChange($event, searchInput, categoriesTable)"></p-dropdown>            
             <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100; padding-top: 10px;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
@@ -124,7 +124,7 @@
         <ng-template pTemplate="body" let-category let-expanded="expanded">
           <tr [super-ContextMenuRow]="category" *ngIf="displayAsCategories">
               <td>
-                  <button type="button" pButton pRipple [super-RowToggler]="category" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                  <button aria-label="Expand" type="button" pButton pRipple [super-RowToggler]="category" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
               </td>          
               <td #tt pTooltip="{{ category.categoryName }}" [tooltipDisabled]='false' style="overflow:unset; border:none;font-weight: 700; ">{{ category.categoryName }}</td>
           </tr>
@@ -169,8 +169,8 @@
         >
         </jhi-editable-multiselect>
         <div class="modal-footer">
-          <button pButton label="Cancel" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-times" (click)="cancelCategorize()"></button>
-          <button pButton label="Ok" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-check" (click)="okCategorize()"></button>
+          <button aria-label="Cancel" pButton label="Cancel" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-times" (click)="cancelCategorize()"></button>
+          <button aria-label="Ok" pButton label="Ok" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-check" (click)="okCategorize()"></button>
         </div>
       </p-dialog>
       <p-dialog header="{{ birthdayDialogTitle }}" [(visible)]="bDisplayBirthday" [style]="{width: '50vw'}" [baseZIndex]="10000">
