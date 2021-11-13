@@ -32,6 +32,18 @@ interface IView {
   categoryQuery? : string
 }
 
+interface IQueryRule {
+  field: string,
+  operator: string,
+  value: string
+}
+
+interface IQuery {
+  condition: string,
+  rules: IQueryRule[],
+  not: boolean
+}
+
 @Component({
   selector: 'jhi-category',
   templateUrl: './category.component.html',
@@ -56,6 +68,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   displayAsCategories = true;
   faCheck = faCheck;
   categoriesTable: SuperTable | null = null;
+  searchQueryAsString = "";
   
   columnDefs = [
     { field: 'categoryName', sortable: true, filter: true },
@@ -155,9 +168,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
     const tolerance = 3;
     return element.offsetWidth + tolerance < element.scrollWidth
   }
-  showSearchDialog(categoriesTable: SuperTable) : void {
+  showSearchDialog() : void {
     // initialize dialog here
-    this.categoriesTable = categoriesTable;  // allows search to run the filter after the search
     this.bDisplaySearchDialog = true;
   }
 
@@ -170,13 +182,44 @@ export class CategoryComponent implements OnInit, OnDestroy {
       this.databaseQuery = "";
     } else {
       this.databaseQuery = JSON.stringify(queryBuilder.query);
+      this.searchQueryAsString = this.QueryAsString(queryBuilder.query as IQuery);
     }
     this.bDisplaySearchDialog = false;
-    if (this.categoriesTable?.displayingAsCategories){
-      delete this.categories;
-      this.categoriesTable?.doFilter();
-    }
     this.refreshData();
+  }
+
+  clearSearch(): void{
+    this.searchQueryAsString = "";
+    this.databaseQuery = "";
+    this.refreshData();
+  }
+
+  setCategoriesTable(categoriesTable: SuperTable): void{
+    this.categoriesTable = categoriesTable;
+  }
+  
+  QueryAsString(query : IQuery, recurse?: boolean): string{
+    let result = "";
+    let multipleConditions = false;
+    query.rules.forEach((r)=>{
+      if (result.length > 0){
+        result += (' ' + query.condition.toUpperCase() + ' ');
+        multipleConditions = true;
+      }
+      if ((r as any).condition !== undefined){
+        result += this.QueryAsString(r as unknown as IQuery, true);
+      } else {
+        result += r.field;
+        result += (' ' + r.operator.toUpperCase() + ' ');
+        result += ("'" + r.value.toLowerCase() + "'");
+      }
+    });
+    if (query.not){
+      result = '!(' + result + ')';
+    } else if (recurse && multipleConditions){
+      result = '(' + result + ')';
+    }
+    return result;
   }
   onCheckboxChange() : void {
     this.chipSelectedRows = [];
@@ -492,6 +535,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
       this.rowData = of(this.categories);
     }
     this.displayAsCategories = this.categories?.length !== 1;
+    if (this.categoriesTable != null){
+      const categoriesTable = this.categoriesTable;
+      setTimeout(function() : void{
+        if (categoriesTable.displayingAsCategories){
+          categoriesTable.filteringGlobal = true;
+        }
+        categoriesTable._filter();
+      }, 0);
+    }
     this.loading = false;
   }
 
