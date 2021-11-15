@@ -148,6 +148,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.categories =[];
     this.selectableCategories =[];
     this.rowData = of(this.categories);
+    if (this.categoriesTable){
+      this.categoriesTable.children.length = 0;
+    }
     this.loadPage();
   }
 

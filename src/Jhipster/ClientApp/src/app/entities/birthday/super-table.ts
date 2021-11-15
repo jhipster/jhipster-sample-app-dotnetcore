@@ -491,7 +491,7 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
     }
 
     setChildWidths(): void{
-        let state: TableState = {};
+        let state: TableState = {}; 
         this.saveColumnWidths(state);
         this.children.forEach(child=>{
             (child.columnWidthsState as any) = state.columnWidths;
@@ -499,6 +499,25 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
         });
     }
 
+    toggleRowsWithCheckbox(event: any, check: any){
+        if (this.children.length == 1 && this._totalRecords == 1){
+            this.children[0].toggleRowsWithCheckbox(event, check);
+            let selection = this.children[0].selection;
+            let selectionKeys = this.children[0].selectionKeys;
+            super.toggleRowsWithCheckbox(event, check);
+            this.selectionKeys = selectionKeys;
+            //this.selection = selection; // use the selection changed by the child
+            this.selectionChange.emit(selection);
+        } else {
+            if (this.children.length > 0){
+                check = false;
+                this.children.forEach(c=>{
+                    c.toggleRowsWithCheckbox(event, check);
+                });
+            }
+            super.toggleRowsWithCheckbox(event, check);
+        }
+    }
 
     filter(value: any, field: string, matchMode: string) {
         if (this.parent === null && !(field === "global" || this.displayingAsCategories)){
@@ -992,7 +1011,7 @@ export class SuperTableCheckbox extends TableCheckbox  {
                     // insure each child has the same selection
                     c.selection = dt.selection;
                     c.selectionKeys = dt.selectionKeys;
-                    // chanage the visual checkboxes
+                    // change the visual checkboxes
                     c.tableService.onSelectionChange();
                 }
             });
