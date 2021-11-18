@@ -23,6 +23,12 @@ import { ConfirmationService, PrimeNGConfig} from "primeng/api";
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { SuperTable } from '../birthday/super-table';
 
+interface IParse {
+  matches: boolean,
+  string: string,
+  i: number
+}
+
 interface IView {
   name: string,
   aggregation: string,
@@ -174,7 +180,245 @@ export class CategoryComponent implements OnInit, OnDestroy {
   showSearchDialog() : void {
     // initialize dialog here
     this.bDisplaySearchDialog = true;
+    const json = this.parseFlatQuery("(sign = 'sagittarius' AND dob > '1975-01-01') OR (dob <= '1493-01-01' AND lname != 'o\\'neill')");
   }
+
+  parseFlatQuery(query: string): string{
+    const parsed = '';
+    query = query.replace(/\\\\/g,'\x01').replace(/\\'/g, '\x02').replace(/`/g,'\x03');
+    const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|'[^']*'|(AND|OR|!))\s*/g, '`$1').split('`');
+    const i = 1;
+    let ret = this.parseRuleset(tokens, i);
+    if (!ret.matches){
+      ret = this.parseRule(tokens, i);
+    } else {
+      ret.string = '{"condition":"or","rules":[' + ret.string + '],"not":false}';
+    }
+    if (!ret.matches){
+      return '{"Invalid":true, "position", ' + ret.i + '}'
+    }
+    return ret.string;
+  }
+
+  parseRule(tokens: string[], i: number):IParse{
+    const parse: IParse = {
+      matches: false,
+      string: "",
+      i
+    }
+    if ((i + 2) > tokens.length){
+      return parse;
+    }
+    if (!/^(sign|dob|lname|fname|isAlive|document)$/.test(tokens[parse.i])){
+      parse.string = '[invalid field name]';
+      return parse;
+    }
+    parse.i++;
+    parse.string = '[invalid operator]'
+    switch (tokens[i]){
+      case 'isAlive':
+      case 'sign':
+        if (tokens[i + 1] !== '='){
+          return parse;
+        }
+        break;
+      
+      case 'dob':
+        if (!/^(=|!=|>=|<=|>|<)$/.test(tokens[i + 1])){
+          return parse;
+        }
+        break;
+      
+      case 'lname':
+      case 'fname':
+        if (!/^(=|!=|CONTAINS|LIKE)$/.test(tokens[i + 1])){
+          return parse;
+        }
+        break;
+
+      case 'document':
+        if (tokens[i + 1] !== 'CONTAINS'){
+          return parse;
+        }
+        break;
+      
+      default:
+        return parse;
+        break;
+    }
+    parse.i++;
+    parse.string = '[invalid value]';
+    switch (tokens[i]){
+      case 'isAlive':
+        if (!/^'(true|false)'$/.test(tokens[i + 2])){
+          return parse;
+        }
+        break;
+
+      case 'sign':
+        if (!/^'(aries|taurus|gemini|cancer|leo|virgo|libra|scorpio|sagittarius|capricorn|aquarius|pisces)'$/.test(tokens[i + 2])){
+          return parse;
+        }
+        break;
+      
+      case 'dob':
+        if (!/^'\d{4,4}-\d{2,2}-\d{2,2}'$/.test(tokens[i + 2])){
+          return parse;
+        }
+        break;
+      
+      case 'lname':
+      case 'fname':
+      case 'document':
+        if (!/^'[^']*'$/.test(tokens[i + 2])){
+          return parse;
+        }
+        break;
+
+      default:
+        return parse;
+    }
+    parse.i++;
+    let value = "";
+    if (tokens[i] === "isAlive"){
+      value = tokens[i + 2].substr(1, tokens[i + 2].length - 2);
+    } else {
+/* eslint "no-control-regex": 0 */ 
+      value = '"' + tokens[i + 2].substr(1, tokens[i + 2].length - 2).replace(/\x03/g,'`').replace(/\x02/g,"'").replace(/\x01/g,"\\\\").replace(/"/g,"\\\"") + '"';
+    }
+    parse.matches = true;
+    parse.string = '{"field":"' + tokens[i] + '","operator":"' + tokens[i + 1] + '","value":' + value + '}';
+    return parse;
+  }
+
+  parseRuleset(tokens: string[], i: number):IParse{
+    const parse: IParse = {
+      matches: false,
+      string: "",
+      i
+    }
+    let ret = this.parseAndOrRuleset(tokens, i);
+    if (!ret.matches){
+      if (ret.string !== ""){
+        return ret;
+      }
+      ret = this.parseNotRuleset(tokens, i);
+    }
+    if (!ret.matches){
+      ret = this.parseParened(tokens, i);
+    }
+    return ret;
+  }
+
+  parseAndOrRuleset(tokens: string[], i: number):IParse{
+    const rules : string[] = [];
+    const parse: IParse = {
+      matches: false,
+      string: "",
+      i
+    }
+    let ret = this.parseParened(tokens, i);
+    if (!ret.matches){
+      if (ret.string !== ""){
+        return ret;
+      }
+      ret = this.parseRule(tokens, i);
+      if (!ret.matches){
+        if (ret.string !== ""){
+          return ret;
+        }
+        return parse;
+      }
+    }
+    if (!/^(AND|OR)$/.test(tokens[ret.i])){
+      return parse;
+    }
+    const condition = tokens[ret.i];
+    parse.i = ret.i + 1;
+    parse.matches = true;
+    rules.push(ret.string);
+    let loop = true;
+    while (loop){
+      ret = this.parseParened(tokens, parse.i);
+      if (!ret.matches){
+        if (ret.string !== ""){
+          return ret;
+        }
+        ret = this.parseRule(tokens, parse.i);
+        if (!ret.matches){
+          if (ret.string !== ""){
+            return ret;
+          }
+          loop = false;
+        }
+      }
+      if (ret.matches){
+        rules.push(ret.string);
+        parse.i = ret.i;
+        if (tokens[ret.i] !== condition){
+          loop = false;
+        } else {
+          parse.i++;
+        }        
+      } else {
+        loop = false;
+      }
+    }
+    parse.string = '{"condition":"' + condition.toLowerCase() + '","rules":[' + rules.join(',') + '],"not":false}'
+    return parse;
+  }
+
+  parseNotRuleset(tokens: string[], i: number):IParse{
+    const parse: IParse = {
+      matches: false,
+      string: "",
+      i
+    }
+    if (tokens[i++] !== "NOT"){
+      return parse;
+    }
+    const ret = this.parseParened(tokens, i);
+    if (!ret.matches){
+      if (ret.string !== ""){
+        return ret;
+      }
+      parse.string = "[! is not followed by parenthesized expression]";
+      return parse;
+    } else {
+      ret.string.replace('"not":false', '"not":true')
+    }
+    return ret;
+  }
+
+  parseParened(tokens: string[], i: number):IParse{
+    const parse: IParse = {
+      matches: false,
+      string: "",
+      i
+    }
+    if (tokens[i++] !== "("){
+      return parse;
+    }
+    parse.i++;
+    let ret = this.parseRuleset(tokens, i);
+    if (!ret.matches && ret.string === ""){
+      ret = this.parseRule(tokens, i);
+      if (ret.matches){
+        ret.string = ret.string = '{"condition":"or","rules":[' + ret.string + '],"not":false}';
+      } else {
+        return ret;
+      }
+    }
+    if (tokens[ret.i] !== ')'){
+      ret.matches = false;
+      ret.string = "[missing right paren]";
+    } else {
+      ret.i++;
+    }
+    return ret;
+  }
+
+
 
   cancelSearchDialog() : void {
     this.bDisplaySearchDialog = false;
@@ -214,7 +458,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
       } else {
         result += r.field;
         result += (' ' + r.operator.toUpperCase() + ' ');
-        result += ("'" + r.value.toLowerCase() + "'");
+        result += ("'" + r.value.toString().toLowerCase() + "'");
       }
     });
     if (query.not){
