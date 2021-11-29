@@ -277,10 +277,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
       }
       if ((r as any).condition !== undefined){
         result += this.QueryAsString(r as unknown as IQuery, true);
+      } else if (r.field === "document") { 
+        result += (r.value.toString().toLowerCase());
       } else {
         result += r.field;
         result += (' ' + r.operator.toUpperCase() + ' ');
-        result += ("'" + r.value.toString().toLowerCase() + "'");
+        result += (r.value.toString().toLowerCase());
       }
     });
     if (query.not){

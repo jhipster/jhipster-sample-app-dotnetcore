@@ -21,8 +21,8 @@ export class BirthdayQueryParserService {
         if (query.trim() === ""){
             return '{"condition":"or","not":false,"rules":[]}';
         }
-        query = query.replace(/\\\\/g,'\x01').replace(/\\'/g, '\x02').replace(/`/g,'\x03');
-        const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|'[^']*'|(AND|OR|!))\s*/g, '`$1').split('`');
+        query = query.replace(/\\\\/g,'\x01').replace(/\\"/g, '\x02').replace(/`/g,'\x03');
+        const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|[a-z0-9-*]+|"[^"]+"|(AND|OR|!))\s*/g, '`$1').split('`');
         const i = 1;
         let ret = this.parseRuleset(tokens, i);
         if (!ret.matches){
@@ -43,13 +43,21 @@ export class BirthdayQueryParserService {
           string: "",
           i
         }
-        if ((i + 2) > tokens.length){
-          return parse;
-        }
+
         if (!/^(sign|dob|lname|fname|isAlive|document)$/.test(tokens[parse.i])){
-          parse.string = '[invalid field name]';
-          return parse;
+            if (/^[a-z0-9-*]+$/.test(tokens[i]) || /^"[^"]+"$/.test(tokens[i])){
+                const documentValue = '"' + (tokens[i].replace(/\x03/g,'`').replace(/\x02/g,'"').replace(/\x01/g,"\\\\").replace(/"/g,"\\\"")) + '"';
+                parse.matches = true;
+                parse.string = '{"field":"document", "operator":"contains","value":' + documentValue + '}';
+                parse.i++;
+                return parse;
+            }            
+            parse.string = '[invalid field name]';
+            return parse;
         }
+        if ((i + 2) > tokens.length){
+            return parse;
+        }        
         parse.i++;
         parse.string = '[invalid operator]'
         switch (tokens[i]){
@@ -87,19 +95,19 @@ export class BirthdayQueryParserService {
         parse.string = '[invalid value]';
         switch (tokens[i]){
           case 'isAlive':
-            if (!/^'(true|false)'$/.test(tokens[i + 2])){
+            if (!/^(true|false)$/.test(tokens[i + 2])){
               return parse;
             }
             break;
     
           case 'sign':
-            if (!/^'(aries|taurus|gemini|cancer|leo|virgo|libra|scorpio|sagittarius|capricorn|aquarius|pisces)'$/.test(tokens[i + 2])){
+            if (!/^(aries|taurus|gemini|cancer|leo|virgo|libra|scorpio|sagittarius|capricorn|aquarius|pisces)$/.test(tokens[i + 2])){
               return parse;
             }
             break;
           
           case 'dob':
-            if (!/^'\d{4,4}-\d{2,2}-\d{2,2}'$/.test(tokens[i + 2])){
+            if (!/^\d{4,4}-\d{2,2}-\d{2,2}$/.test(tokens[i + 2])){
               return parse;
             }
             break;
@@ -107,7 +115,7 @@ export class BirthdayQueryParserService {
           case 'lname':
           case 'fname':
           case 'document':
-            if (!/^'[^']*'$/.test(tokens[i + 2])){
+            if (!/^[a-z0-9-*]+$/.test(tokens[i + 2]) && !/^"[^"]+"$/.test(tokens[i + 2])){
               return parse;
             }
             break;
@@ -118,10 +126,10 @@ export class BirthdayQueryParserService {
         parse.i++;
         let value = "";
         if (tokens[i] === "isAlive"){
-          value = tokens[i + 2].substr(1, tokens[i + 2].length - 2);
+          value = tokens[i + 2];
         } else {
     /* eslint "no-control-regex": 0 */ 
-          value = '"' + tokens[i + 2].substr(1, tokens[i + 2].length - 2).replace(/\x03/g,'`').replace(/\x02/g,"'").replace(/\x01/g,"\\\\").replace(/"/g,"\\\"") + '"';
+          value = '"' + (tokens[i + 2].replace(/\x03/g,'`').replace(/\x02/g,'"').replace(/\x01/g,"\\\\").replace(/"/g,"\\\"")) + '"';
         }
         parse.matches = true;
         parse.string = '{"field":"' + tokens[i] + '","operator":"' + tokens[i + 1].toLowerCase() + '","value":' + value + '}';
@@ -232,6 +240,11 @@ export class BirthdayQueryParserService {
           string: "",
           i
         }
+        let not = false;
+        if (tokens[i] === "!"){
+          i++;
+          not = true;
+        }
         if (tokens[i++] !== "("){
           return parse;
         }
@@ -240,7 +253,7 @@ export class BirthdayQueryParserService {
         if (!ret.matches && ret.string === ""){
           ret = this.parseRule(tokens, i);
           if (ret.matches){
-            ret.string = ret.string = '{"condition":"or","rules":[' + ret.string + '],"not":false}';
+            ret.string = ret.string = '{"condition":"or","rules":[' + ret.string + '],"not":' + (not ? 'true' : 'false') + '}';
           } else {
             return ret;
           }
