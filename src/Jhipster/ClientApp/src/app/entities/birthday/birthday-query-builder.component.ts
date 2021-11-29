@@ -145,14 +145,19 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
 
   constructor(private formBuilder: FormBuilder, private localChangeDetectorRef:ChangeDetectorRef, private renderer : Renderer2) {
-    super(localChangeDetectorRef); 
+    super(localChangeDetectorRef);
+    this.queryCtrl = this.formBuilder.control(this.query); 
+    this.initialize(JSON.stringify(this.query));
+  }
+
+  public initialize(query: string): void{
+    this.query = JSON.parse(query);
     this.queryCtrl = this.formBuilder.control(this.query);
     this.data = this.query;
     this.queryCtrl.valueChanges.subscribe(ruleSet => {
       this.oDataFilter = `${this.BASE_URL}?$filter=${this.toODataString(ruleSet)}`;
     });
   }
-
 
   ngOnInit() : any{
     // super.ngOnInit();

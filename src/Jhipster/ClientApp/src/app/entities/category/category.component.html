@@ -1,12 +1,28 @@
 <div>
   <h2 id="page-heading">
       <span jhiTranslate="jhipsterApp.category.home.title">Categories</span><span style="font-size: 16px;font-weight: 700;">... </span>
-      <span (click)="showSearchDialog()">
-        <span aria-label="Search" class="pi pi-search" style="cursor:pointer;"></span>
+      <span (click)="showSearchDialog(queryBuilder)" style="cursor:pointer;">
+        <span aria-label="Search" class="pi pi-search"></span>
+        <span *ngIf="searchQueryAsString.length == 0 && !editingQuery" class="p-component" style="font-weight: 100; padding-top: 10px; margin-left: -6px;"><i>click search for widgit or pencil to edit</i></span>
       </span>
-      <span *ngIf="searchQueryAsString.length > 0" style="font-size: 16px;font-weight: 200;">
+      <span *ngIf="!editingQuery" aria-label="Search" class="pi pi-pencil" style="cursor:pointer;" (click)="editQuery()"></span>
+      <span *ngIf="!editingQuery && searchQueryAsString.length > 0" style="font-size: 16px;font-weight: 200;">
         {{searchQueryAsString}}
         <span aria-label="Cancel Search" class="pi pi-times" style="cursor:pointer;" (click)="clearSearch()"></span>
+      </span>
+      <span *ngIf="editingQuery">
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="searchQueryAsString"
+          placeholder="Edit search query"
+          size="130"
+          minlength="0"
+          jhiValidateBirthdayQuery
+          #queryEditor="ngModel"
+        />
+        <span aria-label="Search" class="pi pi-check" *ngIf="queryEditor.valid" style="cursor:pointer;" (click)="acceptEditQuery()"></span>
+        <span aria-label="Search" class="pi pi-times" style="cursor:pointer;" (click)="cancelEditQuery()"></span>
       </span>
       <p-dialog 
       header="Enter Search Criteria" 
@@ -79,7 +95,7 @@
                 pInputText
                 type="text"
                 (input)="categoriesTable.filterGlobal($any($event.target).value, 'contains')"
-                placeholder="Search keyword"
+                placeholder="Filter keyword"
               />
             </span>
           </div>
