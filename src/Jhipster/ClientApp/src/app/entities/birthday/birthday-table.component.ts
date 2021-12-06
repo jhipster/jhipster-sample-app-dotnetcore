@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -85,6 +85,8 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
   selectedCategories : ICategory[] = [];
 
   initialSelectedCategories = "";
+
+  @Output() setViewFocus:EventEmitter<IBirthday> = new EventEmitter<IBirthday>();
 
   constructor(
     protected birthdayService: BirthdayService,
@@ -316,6 +318,16 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
     this.menuItems = [{
       label: 'Options',
       items: [
+        {
+          label: 'Focus',
+          icon: 'pi pi-angle-double-down',
+          command: ()=>{
+            setTimeout(()=>{
+              this.setViewFocus.emit(this.contextSelectedRow as IBirthday); // used to provide controller a reference to the table 
+            }, 0);
+          }
+        }
+        ,
         {
           label: 'Categorize',
           icon: 'pi pi-bookmark',

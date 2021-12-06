@@ -31,6 +31,7 @@ interface IView {
   query: string,
   script?: string,
   categoryQuery? : string
+  focus? : IBirthday[]
 }
 
 interface IQueryRule {
@@ -266,6 +267,28 @@ export class CategoryComponent implements OnInit, OnDestroy {
   setCategoriesTable(categoriesTable: SuperTable): void{
     this.categoriesTable = categoriesTable;
   }
+
+  setViewFocus(focus: IBirthday): void{
+    let focusView : IView = {name: 'Focus on ' + (focus.fname as string) + ' ' + (focus.lname as string), field: "", aggregation: "", query: "", focus: [focus]};
+    if (this.views[this.views.length - 1].focus !== undefined){
+      const existingFocus : IView = this.views[this.views.length - 1];
+      if ((existingFocus.focus as IBirthday[]).includes(focus)){
+        focusView = existingFocus; // the name already exists, so do nothing
+      } else {
+        focusView.name = existingFocus.name + ' and ' + (focus.fname as string) + ' ' + (focus.lname as string); 
+        focusView.focus = existingFocus.focus as IBirthday[];
+        focusView.focus.push(focus);
+      }
+      delete this.views[this.views.length - 1];
+    }
+    this.views.push(focusView);
+    const newViews : IView[] = [];
+    this.views.forEach(v=>{
+      newViews.push(v);
+    });
+    this.views = newViews;  // replace the list of views so the dropdown sees the change
+    this.selectedView = focusView;
+  }
   
   QueryAsString(query : IQuery, recurse?: boolean): string{
     let result = "";
@@ -307,7 +330,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
       categoriesTable.filter("", "global", "contains"); // reset the global filter
       Object.keys(this.expandedRows).forEach((key)=>{
         this.expandedRows[key] = false;
-      });      
+      });
+      if (this.views[this.views.length - 1].focus !== undefined){
+        delete this.views[this.views.length - 1];
+      }
+      const newViews : IView[] = [];
+      this.views.forEach(v=>{
+        newViews.push(v);
+      });
+      this.views = newViews; // replace the list of views so the dropdown sees the change
       this.refreshData();
     }
   }

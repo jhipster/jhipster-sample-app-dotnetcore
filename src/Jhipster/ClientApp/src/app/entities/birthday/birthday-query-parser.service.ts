@@ -22,7 +22,7 @@ export class BirthdayQueryParserService {
             return '{"condition":"or","not":false,"rules":[]}';
         }
         query = query.replace(/\\\\/g,'\x01').replace(/\\"/g, '\x02').replace(/`/g,'\x03');
-        const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|[a-z0-9-*]+|"[^"]+"|(AND|OR|!))\s*/g, '`$1').split('`');
+        const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|"[^"]+"|(AND|OR|!)|[\w\d-*]+)\s*/g, '`$1').split('`');
         const i = 1;
         let ret = this.parseRuleset(tokens, i);
         if (!ret.matches){
@@ -45,7 +45,7 @@ export class BirthdayQueryParserService {
         }
 
         if (!/^(sign|dob|lname|fname|isAlive|document)$/.test(tokens[parse.i])){
-            if (/^[a-z0-9-*]+$/.test(tokens[i]) || /^"[^"]+"$/.test(tokens[i])){
+            if (/^[\w\d-*]+$/.test(tokens[i]) || /^"[^"]+"$/.test(tokens[i])){
                 const documentValue = '"' + (tokens[i].replace(/\x03/g,'`').replace(/\x02/g,'"').replace(/\x01/g,"\\\\").replace(/"/g,"\\\"")) + '"';
                 parse.matches = true;
                 parse.string = '{"field":"document", "operator":"contains","value":' + documentValue + '}';
@@ -115,7 +115,7 @@ export class BirthdayQueryParserService {
           case 'lname':
           case 'fname':
           case 'document':
-            if (!/^[a-z0-9-*]+$/.test(tokens[i + 2]) && !/^"[^"]+"$/.test(tokens[i + 2])){
+            if (!/^[\w\d-*]+$/.test(tokens[i + 2]) && !/^"[^"]+"$/.test(tokens[i + 2])){
               return parse;
             }
             break;

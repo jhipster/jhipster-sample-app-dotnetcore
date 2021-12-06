@@ -10,6 +10,7 @@ Subtemplates:
 {#lte:[{field}:{'['}* TO {'"'}{value}{'"]'}]}
 {#gt:[{field}:{'{"'}{value}{'"'} TO *{'}'}]}
 {#lt:[{field}:{'{'}* TO {'"'}{value}{'"}'}]}
-{#contains:[{field != 'document'->[{field}:]}{value}]}
+{#contains:[{field != 'document'->[{field}:]}{#value}]}
+{#value:[{!value.Contains(' ') | value.Matches(/"[^"]+"/)=>[{value}],["{value}"~4]}]}
 {#isnull:[!{field}:*]}
 {#isnotnull:[{field}:*]}
