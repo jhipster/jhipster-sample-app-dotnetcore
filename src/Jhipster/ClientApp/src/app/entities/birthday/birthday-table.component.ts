@@ -80,8 +80,6 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
 
   @Input() categories : any = [];
 
-  @Input() passedCategories: any | null = null;
-
   selectedCategories : ICategory[] = [];
 
   initialSelectedCategories = "";
@@ -239,7 +237,6 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
     });
     */
   }
-
   onRemoveChip(chip : any) : void {
     if (this.expandedRows[chip.id]){
       this.expandedRows[chip.id] = false;
@@ -252,7 +249,6 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
     });
     this.checkboxSelectedRows = newSelection;
   }
-
   isSelected(key : any) : boolean {
     let ret = false;
     this.checkboxSelectedRows.forEach((row)=>{
@@ -288,28 +284,6 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
   }  
   cancelCategorize() : void {
     this.bDisplayCategories = false;
-  }
-  addToSelectedCategories(categoryInput : any) : void {
-    let category = categoryInput;
-    let categoryPresent = false;
-    (this.categories as any[]).forEach(c=>{
-      if (c.categoryName === category.categoryName){
-        categoryPresent = true;
-        category = c;
-      }
-    });
-    if (!categoryPresent){
-      this.categories.push(category);
-    }
-    let selectedCategoryPresent = false;
-    this.selectedCategories.forEach(c=>{
-      if (c.categoryName === category.categoryName){
-        selectedCategoryPresent = true;
-      }
-    });
-    if (!selectedCategoryPresent){
-      this.selectedCategories.push(category);
-    } 
   }
   ngOnInit(): void {
     this.loadPage(1, true);
@@ -392,23 +366,18 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
   onCategorySuccess(data: ICategory[] | null, headers: HttpHeaders) : void{
     const totalItems = Number(headers.get('X-Total-Count'));
     this.selectedCategories = [];
+    this.categories = [];
+    const selectedCategoryNames:string[] = [];
     if (totalItems > 0 || (data && data?.length > 0)){
       data?.forEach(r=>{
-        if (this.parent == null){
-          this.categories.push(r);
-          if (r.selected){
-            this.selectedCategories.push(r);
-          }
-        } else {
-          (this.passedCategories as ICategory[]).forEach(p=>{
-            if (p.categoryName === r.categoryName && !this.selectedCategories.includes(p)){
-              this.selectedCategories.push(p);
-            }
-          });
+        this.categories.push(r);
+        if (r.selected){
+          this.selectedCategories.push(r);
+          selectedCategoryNames.push(r.categoryName as string);
         }
       });
     }
-    this.initialSelectedCategories = this.selectedCategories.join(",");
+    this.initialSelectedCategories = selectedCategoryNames.join(",");
     this.bDisplayCategories = true;
   }
   doMenuView(selectedRow: any) : void {

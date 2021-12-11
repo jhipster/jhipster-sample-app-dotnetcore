@@ -53,10 +53,7 @@ interface IQuery {
 })
 
 export class CategoryComponent implements OnInit, OnDestroy {
-  categories?: ICategory[];
-  
-  selectableCategories: ICategory[] = [];
-  
+  categories: ICategory[] = [];
   categoriesMap : {} = {};
   eventSubscriber?: Subscription;
   totalItems = 0;
@@ -128,7 +125,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     private primeNGConfig : PrimeNGConfig,
     protected birthdayQueryParserService : BirthdayQueryParserService
   ) {
-    this.selectableCategories = []; // For some reason, selectableCategories is not visible in the html without this
     this.refresh = this.refreshData.bind(this);
   }
 
@@ -152,7 +148,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   refreshData(): void {
     this.categories =[];
-    this.selectableCategories =[];
     this.rowData = of(this.categories);
     if (this.categoriesTable){
       this.categoriesTable.children.length = 0;
@@ -434,28 +429,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
   cancelCategorize() : void {
     this.bDisplayCategories = false;
   }
-  addToSelectedCategories(categoryInput : any) : void {
-    let category = categoryInput;
-    let categoryPresent = false;
-    (this.categories as any[]).forEach(c=>{
-      if (c.categoryName === category.categoryName){
-        categoryPresent = true;
-        category = c;
-      }
-    });
-    if (!categoryPresent){
-      this.categories?.push(category);
-    }
-    let selectedCategoryPresent = false;
-    this.selectedCategories.forEach(c=>{
-      if (c.categoryName === category.categoryName){
-        selectedCategoryPresent = true;
-      }
-    });
-    if (!selectedCategoryPresent){
-      this.selectedCategories.push(category);
-    } 
-  }
   ngOnInit(): void {
     this.handleNavigation();
     this.registerChangeInCategories();
@@ -527,16 +500,17 @@ export class CategoryComponent implements OnInit, OnDestroy {
   onCategorySuccess(data: ICategory[] | null, headers: HttpHeaders) : void{
     const totalItems = Number(headers.get('X-Total-Count'));
     this.selectedCategories = [];
+    this.categories = [];
+    const selectedCategoryNames:string[] = [];
     if (totalItems > 0 || (data && data?.length > 0)){
       data?.forEach(r=>{
-          this.selectableCategories.forEach(p=>{
-            if (p.categoryName === r.categoryName){
-              this.selectedCategories.push(p);
-            }
-          });
+        this.categories.push(r);
+        if (r.selected){
+          selectedCategoryNames.push(r.categoryName as string);
+        }
       });
     }
-    this.initialSelectedCategories = this.selectedCategories.join(",");
+    this.initialSelectedCategories = selectedCategoryNames.join(",");
     this.bDisplayCategories = true;
   }
   doMenuView(selectedRow: any) : void {
@@ -614,12 +588,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
       });
     }
     this.categories = data || [];
-    this.categories.forEach((category)=>{
-      this.categoriesMap[category.id as number] = category;
-      if (!category.notCategorized){
-        this.selectableCategories?.push(category);
-      }
-    });
     this.ngbPaginationPage = this.page;
     
     if (data) {

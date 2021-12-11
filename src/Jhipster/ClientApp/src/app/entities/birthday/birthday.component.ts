@@ -280,28 +280,6 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   cancelCategorize() : void {
     this.bDisplayCategories = false;
   }
-  addToSelectedCategories(categoryInput : any) : void {
-    let category = categoryInput;
-    let categoryPresent = false;
-    this.categories.forEach(c=>{
-      if (c.categoryName === category.categoryName){
-        categoryPresent = true;
-        category = c;
-      }
-    });
-    if (!categoryPresent){
-      this.categories.push(category);
-    }
-    let selectedCategoryPresent = false;
-    this.selectedCategories.forEach(c=>{
-      if (c.categoryName === category.categoryName){
-        selectedCategoryPresent = true;
-      }
-    });
-    if (!selectedCategoryPresent){
-      this.selectedCategories.push(category);
-    }
-  }
   ngOnInit(): void {
     this.handleNavigation();
     this.registerChangeInBirthdays();

@@ -52,7 +52,7 @@
             </div>
           </th>
           <th>Alive?</th>
-          <th style="width:25px;font-weight: 700;"><span class="p-button-icon pi pi-chevron-right" aria-hidden="true"></span></th>
+          <th style="width:2rem;font-weight: 700;"><span class="p-button-icon pi pi-chevron-right" aria-hidden="true"></span></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-birthday let-expanded="expanded">
@@ -89,7 +89,7 @@
   ></p-scrollTop>
   <p-dialog header="Categorize {{birthdayDialogTitle}}" [(visible)]="bDisplayCategories" >
     <jhi-editable-multiselect *ngIf="bDisplayCategories"
-      [options]="passedCategories" 
+      [options]="categories" 
       [(ngModel)]="selectedCategories" 
       defaultLabel="Select or enter a new Category" 
       optionLabel="categoryName"

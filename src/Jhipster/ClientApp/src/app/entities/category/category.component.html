@@ -154,7 +154,6 @@
                   [parent] = "categoriesTable"
                   [databaseQuery] = "databaseQuery"
                   [category] = "category"
-                  [passedCategories] = "selectableCategories"
                   [refresh] = "refresh"
                   (setViewFocus) = "setViewFocus($event)"
                 >
@@ -163,14 +162,13 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="rowexpansion" let-category>
-          <td colspan="7">
+          <td colspan="7" style="border-style: hidden;">
             <jhi-birthday-table 
               firstColumnIndent="&nbsp;&nbsp;&nbsp;" 
               [hideHeader]=true
               [parent] = "categoriesTable"
               [databaseQuery] = "databaseQuery"
               [category] = "category"
-              [passedCategories] = "selectableCategories"
               [refresh] = "refresh"
               (setViewFocus) = "setViewFocus($event)"
             >
@@ -180,7 +178,7 @@
       </super-table>
       <p-dialog header="Categorize {{birthdayDialogTitle}}" [(visible)]="bDisplayCategories" >
         <jhi-editable-multiselect *ngIf="bDisplayCategories"
-          [options]="selectableCategories" 
+          [options]="categories" 
           [(ngModel)]="selectedCategories" 
           defaultLabel="Select or enter a new Category" 
           optionLabel="categoryName"
