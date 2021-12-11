@@ -12,6 +12,7 @@ using Jhipster.Infrastructure.Data;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using Jhipster.Domain.Services.Interfaces;
 
 namespace Jhipster.Infrastructure.Data.Repositories
 {
@@ -20,10 +21,10 @@ namespace Jhipster.Infrastructure.Data.Repositories
         private static Uri node = new Uri("https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/");
         private static Nest.ConnectionSettings setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9","4cdkz0o14").DefaultIndex("birthdays");
         private static ElasticClient elastic = new ElasticClient(setting);        
-        protected readonly IBirthdayRepository _birthdayRepository;   
-        public CategoryRepository(IUnitOfWork context, IBirthdayRepository birthdayRepository) : base(context)
+        protected readonly IBirthdayService _birthdayService;   
+        public CategoryRepository(IUnitOfWork context, IBirthdayService birthdayService) : base(context)
         {
-            _birthdayRepository = birthdayRepository;
+            _birthdayService = birthdayService;
         }
      
 
@@ -42,12 +43,42 @@ namespace Jhipster.Infrastructure.Data.Repositories
             return category;
         }
         public override async Task<IPage<Category>> GetPageFilteredAsync(IPageable pageable, string queryJson){
+            long id = 0;
+            List<Category> content = new List<Category>();
+            if (!queryJson.StartsWith("{")){
+                var result = await elastic.SearchAsync<Aggregation>(q => q
+                    .Size(0).Index("birthdays").Aggregations(agg => agg.Terms(
+                        "distinct", e =>
+                            e.Field("categories.keyword").Size(10000)
+                        )
+                    )
+                );
+                Dictionary<string, Category> allCategories = new Dictionary<string, Category>();
+                ((BucketAggregate)result.Aggregations.ToList()[0].Value).Items.ToList().ForEach(it => {
+                    KeyedBucket<Object> kb = (KeyedBucket<Object>)it;
+                    string categoryName = kb.KeyAsString != null ? kb.KeyAsString : (string)kb.Key;
+                    allCategories.Add(categoryName, new Category
+                    {
+                        CategoryName = categoryName,
+                        Id = ++id
+                    });
+                });
+                Birthday birthday =  await _birthdayService.FindOne(queryJson);
+                if (birthday.Categories != null)
+                {
+                    birthday.Categories.ForEach(c => {
+                        allCategories[c.CategoryName].selected = true;
+                    });
+                }
+                allCategories.Keys.ToList().OrderBy(k => k).ToList().ForEach(k=>{
+                    content.Add(allCategories[k]);
+                });
+                return new Page<Category>(content, pageable, content.Count);
+            }
             var categoryRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(queryJson);
             Dictionary<string, string> view = new Dictionary<string, string>();
             string aggregationKey = "";
             string query = "";
-            long id = 0;
-            List<Category> content = new List<Category>();               
             if (categoryRequest["view"] == null){
                 // default
                 content.Add(new Category{
@@ -102,6 +133,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
             }
             return new Page<Category>(content, pageable, content.Count);
         }
+
         class Aggregation{
             string key {get; set;}
             int doc_count {get; set;}

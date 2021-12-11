@@ -54,6 +54,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
         public override async Task<IPage<Birthday>> GetPageAsync(IPageable pageable){
             return await GetPageFilteredAsync(pageable, "");
         }
+        
         public override async Task<IPage<Birthday>> GetPageFilteredAsync(IPageable pageable, string queryJson){
             if (!queryJson.StartsWith("{")){
                 // backwards compatibility
@@ -138,8 +139,16 @@ namespace Jhipster.Infrastructure.Data.Repositories
                 Fname = hit.Source.fname,
                 Dob = hit.Source.dob,
                 Sign = hit.Source.sign,
-                IsAlive = hit.Source.isAlive 
+                IsAlive = hit.Source.isAlive,
+                Categories = new List<Category>()
             };
+            hit.Source.categories.ToList().ForEach(c => {
+                Category category = new Category
+                {
+                    CategoryName = c
+                };
+                birthday.Categories.Add(category);
+            });
             return birthday;
         }
         public async Task<string> GetOneTextAsync(object id){
