@@ -22,7 +22,24 @@ export class BirthdayQueryParserService {
             return '{"condition":"or","not":false,"rules":[]}';
         }
         query = query.replace(/\\\\/g,'\x01').replace(/\\"/g, '\x02').replace(/`/g,'\x03');
-        const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|"[^"]+"|(AND|OR|!)|[\w\d-*]+)\s*/g, '`$1').split('`');
+        const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|(AND|OR|!)|[\w\d".*-]+)\s*/g, '`$1').split('`');
+        // join adjacent words
+        let looping = tokens.length > 2;
+        while (looping){
+          for (let iTokens = 1; iTokens < (tokens.length - 1); iTokens++){
+            looping = false;
+            if (!/^(AND|OR|CONTAINS|LIKE|AN|CO|CON|CONT|CONTA|CONTAI|CONTAIN|LI|LIK)$/.test(tokens[iTokens]) 
+              && /^[\w\d".*-]+/.test(tokens[iTokens])
+              && !/^(AND|OR|CONTAINS|LIKE|AN|CO|CON|CONT|CONTA|CONTAI|CONTAIN|LI|LIK)$/.test(tokens[iTokens + 1]) 
+              && /^[\w\d".*-]+/.test(tokens[iTokens + 1])){
+                tokens[iTokens] += (" " + tokens[iTokens + 1]);
+                tokens.splice(iTokens + 1, 1);
+                looping = tokens.length > 2;
+                break;
+              }
+
+          }
+        }
         const i = 1;
         let ret = this.parseRuleset(tokens, i);
         if (!ret.matches){
@@ -43,9 +60,11 @@ export class BirthdayQueryParserService {
           string: "",
           i
         }
-
+        if (i >= tokens.length){
+          return parse;
+        }
         if (!/^(sign|dob|lname|fname|isAlive|document)$/.test(tokens[parse.i])){
-            if (/^[\w\d-*]+$/.test(tokens[i]) || /^"[^"]+"$/.test(tokens[i])){
+            if (/^[\w\d.* -]+$/.test(tokens[i]) || /^"[^"]+"$/.test(tokens[i])){
                 const documentValue = '"' + (tokens[i].replace(/\x03/g,'`').replace(/\x02/g,'"').replace(/\x01/g,"\\\\").replace(/"/g,"\\\"")) + '"';
                 parse.matches = true;
                 parse.string = '{"field":"document", "operator":"contains","value":' + documentValue + '}';
@@ -115,7 +134,7 @@ export class BirthdayQueryParserService {
           case 'lname':
           case 'fname':
           case 'document':
-            if (!/^[\w\d-*]+$/.test(tokens[i + 2]) && !/^"[^"]+"$/.test(tokens[i + 2])){
+            if (!/^[\w\d.* -]+$/.test(tokens[i + 2]) && !/^"[^"]+"$/.test(tokens[i + 2])){
               return parse;
             }
             break;

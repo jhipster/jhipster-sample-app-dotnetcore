@@ -181,42 +181,34 @@ export class CategoryComponent implements OnInit, OnDestroy {
     // initialize dialog here
     /*
     queryBuilder.initialize(JSON.stringify({
-      "condition": "or",
+      "condition": "and",
       "rules": [
         {
-          "condition": "and",
-          "not": false,
-          "rules": [
-            {
-              "field": "sign",
-              "operator": "=",
-              "value": "cancer"
-            },
-            {
-              "field": "dob",
-              "operator": ">",
-              "value": "1975-01-01"
-            }
-          ]
-        },
-        {
-          "condition": "and",
-          "not": false,
-          "rules": [
-            {
-              "field": "dob",
-              "operator": "<=",
-              "value": "1493-01-01"
-            }
-          ]
+          "field": "document",
+          "operator": "contains",
+          "value": ""
         }
       ]
     }));
     */
     let queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
-    if (this.editingQuery && queryObject.Invalid){
-      this.searchQueryAsString = this.searchQueryBeforeEdit;
-      queryObject = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
+    if (queryObject.Invalid){
+      if (this.editingQuery){
+        this.searchQueryAsString = this.searchQueryBeforeEdit;
+        queryObject = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
+      }
+    }
+    if (this.searchQueryAsString === ""){
+      queryObject = queryObject = {
+        "condition": "and",
+        "rules": [
+          {
+            "field": "document",
+            "operator": "contains",
+            "value": ""
+          }
+        ]
+      }
     }
     queryBuilder.initialize(JSON.stringify(queryObject));
     this.bDisplaySearchDialog = true;
@@ -247,15 +239,25 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.refreshData();
   }
 
-  okSearchDialog(queryBuilder : any) : void {
+  okSearchDialog(queryBuilder : any, queryEditbox : any) : void {
     if (queryBuilder.query.rules && queryBuilder.query.rules.length === 0){
       this.databaseQuery = "";
+      this.searchQueryAsString = "";
     } else {
       this.databaseQuery = JSON.stringify(queryBuilder.query);
       this.searchQueryAsString = this.QueryAsString(queryBuilder.query as IQuery);
     }
     this.bDisplaySearchDialog = false;
-    this.refreshData();
+    const queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
+    if (queryObject.Invalid){
+      this.editingQuery = true;
+      setTimeout(function() : void{
+        // hack needed to turn the box red
+        queryEditbox.children[0].children[0].classList.add('ng-dirty');
+      }, 0);
+    } else {
+      this.refreshData();
+    }
   }
 
   clearSearch(): void{

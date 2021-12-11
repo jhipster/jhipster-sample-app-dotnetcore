@@ -10,19 +10,21 @@
         {{searchQueryAsString}}
         <span aria-label="Cancel Search" class="pi pi-times" style="cursor:pointer;" (click)="clearSearch()"></span>
       </span>
-      <span *ngIf="editingQuery">
-        <input
-          pInputText
-          type="text"
-          [(ngModel)]="searchQueryAsString"
-          placeholder="Edit search query"
-          size="130"
-          minlength="0"
-          jhiValidateBirthdayQuery
-          #queryEditor="ngModel"
-        />
-        <span aria-label="Search" class="pi pi-check" *ngIf="queryEditor.valid" style="cursor:pointer;" (click)="acceptEditQuery()"></span>
-        <span aria-label="Search" class="pi pi-times" style="cursor:pointer;" (click)="cancelEditQuery()"></span>
+      <span #queryEditbox>
+        <span *ngIf="editingQuery">
+          <input 
+            pInputText
+            type="text"
+            [(ngModel)]="searchQueryAsString"
+            placeholder="Edit search query"
+            size="130"
+            minlength="0"
+            jhiValidateBirthdayQuery
+            #queryEditor="ngModel"
+          />
+          <span aria-label="Search" class="pi pi-check" *ngIf="queryEditor.valid" style="cursor:pointer;" (click)="acceptEditQuery()"></span>
+          <span aria-label="Search" class="pi pi-times" style="cursor:pointer;" (click)="cancelEditQuery()"></span>
+        </span>
       </span>
       <p-dialog 
       header="Enter Search Criteria" 
@@ -39,7 +41,7 @@
         </button>
 
         <button type="Submit" aria-label="submit" class="btn btn-primary" [disabled]="queryBuilder.queryCtrl.errors">
-          <fa-icon [icon]="faCheck"></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok" (click)="okSearchDialog(queryBuilder)"></span>
+          <fa-icon [icon]="faCheck"></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok" (click)="okSearchDialog(queryBuilder, queryEditbox)"></span>
         </button>
       </div>
     </p-dialog>
