@@ -178,19 +178,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     return element.offsetWidth + tolerance < element.scrollWidth
   }
   showSearchDialog(queryBuilder : any) : void {
-    // initialize dialog here
-    /*
-    queryBuilder.initialize(JSON.stringify({
-      "condition": "and",
-      "rules": [
-        {
-          "field": "document",
-          "operator": "contains",
-          "value": ""
-        }
-      ]
-    }));
-    */
     let queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
     if (queryObject.Invalid){
       if (this.editingQuery){
