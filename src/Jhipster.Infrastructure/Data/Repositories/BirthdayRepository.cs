@@ -15,7 +15,6 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Query;
 
-
 namespace Jhipster.Infrastructure.Data.Repositories
 {
     public class BirthdayRepository : GenericRepository<Birthday>, IBirthdayRepository
@@ -64,17 +63,17 @@ namespace Jhipster.Infrastructure.Data.Repositories
                 queryJson = JsonConvert.SerializeObject(queryObject);
             }
             var birthdayRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(queryJson);
-            Dictionary<string, string> view = new Dictionary<string, string>();
+            View view = new View();
             string query = birthdayRequest.ContainsKey("query") ? (string)birthdayRequest["query"] : "";
             if (birthdayRequest["view"] != null){
-                view = JsonConvert.DeserializeObject<Dictionary<string,string>>(birthdayRequest["view"].ToString());
+                view = JsonConvert.DeserializeObject<View>(birthdayRequest["view"].ToString());
             }
             string categoryClause = "";
-            if (birthdayRequest.ContainsKey("category") && view.ContainsKey("field")){
-                if (view.ContainsKey("categoryQuery")){
-                    categoryClause = view["categoryQuery"].Replace("{}", (string)birthdayRequest["category"]);
+            if (birthdayRequest.ContainsKey("category") && view.field != null){
+                if (view.categoryQuery != null){
+                    categoryClause = view.categoryQuery.Replace("{}", (string)birthdayRequest["category"]);
                 } else {
-                    categoryClause = (string)birthdayRequest["category"] == "-" ? "-" + view["field"] + ":*" : view["field"] + ":\"" + birthdayRequest["category"]  + "\"";
+                    categoryClause = (string)birthdayRequest["category"] == "-" ? "-" + view.field + ":*" : view.field + ":\"" + birthdayRequest["category"]  + "\"";
                 }
                 query = categoryClause + (query != "" ? " AND (" + query + ")" : "");
             }
@@ -154,6 +153,42 @@ namespace Jhipster.Infrastructure.Data.Repositories
         public async Task<string> GetOneTextAsync(object id){
             var hit = await elastic.GetAsync<ElasticBirthday>((string)id);
             return hit.Source.wikipedia;
+        }
+
+        public async Task<List<Birthday>> GetReferencesFromAsync(string id){
+            return null;
+        }
+
+        public async Task<List<Birthday>> GetReferencesToAsync(string id){
+            List<Birthday> birthdays = new List<Birthday>();
+            Birthday bday = await GetOneAsync(id);
+            var searchResponse = await elastic.SearchAsync<ElasticBirthday>(x => x
+                .Index("birthdays")
+                .QueryOnQueryString("\"" + bday.Fname + " " + bday.Lname + "\"~4")
+                .Size(10000)
+            );
+            foreach (var hit in searchResponse.Hits){
+                if (hit.Id != id){
+                    List<Category> listCategory = new List<Category>();
+                    if (hit.Source.categories != null){
+                        hit.Source.categories.ToList().ForEach(c=>{
+                            listCategory.Add(new Category{
+                                CategoryName = c
+                            });
+                        });
+                    }
+                    birthdays.Add(new Birthday{
+                        Id = hit.Id,
+                        Lname = hit.Source.lname,
+                        Fname = hit.Source.fname,
+                        Dob = hit.Source.dob,
+                        Sign = hit.Source.sign,
+                        IsAlive = hit.Source.isAlive,
+                        Categories = listCategory
+                    });
+                }         
+            }         
+            return birthdays;
         }
     }
 }

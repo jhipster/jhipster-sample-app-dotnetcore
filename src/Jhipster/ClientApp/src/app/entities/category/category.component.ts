@@ -272,6 +272,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     });
     this.views = newViews;  // replace the list of views so the dropdown sees the change
     this.selectedView = focusView;
+    this.refreshData();
   }
   
   QueryAsString(query : IQuery, recurse?: boolean): string{
@@ -593,7 +594,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     if (data) {
       this.rowData = of(this.categories);
     }
-    this.displayAsCategories = this.categories?.length !== 1;
+    this.displayAsCategories = this.categories?.length !== 1 || !!this.views[this.views.length - 1].focus;
     if (this.categoriesTable != null){
       const categoriesTable = this.categoriesTable;
       setTimeout(function() : void{

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using JHipsterNet.Core.Pagination;
 using Jhipster.Domain.Services.Interfaces;
 using Jhipster.Domain.Repositories.Interfaces;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jhipster.Domain.Services
@@ -61,6 +62,14 @@ namespace Jhipster.Domain.Services
         {
             await _birthdayRepository.DeleteByIdAsync(id);
             await _birthdayRepository.SaveChangesAsync();
+        }
+
+        public virtual async Task<List<Birthday>> GetReferencesTo(string id){
+            return  await _birthdayRepository.GetReferencesToAsync(id);
+        }
+
+        public virtual async Task<List<Birthday>> GetReferencesFrom(string id){
+            return  await _birthdayRepository.GetReferencesFromAsync(id);
         }
     }
 }

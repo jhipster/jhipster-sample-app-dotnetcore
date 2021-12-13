@@ -19,14 +19,14 @@ namespace Jhipster.Infrastructure.Data.Repositories
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
         private static Uri node = new Uri("https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/");
-        private static Nest.ConnectionSettings setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9","4cdkz0o14").DefaultIndex("birthdays");
-        private static ElasticClient elastic = new ElasticClient(setting);        
-        protected readonly IBirthdayService _birthdayService;   
+        private static Nest.ConnectionSettings setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9", "4cdkz0o14").DefaultIndex("birthdays");
+        private static ElasticClient elastic = new ElasticClient(setting);
+        protected readonly IBirthdayService _birthdayService;
         public CategoryRepository(IUnitOfWork context, IBirthdayService birthdayService) : base(context)
         {
             _birthdayService = birthdayService;
         }
-     
+
 
         public override async Task<Category> CreateOrUpdateAsync(Category category)
         {
@@ -42,10 +42,12 @@ namespace Jhipster.Infrastructure.Data.Repositories
             }
             return category;
         }
-        public override async Task<IPage<Category>> GetPageFilteredAsync(IPageable pageable, string queryJson){
+        public override async Task<IPage<Category>> GetPageFilteredAsync(IPageable pageable, string queryJson)
+        {
             long id = 0;
             List<Category> content = new List<Category>();
-            if (!queryJson.StartsWith("{")){
+            if (!queryJson.StartsWith("{"))
+            {
                 var result = await elastic.SearchAsync<Aggregation>(q => q
                     .Size(0).Index("birthdays").Aggregations(agg => agg.Terms(
                         "distinct", e =>
@@ -54,7 +56,8 @@ namespace Jhipster.Infrastructure.Data.Repositories
                     )
                 );
                 Dictionary<string, Category> allCategories = new Dictionary<string, Category>();
-                ((BucketAggregate)result.Aggregations.ToList()[0].Value).Items.ToList().ForEach(it => {
+                ((BucketAggregate)result.Aggregations.ToList()[0].Value).Items.ToList().ForEach(it =>
+                {
                     KeyedBucket<Object> kb = (KeyedBucket<Object>)it;
                     string categoryName = kb.KeyAsString != null ? kb.KeyAsString : (string)kb.Key;
                     allCategories.Add(categoryName, new Category
@@ -63,81 +66,116 @@ namespace Jhipster.Infrastructure.Data.Repositories
                         Id = ++id
                     });
                 });
-                Birthday birthday =  await _birthdayService.FindOne(queryJson);
+                Birthday birthday = await _birthdayService.FindOne(queryJson);
                 if (birthday.Categories != null)
                 {
-                    birthday.Categories.ForEach(c => {
+                    birthday.Categories.ForEach(c =>
+                    {
                         allCategories[c.CategoryName].selected = true;
                     });
                 }
-                allCategories.Keys.ToList().OrderBy(k => k).ToList().ForEach(k=>{
+                allCategories.Keys.ToList().OrderBy(k => k).ToList().ForEach(k =>
+                {
                     content.Add(allCategories[k]);
                 });
                 return new Page<Category>(content, pageable, content.Count);
             }
-            var categoryRequest = JsonConvert.DeserializeObject<Dictionary<string,object>>(queryJson);
-            Dictionary<string, string> view = new Dictionary<string, string>();
+            var categoryRequest = JsonConvert.DeserializeObject<Dictionary<string, object>>(queryJson);
+            View view = new View();
             string aggregationKey = "";
             string query = "";
-            if (categoryRequest["view"] == null){
+            if (categoryRequest["view"] == null)
+            {
                 // default
-                content.Add(new Category{
+                content.Add(new Category
+                {
                     CategoryName = "(Uncategorized)",
                     selected = false,
-                    notCategorized = true
+                    notCategorized = true,
+                    Id = ++id
                 });
-            } else {
-                view = JsonConvert.DeserializeObject<Dictionary<string,string>>(categoryRequest["view"].ToString());
-                aggregationKey = view["aggregation" ];
-                query = view["query"] + ((string)categoryRequest["query"] != "" ? " AND " + categoryRequest["query"] : "");
-                var result = await elastic.SearchAsync<Aggregation>(q => q
-                    .Size(0)
-                    .Index("birthdays")
-                    .Aggregations(agg => agg.Terms(
-                        "distinct", e =>
-                            (view != null && view.Keys.Contains("script") 
-                                ? e.Script(view["script"]) 
-                                : e.Field(aggregationKey)
-                            )                   
-                            .Size(10000)
-                        )
-                    )
-                    .QueryOnQueryString(query)
-                );
-                ((BucketAggregate)result.Aggregations.ToList()[0].Value).Items.ToList().ForEach(it=>{
-                    KeyedBucket<Object> kb = (KeyedBucket<Object>)it;
-                    string categoryName = kb.KeyAsString != null ? kb.KeyAsString : (string)kb.Key;
-                    if (Regex.IsMatch(categoryName, @"\d{4,4}-\d{2,2}-\d{2,2}T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z")){
-                        categoryName = Regex.Replace(categoryName, @"(\d{4,4})-(\d{2,2})-(\d{2,2})T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z","$1-$2-$3");
+            }
+            else
+            {
+                view = JsonConvert.DeserializeObject<View>(categoryRequest["view"].ToString());
+                if (view.focus != null){
+                    foreach (Birthday bday in view.focus){
+                        content.Add(new Category
+                        {
+                            CategoryName = bday.Fname + " " + bday.Lname + " and its references",
+                            Focus = bday,
+                            focusType = FocusType.REFERENCESFROM,
+                            Id = ++id
+                        });
+                            List<Birthday> referencesTo = await _birthdayService.GetReferencesTo(bday.Id);
+                        if (referencesTo.Count > 0){
+                            content.Add(new Category
+                            {
+                                CategoryName = bday.Fname + " " + bday.Lname + " referenced by",
+                                Focus = bday,
+                                focusType = FocusType.REFERENCESTO,
+                                Id = ++id                      
+                            });
+                        }
                     }
-                    content.Add(new Category{
-                        CategoryName = categoryName,
-                        Id = ++id
-                    });
+                } else {
+                    aggregationKey = view.aggregation;
+                    query = view.query + ((string)categoryRequest["query"] != "" ? " AND " + categoryRequest["query"] : "");
+                    var result = await elastic.SearchAsync<Aggregation>(q => q
+                        .Size(0)
+                        .Index("birthdays")
+                        .Aggregations(agg => agg.Terms(
+                            "distinct", e =>
+                                (view != null && view.script != null
+                                    ? e.Script(view.script)
+                                    : e.Field(aggregationKey)
+                                )
+                                .Size(10000)
+                            )
+                        )
+                        .QueryOnQueryString(query)
+                    );
+                    ((BucketAggregate)result.Aggregations.ToList()[0].Value).Items.ToList().ForEach(it =>
+                    {
+                        KeyedBucket<Object> kb = (KeyedBucket<Object>)it;
+                        string categoryName = kb.KeyAsString != null ? kb.KeyAsString : (string)kb.Key;
+                        if (Regex.IsMatch(categoryName, @"\d{4,4}-\d{2,2}-\d{2,2}T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z"))
+                        {
+                            categoryName = Regex.Replace(categoryName, @"(\d{4,4})-(\d{2,2})-(\d{2,2})T\d{2,2}:\d{2,2}:\d{2,2}.\d{3,3}Z", "$1-$2-$3");
+                        }
+                        content.Add(new Category
+                        {
+                            CategoryName = categoryName,
+                            Id = ++id
+                        });
 
-                    var x = kb.Key;
-                });
-                content = content.OrderBy(cat => cat.CategoryName).ToList();
-                result = await elastic.SearchAsync<Aggregation>(q => q
-                    .Size(0)
-                    .Index("birthdays")
-                    .QueryOnQueryString("-" + view["query"])
-                );
-                if (result.Total > 0){
-                    content.Add(new Category{
-                        CategoryName = "(Uncategorized)",
-                        selected = false,
-                        notCategorized = true
+                        var x = kb.Key;
                     });
+                    content = content.OrderBy(cat => cat.CategoryName).ToList();
+                    result = await elastic.SearchAsync<Aggregation>(q => q
+                        .Size(0)
+                        .Index("birthdays")
+                        .QueryOnQueryString("-" + view.query)
+                    );
+                    if (result.Total > 0)
+                    {
+                        content.Add(new Category
+                        {
+                            CategoryName = "(Uncategorized)",
+                            selected = false,
+                            notCategorized = true
+                        });
+                    }
                 }
             }
             return new Page<Category>(content, pageable, content.Count);
         }
 
-        class Aggregation{
-            string key {get; set;}
-            int doc_count {get; set;}
-            object[] distinct {get; set;}
+        class Aggregation
+        {
+            string key { get; set; }
+            int doc_count { get; set; }
+            object[] distinct { get; set; }
         }
     }
 }

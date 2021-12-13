@@ -15,6 +15,8 @@ namespace Jhipster.Domain
         public string CategoryName { get; set; }
         public bool selected {get; set;} 
         public bool notCategorized {get; set;}
+        public Birthday Focus {get; set;}
+        public FocusType focusType {get; set;}
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
@@ -41,5 +43,10 @@ namespace Jhipster.Domain
                     $", notCategorized = {notCategorized}" +
                     "}";
         }
+    }
+
+    public enum FocusType {
+        REFERENCESTO,
+        REFERENCESFROM
     }
 }
