@@ -2105,7 +2105,7 @@
     ]
   },
   "packageFolders": {
-    "..\\..\\packages\\": {}
+    "C:\\Users\\eisne\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -2113,18 +2113,16 @@
       "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj",
       "projectName": "Jhipster.Domain",
       "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj",
-      "packagesPath": "..\\..\\packages\\",
+      "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
       "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
