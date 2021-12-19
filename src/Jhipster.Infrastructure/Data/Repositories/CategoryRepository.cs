@@ -121,6 +121,18 @@ namespace Jhipster.Infrastructure.Data.Repositories
                 } else {
                     aggregationKey = view.aggregation;
                     query = view.query + ((string)categoryRequest["query"] != "" ? " AND " + categoryRequest["query"] : "");
+                    if (view.topLevelView != null){
+                        View topLevelView = view.topLevelView;
+                        string categoryClause = "";
+                        if (view.topLevelCategory != null && topLevelView.field != null){
+                            if (topLevelView.categoryQuery != null){
+                                categoryClause = view.categoryQuery.Replace("{}", view.topLevelCategory);
+                            } else {
+                                categoryClause = view.topLevelCategory == "-" ? "-" + topLevelView.field + ":*" : topLevelView.field + ":\"" + view.topLevelCategory + "\"";
+                            }
+                            query = categoryClause + " AND (" + query + ")";
+                        }
+                    }                    
                     var result = await elastic.SearchAsync<Aggregation>(q => q
                         .Size(0)
                         .Index("birthdays")

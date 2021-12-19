@@ -1574,6 +1574,18 @@ namespace Jhipster.Infrastructure.Data.Repositories
                     categoryClause = (string)birthdayRequest["category"] == "-" ? "-" + view.field + ":*" : view.field + ":\"" + birthdayRequest["category"]  + "\"";
                 }
                 query = categoryClause + (query != "" ? " AND (" + query + ")" : "");
+                if (view.topLevelView != null){
+                    View topLevelView = view.topLevelView;
+                    categoryClause = "";
+                    if (view.topLevelCategory != null && topLevelView.field != null){
+                        if (topLevelView.categoryQuery != null){
+                            categoryClause = view.categoryQuery.Replace("{}", view.topLevelCategory);
+                        } else {
+                            categoryClause = view.topLevelCategory == "-" ? "-" + topLevelView.field + ":*" : topLevelView.field + ":\"" + view.topLevelCategory + "\"";
+                        }
+                        query = categoryClause + " AND (" + query + ")";
+                    }
+                }
             }
             ISearchResponse<ElasticBirthday> searchResponse = null;
             if (query == "" || query == "()"){

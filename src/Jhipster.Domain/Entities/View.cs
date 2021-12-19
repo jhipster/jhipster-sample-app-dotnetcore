@@ -11,5 +11,7 @@
             public string categoryQuery { get; set; }
             public string field { get; set; }
             public List<Birthday> focus { get; set; }
+            public View topLevelView { get; set; }
+            public string topLevelCategory { get; set; }
         }
     }

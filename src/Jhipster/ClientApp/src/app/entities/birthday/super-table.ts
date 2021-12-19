@@ -494,9 +494,16 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
         let state: TableState = {}; 
         this.saveColumnWidths(state);
         this.children.forEach(child=>{
-            (child.columnWidthsState as any) = state.columnWidths;
-            child.restoreColumnWidths();
+            child.setChildWidthState(state);
         });
+    }
+
+    setChildWidthState(state: TableState): void{
+        (this.columnWidthsState as any) = state.columnWidths;
+        this.restoreColumnWidths();
+        this.children.forEach(child=>{
+            child.setChildWidthState(state);
+        });        
     }
 
     toggleRowsWithCheckbox(event: any, check: any){
@@ -588,6 +595,20 @@ export class SuperTable extends Table implements OnInit, AfterViewInit, AfterCon
             super.sortSingle();
         }
     }
+
+    setChildSelection(child : SuperTable, selectingTable : SuperTable){
+        if (child.children.length > 0){
+            child.children.forEach(c=>{
+                c.setChildSelection(c, selectingTable);
+            })
+        } else if (child !== selectingTable){
+            // insure each child has the same selection
+            child.selection = selectingTable.selection;
+            child.selectionKeys = selectingTable.selectionKeys;
+            // change the visual checkboxes
+            child.tableService.onSelectionChange();
+        }
+    }    
 }
 
 @Component({
@@ -1000,23 +1021,23 @@ export class SuperTableCheckbox extends TableCheckbox  {
             dt.selectionKeys = dt.parent.selectionKeys;
         }
         super.onClick(event);
-        if (dt.parent !== null){
+        let topParent = dt.parent;
+        if (topParent !== null){
+            while (topParent.parent){
+                topParent = topParent.parent;
+            }
             // insure the parent sees the change
-            dt.parent.selection = dt.selection;
-            dt.parent.selectionKeys = dt.selectionKeys;
+            topParent.selection = dt.selection;
+            topParent.selectionKeys = dt.selectionKeys;
         }
-        if (dt.parent !== null){
-            dt.parent.children.forEach(c=>{
+        if (topParent !== null){
+            topParent.children.forEach(c=>{
                 if (c !== dt){
-                    // insure each child has the same selection
-                    c.selection = dt.selection;
-                    c.selectionKeys = dt.selectionKeys;
-                    // change the visual checkboxes
-                    c.tableService.onSelectionChange();
+                    c.setChildSelection(c, dt);
                 }
             });
             // notify the component's owner
-            dt.parent?.selectionChange.emit(dt.parent.selection);
+            topParent?.selectionChange.emit(topParent.selection);
         }
     }
 }

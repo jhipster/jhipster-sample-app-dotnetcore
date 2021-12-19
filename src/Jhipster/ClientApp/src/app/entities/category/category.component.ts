@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, ParamMap, Router, Data } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -32,6 +32,9 @@ interface IView {
   script?: string,
   categoryQuery? : string
   focus? : IBirthday[]
+  secondLevelView? : IView
+  topLevelView? : IView
+  topLevelCategory? : string
 }
 
 interface IQueryRule {
@@ -96,7 +99,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   birthdayDialogId : any = "";
 
-  databaseQuery = "";
+  @Input() databaseQuery = "";
 
   refresh:any = null;
 
@@ -106,11 +109,37 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   selectedView: IView | null = null ;
 
+  secondLevel = false;
+
+  @Input() firstColumnIndent = "";
+
+  @Input() hideHeader = false;
+
+  _parent : SuperTable | null = null;
+
+  @Input() get parent(): SuperTable {
+    return this._parent as SuperTable;
+  }
+  set parent(val: SuperTable){
+      this._parent = val;
+      const parentSelectedView = JSON.parse(JSON.stringify(val.selectedView)); // clone
+      this.selectedView = parentSelectedView.secondLevelView;
+      delete parentSelectedView.secondLevelView;
+      (this.selectedView as IView).topLevelView = parentSelectedView;
+  }
+
+  categoryComponent: null | CategoryComponent = null;
+
+  @Input() category : ICategory | null = null;
+
+  @Input() parentComponent: null | CategoryComponent  = null;
+
   views: IView[] = [
     {name:"Category", field: "categories", aggregation: "categories.keyword", query: "categories:*"}
-    ,{name:"Year of Birth", field: "dob", aggregation: "dob", query: "*", categoryQuery: "dob:[{}-01-01 TO {}-12-31]", script: "\n            String st = doc['dob'].value.getYear().toString();\n            if (st==null){\n              return \"\";\n            } else {\n              return st.substring(0, 4);\n            }\n          "}
+    ,{name:"Birth Year", field: "dob", aggregation: "dob", query: "*", categoryQuery: "dob:[{}-01-01 TO {}-12-31]", script: "\n            String st = doc['dob'].value.getYear().toString();\n            if (st==null){\n              return \"\";\n            } else {\n              return st.substring(0, 4);\n            }\n          "}
     ,{name:"Sign", field: "sign", aggregation: "sign.keyword", query: "sign:*"}
     ,{name: "First Name", field: "fname", aggregation: "fname.keyword", query: "fname:*"}
+    ,{name:"Sign/Birth Year", field: "sign", aggregation: "sign.keyword", query: "sign:*", secondLevelView:{name:"Year of Birth", field: "dob", aggregation: "dob", query: "*", categoryQuery: "dob:[{}-01-01 TO {}-12-31]", script: "\n            String st = doc['dob'].value.getYear().toString();\n            if (st==null){\n              return \"\";\n            } else {\n              return st.substring(0, 4);\n            }\n          "}}
   ];
 
   constructor(
@@ -126,12 +155,16 @@ export class CategoryComponent implements OnInit, OnDestroy {
     protected birthdayQueryParserService : BirthdayQueryParserService
   ) {
     this.refresh = this.refreshData.bind(this);
+    this.categoryComponent = this;
   }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
     const pageToLoad: number = page || this.page || 1;
     this.loading = true;
     const viewQuery: any = this.selectedView === null ? {view: null} : {view:this.selectedView};
+    if (this.selectedView && this.selectedView.topLevelView){
+      this.selectedView.topLevelCategory = this.category?.notCategorized ? "-" : this.category?.categoryName;
+    }
     viewQuery.query = this.databaseQuery;
     this.categoryService
       .query({
@@ -253,6 +286,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   setViewFocus(focus: IBirthday): void{
+    if (this.parentComponent){
+      return this.parentComponent.setViewFocus(focus);
+    }
     let focusView : IView = {name: 'Focus on ' + (focus.fname as string) + ' ' + (focus.lname as string), field: "", aggregation: "", query: "", focus: [focus]};
     if (this.views[this.views.length - 1].focus !== undefined){
       const existingFocus : IView = this.views[this.views.length - 1];
@@ -314,16 +350,17 @@ export class CategoryComponent implements OnInit, OnDestroy {
       searchInput.value = ""; // global search must be cleared to prevent odd behavior
       categoriesTable.filter("", "global", "contains"); // reset the global filter
       Object.keys(this.expandedRows).forEach((key)=>{
-        this.expandedRows[key] = false;
+        this.expandedRows[key] = false; // unexpand all
       });
       if (this.views[this.views.length - 1].focus !== undefined){
-        delete this.views[this.views.length - 1];
+        delete this.views[this.views.length - 1]; // get rid of the focus view
       }
       const newViews : IView[] = [];
       this.views.forEach(v=>{
         newViews.push(v);
       });
       this.views = newViews; // replace the list of views so the dropdown sees the change
+      this.secondLevel = this.selectedView?.secondLevelView != null;
       this.refreshData();
     }
   }

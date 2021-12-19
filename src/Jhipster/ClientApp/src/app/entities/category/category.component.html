@@ -1,5 +1,5 @@
 <div>
-  <h2 id="page-heading">
+  <h2 id="page-heading" *ngIf="!hideHeader">
       <span jhiTranslate="jhipsterApp.category.home.title">Categories</span><span style="font-size: 16px;font-weight: 700;">... </span>
       <span (click)="showSearchDialog(queryBuilder)" style="cursor:pointer;">
         <span aria-label="Search" class="pi pi-search"></span>
@@ -67,8 +67,9 @@
           [selectedView]="selectedView"
           [displayingAsCategories]="displayAsCategories"
           (setTableReference)="setCategoriesTable($event)"
+          [parent]="parent"
         >
-        <ng-template pTemplate="caption">
+        <ng-template pTemplate="caption" *ngIf="!hideHeader">
           <div class="p-d-flex">
             <button aria-label="Refresh" pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;" icon="pi pi-refresh" (click)="refreshData()"></button>
             &nbsp;
@@ -103,7 +104,7 @@
           </div>
         </ng-template>
         <ng-template pTemplate="header">
-          <tr>
+          <tr [style.visibility]="hideHeader ? 'collapse' : 'visible'">
             <th style="width: 2rem">
               <super-tableHeaderCheckbox></super-tableHeaderCheckbox>
             </th>
@@ -142,9 +143,9 @@
         <ng-template pTemplate="body" let-category let-expanded="expanded">
           <tr [super-ContextMenuRow]="category" *ngIf="displayAsCategories">
               <td>
-                  <button aria-label="Expand" type="button" pButton pRipple [super-RowToggler]="category" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                <span>{{firstColumnIndent}}</span><button aria-label="Expand" type="button" pButton pRipple [super-RowToggler]="category" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
               </td>          
-              <td #tt pTooltip="{{ category.categoryName }}" [tooltipDisabled]='false' style="overflow:unset; border:none;font-weight: 700; ">{{ category.categoryName }}</td>
+              <td #tt pTooltip="{{ category.categoryName }}" [tooltipDisabled]='false' style="overflow:unset; border:none;font-weight: 700; ">{{firstColumnIndent}}{{ category.categoryName }}</td>
           </tr>
           <tr *ngIf="!displayAsCategories">
             <td colspan="7" style="padding:unset; background-color: white;">
@@ -163,8 +164,17 @@
         </ng-template>
         <ng-template pTemplate="rowexpansion" let-category>
           <td colspan="7" style="border-style: hidden;">
-            <jhi-birthday-table 
+            <jhi-category *ngIf="secondLevel"
               firstColumnIndent="&nbsp;&nbsp;&nbsp;" 
+              [hideHeader]=true
+              [parent] = "categoriesTable"
+              [databaseQuery] = "databaseQuery"
+              [category] = "category"
+              [parentComponent] = "categoryComponent"
+            >
+            </jhi-category>
+            <jhi-birthday-table *ngIf="!secondLevel"
+              firstColumnIndent="{{firstColumnIndent}}&nbsp;&nbsp;&nbsp;" 
               [hideHeader]=true
               [parent] = "categoriesTable"
               [databaseQuery] = "databaseQuery"
@@ -172,7 +182,7 @@
               [refresh] = "refresh"
               (setViewFocus) = "setViewFocus($event)"
             >
-            </jhi-birthday-table>
+            </jhi-birthday-table>            
           </td>
         </ng-template>
       </super-table>
