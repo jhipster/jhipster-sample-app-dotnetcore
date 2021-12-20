@@ -99,22 +99,43 @@ namespace Jhipster.Infrastructure.Data.Repositories
             {
                 view = JsonConvert.DeserializeObject<View>(categoryRequest["view"].ToString());
                 if (view.focus != null){
-                    foreach (Birthday bday in view.focus){
-                        content.Add(new Category
-                        {
-                            CategoryName = bday.Fname + " " + bday.Lname + " and its references",
-                            Focus = bday,
-                            focusType = FocusType.REFERENCESFROM,
-                            Id = ++id
-                        });
-                            List<Birthday> referencesTo = await _birthdayService.GetReferencesTo(bday.Id);
-                        if (referencesTo.Count > 0){
+                    if (view.topLevelView != null){
+                        List<Birthday> topLevelFocus = view.topLevelView.focus;
+                        foreach(var bday in topLevelFocus){
+                            if ((bday.Fname + " " + bday.Lname) == view.topLevelCategory){
+                                content.Add(new Category
+                                {
+                                    CategoryName = "The " + bday.Fname + " " + bday.Lname + " article",
+                                    focusId = bday.Id,
+                                    focusType = FocusType.FOCUS,
+                                    Id = ++id
+                                });                                
+                                content.Add(new Category
+                                {
+                                    CategoryName = "References IN the " + bday.Fname + " " + bday.Lname + " article",
+                                    focusId = bday.Id,
+                                    focusType = FocusType.REFERENCESFROM,
+                                    Id = ++id
+                                });
+                                List<Birthday> referencesTo = await _birthdayService.GetReferencesTo(bday.Id);
+                                if (referencesTo.Count > 0){
+                                    content.Add(new Category
+                                    {
+                                        CategoryName = "References TO the " + bday.Fname + " " + bday.Lname + " article",
+                                        focusId = bday.Id,
+                                        focusType = FocusType.REFERENCESTO,
+                                        Id = ++id                      
+                                    });
+                                }
+                            }
+                        }
+                    } else {
+                        foreach (Birthday bday in view.focus){
                             content.Add(new Category
                             {
-                                CategoryName = bday.Fname + " " + bday.Lname + " referenced by",
-                                Focus = bday,
-                                focusType = FocusType.REFERENCESTO,
-                                Id = ++id                      
+                                CategoryName = bday.Fname + " " + bday.Lname,
+                                focusId = bday.Id,
+                                Id = ++id
                             });
                         }
                     }

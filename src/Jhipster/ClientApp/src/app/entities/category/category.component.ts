@@ -289,7 +289,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
     if (this.parentComponent){
       return this.parentComponent.setViewFocus(focus);
     }
-    let focusView : IView = {name: 'Focus on ' + (focus.fname as string) + ' ' + (focus.lname as string), field: "", aggregation: "", query: "", focus: [focus]};
+    let focusView : IView = {name: 'Focus on ' + (focus.fname as string) + ' ' + (focus.lname as string), field: "", aggregation: "", query: "", focus: [focus], secondLevelView:{name:"focuses", field: "", aggregation: "", query: "", focus: [focus]}};
+    this.secondLevel = true;
     if (this.views[this.views.length - 1].focus !== undefined){
       const existingFocus : IView = this.views[this.views.length - 1];
       if ((existingFocus.focus as IBirthday[]).includes(focus)){

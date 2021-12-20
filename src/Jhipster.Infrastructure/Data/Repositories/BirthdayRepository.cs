@@ -1570,20 +1570,27 @@ namespace Jhipster.Infrastructure.Data.Repositories
             if (birthdayRequest.ContainsKey("category") && view.field != null){
                 if (view.categoryQuery != null){
                     categoryClause = view.categoryQuery.Replace("{}", (string)birthdayRequest["category"]);
-                } else {
+                } else if (!birthdayRequest.ContainsKey("focusType")){
                     categoryClause = (string)birthdayRequest["category"] == "-" ? "-" + view.field + ":*" : view.field + ":\"" + birthdayRequest["category"]  + "\"";
                 }
-                query = categoryClause + (query != "" ? " AND (" + query + ")" : "");
-                if (view.topLevelView != null){
+                    query = categoryClause + (query != "" ? " AND (" + query + ")" : "");
+                    if (view.topLevelView != null){
                     View topLevelView = view.topLevelView;
                     categoryClause = "";
                     if (view.topLevelCategory != null && topLevelView.field != null){
-                        if (topLevelView.categoryQuery != null){
+                        if (birthdayRequest.ContainsKey("focusType")){
+                            string focusType = (string)birthdayRequest["focusType"];
+                            if (focusType == "FOCUS"){
+                                categoryClause = "_id:"+birthdayRequest["focusId"];
+                            } else {                            
+                                categoryClause = "*:columbus";
+                            }
+                        } else if (topLevelView.categoryQuery != null){
                             categoryClause = view.categoryQuery.Replace("{}", view.topLevelCategory);
                         } else {
                             categoryClause = view.topLevelCategory == "-" ? "-" + topLevelView.field + ":*" : topLevelView.field + ":\"" + view.topLevelCategory + "\"";
                         }
-                        query = categoryClause + " AND (" + query + ")";
+                        query = categoryClause + (query.Length > 1 ? " AND (" + query + ")" : "");
                     }
                 }
             }

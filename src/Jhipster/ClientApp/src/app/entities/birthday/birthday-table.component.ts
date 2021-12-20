@@ -107,6 +107,10 @@ export class BirthdayTableComponent implements OnInit, OnDestroy {
     const viewQuery: any = !this.parent || this.parent.selectedView === null ? {view: null} : {view:this.parent.selectedView};
     viewQuery.query = this.databaseQuery;
     viewQuery.category = this.category?.notCategorized ? "-" : this.category?.categoryName;
+    if (this.category?.focusType !== "NONE"){
+      viewQuery.focusType = this.category?.focusType;
+      viewQuery.focusId = this.category?.focusId;
+    }
     this.birthdayService
       .query({
         page: pageToLoad - 1,
