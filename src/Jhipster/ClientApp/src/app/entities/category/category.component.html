@@ -1,14 +1,17 @@
 <div>
   <h2 id="page-heading" *ngIf="!hideHeader">
       <span jhiTranslate="jhipsterApp.category.home.title">Categories</span><span style="font-size: 16px;font-weight: 700;">... </span>
-      <span (click)="showSearchDialog(queryBuilder)" style="cursor:pointer;">
-        <span aria-label="Search" class="pi pi-search"></span>
-        <span *ngIf="searchQueryAsString.length == 0 && !editingQuery" class="p-component" style="font-weight: 100; padding-top: 10px; margin-left: -6px;"><i>click search for widgit or pencil to edit</i></span>
+      <span style="cursor:pointer;">
+        <span aria-label="Search" class="pi pi-search" (click)="showSearchDialog(queryBuilder)"></span>
       </span>
-      <span *ngIf="!editingQuery" aria-label="Search" class="pi pi-pencil" style="cursor:pointer;" (click)="editQuery()"></span>
-      <span *ngIf="!editingQuery && searchQueryAsString.length > 0" style="font-size: 16px;font-weight: 200;">
-        {{searchQueryAsString}}
-        <span aria-label="Cancel Search" class="pi pi-times" style="cursor:pointer;" (click)="clearSearch()"></span>
+      <span *ngIf="!editingQuery">
+        <span *ngIf="searchQueryAsString.length == 0" class="p-component" style="font-weight: 100; padding-top: 10px; margin-left: -6px;" (click)="editQuery()"><i>click search icon for widgit or click to edit</i></span>
+        <span *ngIf="searchQueryAsString.length > 0" (click)="editQuery()" style="font-size: 16px;font-weight: 200;">
+          <span (click)="editQuery()">
+          {{searchQueryAsString}}
+          </span>
+          <span aria-label="Cancel Search" class="pi pi-times" style="cursor:pointer;" (click)="clearSearch()"></span>
+        </span>
       </span>
       <span #queryEditbox>
         <span *ngIf="editingQuery">
