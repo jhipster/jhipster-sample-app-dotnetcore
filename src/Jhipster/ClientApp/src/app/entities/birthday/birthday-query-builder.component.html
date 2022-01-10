@@ -14,15 +14,49 @@
       <ng-container *ngTemplateOutlet="template; context: getButtonGroupContext()"></ng-container>
     </div>
   </ng-container>
-
   <ng-template #defaultButtonGroup>
     <div [ngClass]="getClassNames('buttonGroup', 'rightAlign')">
-      <button type="button" (click)="addRule()" [ngClass]="getClassNames('button')" [disabled]=disabled>
-        <i [ngClass]="getClassNames('addIcon')"></i> Rule
-      </button>
-      <button type="button" (click)="addRuleSet()" [ngClass]="getClassNames('button')" *ngIf="allowRuleset" [disabled]=disabled>
-        <i [ngClass]="getClassNames('addIcon')"></i> Ruleset
-      </button>
+      <span style="display: inline-flex;">
+        <span *ngIf="!editingRulesetName && !selectingRuleset" style="align-self:center;">
+          <span *ngIf="$any(data).name == null || $any(data).name.length == 0" class="p-component" style="font-weight: 100; padding-top: 10px;" (click)="editRulesetName()"><i>{{queryIsValid() ? "Click to name ruleset" : "Invalid Query"}}</i></span>
+          <span *ngIf="$any(data).name != null && $any(data).name.length > 0" ((click)="editRulesetName()" style="font-size: 16px;font-weight: 200;">
+            <span *ngIf="queryIsValid()" (click)="editRulesetName()">
+              Ruleset: {{$any(data).name}}
+            </span>
+            <span *ngIf="!queryIsValid()" style="font-weight: 100; padding-top: 10px; font-size: 10px">
+              <i>Invalid Ruleset: {{$any(data).name}}</i>
+            </span>
+          </span>
+        </span>        
+        <span #queryEditbox style="padding-top:7px">
+          <span *ngIf="editingRulesetName && !selectingRuleset">
+            {{$any(nameEditor).control.errors != null ? $any(nameEditor).control.errors.error : ""}}
+            <input 
+              pInputText
+              type="text"
+              [(ngModel)]="$any(data).name"
+              placeholder="Enter Ruleset name"
+              size="30"
+              minlength="1"
+              jhiValidateRulesetName
+              oninput="this.value = this.value.toUpperCase();"
+              #nameEditor="ngModel"
+            />
+            <span aria-label="Search" class="pi pi-check" *ngIf="nameEditor.valid" style="cursor:pointer;" (click)="acceptRulesetName()"></span>
+            <span aria-label="Search" class="pi pi-times" style="cursor:pointer;" (click)="cancelEditRulesetName()"></span>
+          </span>
+     
+        </span>
+        <button type="button" (click)="addRule()" [ngClass]="getClassNames('button')" [disabled]=disabled>
+          <i [ngClass]="getClassNames('addIcon')"></i> Rule
+        </button>
+        <button type="button" (click)="addRuleSet()" [ngClass]="getClassNames('button')" *ngIf="allowRuleset" [disabled]=disabled>
+          <i [ngClass]="getClassNames('addIcon')"></i> Ruleset
+        </button>
+        <button type="button" (click)="addNamedRuleSet()" [ngClass]="getClassNames('button')" *ngIf="allowRuleset" [disabled]=disabled>
+          <i [ngClass]="getClassNames('addIcon')"></i> Named Ruleset
+        </button>
+      </span>
       <ng-container *ngIf="!!parentValue && allowRuleset">
         <button type="button" (click)="removeRuleSet()" [ngClass]="getClassNames('button', 'removeButton')" [disabled]=disabled>
           <i [ngClass]="getClassNames('removeIcon')"></i>
@@ -196,3 +230,17 @@
     <textarea class="output">{{oDataFilter}}</textarea>
   </div>
 </div>
+<p-dialog header="Select a Ruleset" [modal]="true" [baseZIndex]="10000" [(visible)]="selectingRuleset" [style]="{width: '20vw'}" [baseZIndex]="20000">
+  <p-dropdown *ngIf="selectingRuleset"
+    [options]="rulesets" 
+    [(ngModel)]="selectedRuleset" 
+    placeholder="Select a ruleset" 
+    optionLabel="name"
+  >
+  </p-dropdown>
+  <div style="height:200px"></div>
+  <div class="modal-footer">
+    <p-button label="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onClearSelectingRuleset()"></p-button>
+    <p-button label="Ok" type="Submit" class="btn btn-primary" (click)="onRulesetSelected()" [disabled]="!selectedRuleset"></p-button>
+  </div>  
+</p-dialog>

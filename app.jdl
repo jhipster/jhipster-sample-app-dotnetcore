@@ -29,6 +29,16 @@ entity PieceOfWork {
 }
 
 /**
+ * Ruleset entity.
+ * @author The JHipster team.
+ */
+entity Ruleset {
+	name String,
+	jsonString String
+}
+
+
+/**
  * The Employee entity.
  */
 entity Employee {

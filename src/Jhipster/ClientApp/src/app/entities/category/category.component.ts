@@ -260,7 +260,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
       this.searchQueryAsString = "";
     } else {
       this.databaseQuery = JSON.stringify(queryBuilder.query);
-      this.searchQueryAsString = this.QueryAsString(queryBuilder.query as IQuery);
+      this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery);
     }
     this.bDisplaySearchDialog = false;
     const queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
@@ -312,31 +312,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.refreshData();
   }
   
-  QueryAsString(query : IQuery, recurse?: boolean): string{
-    let result = "";
-    let multipleConditions = false;
-    query.rules.forEach((r)=>{
-      if (result.length > 0){
-        result += (' ' + query.condition.toUpperCase() + ' ');
-        multipleConditions = true;
-      }
-      if ((r as any).condition !== undefined){
-        result += this.QueryAsString(r as unknown as IQuery, true);
-      } else if (r.field === "document") { 
-        result += (r.value.toString().toLowerCase());
-      } else {
-        result += r.field;
-        result += (' ' + r.operator.toUpperCase() + ' ');
-        result += (r.value.toString().toLowerCase());
-      }
-    });
-    if (query.not){
-      result = '!(' + result + ')';
-    } else if (recurse && multipleConditions){
-      result = '(' + result + ')';
-    }
-    return result;
-  }
   onCheckboxChange() : void {
     this.chipSelectedRows = [];
     if (this.checkboxSelectedRows.length < 3){

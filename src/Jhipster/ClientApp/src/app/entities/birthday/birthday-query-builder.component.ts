@@ -1,6 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { QueryBuilderConfig, Rule, QueryBuilderComponent } from "angular2-query-builder";
+import { Directive } from '@angular/core';
+import { AbstractControl, NG_ASYNC_VALIDATORS, ValidationErrors, AsyncValidator } from '@angular/forms';
+import { RulesetService } from '../ruleset/ruleset.service';
+import { HttpResponse } from '@angular/common/http';
+import { IRuleset, Ruleset } from 'app/shared/model/ruleset.model';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BirthdayQueryParserService, IQuery } from './birthday-query-parser.service';
 
 interface RuleSet {
   condition: string;
@@ -8,6 +16,7 @@ interface RuleSet {
   collapsed?: boolean;
   isChild?: boolean;
   not?: boolean;
+  name?: string;
 }
 
 @Component({
@@ -20,44 +29,19 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   
   public static firstTimeDiv : any = null;
 
+  public static topLevelRuleset: RuleSet;
+
   public queryCtrl: FormControl;
   
   public allowCollapse = true;
 
   public hoveringOverButton = false;
 
-  public query: RuleSet = {
-    "condition": "or",
-    "rules": [
-      {
-        "condition": "and",
-        "not": false,
-        "rules": [
-          {
-            "field": "sign",
-            "operator": "=",
-            "value": "sagittarius"
-          },
-          {
-            "field": "dob",
-            "operator": ">",
-            "value": "1975-01-01"
-          }
-        ]
-      },
-      {
-        "condition": "and",
-        "not": false,
-        "rules": [
-          {
-            "field": "dob",
-            "operator": "<=",
-            "value": "1493-01-01"
-          }
-        ]
-      }
-    ]
-  };
+  public editingRulesetName = false;
+
+  private oldRulesetName : string | undefined;
+
+  public query: RuleSet | null = null;
 
   public oDataFilter  = "hello";
 
@@ -142,9 +126,15 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     }
   };
 
+  public rulesets : IRuleset[] = [];
+
+  public selectingRuleset = false;
+
+  public selectedRuleset: Ruleset | null = null;
+
   private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
 
-  constructor(private formBuilder: FormBuilder, private localChangeDetectorRef:ChangeDetectorRef, private renderer : Renderer2) {
+  constructor(private formBuilder: FormBuilder, private localChangeDetectorRef:ChangeDetectorRef, private renderer : Renderer2, private rulesetService: RulesetService, private birthdayQueryParserService : BirthdayQueryParserService) {
     super(localChangeDetectorRef);
     this.queryCtrl = this.formBuilder.control(this.query); 
     this.initialize(JSON.stringify(this.query));
@@ -154,6 +144,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     this.query = JSON.parse(query);
     this.queryCtrl = this.formBuilder.control(this.query);
     this.data = this.query;
+    BirthdayQueryBuilderComponent.topLevelRuleset = BirthdayQueryBuilderComponent.topLevelRuleset || this.data;
     this.queryCtrl.valueChanges.subscribe(ruleSet => {
       this.oDataFilter = `${this.BASE_URL}?$filter=${this.toODataString(ruleSet)}`;
     });
@@ -185,7 +176,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   calcButtonDisplay(el : HTMLElement) : boolean {
     this.renderer.setStyle(el.children[0], 'display', (this.hoveringOverButton || (el.children[0].children[0] as any).checked) ? "block" : "none");
-    const multipleChildren = this.data.rules.length > 1;
+    const multipleChildren = this.data && this.data.rules.length > 1;
     this.renderer.setStyle(el.children[1], 'display', (this.hoveringOverButton || ((el.children[1].children[0] as any).checked && multipleChildren)) ? "block" : "none");
     this.renderer.setStyle(el.children[2], 'display', (this.hoveringOverButton || ((el.children[2].children[0] as any).checked && multipleChildren)) ? "block" : "none");
     this.renderer.setStyle(el.children[3], 'display', (this.hoveringOverButton || (el.children[0].children[0] as any).checked || multipleChildren) ? "none" : "block");
@@ -201,6 +192,57 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   private toODataString(ruleSet: RuleSet): string {
     return this.toOdataFilter(ruleSet, true);
+  }
+
+  public editRulesetName() : void {
+    if (!this.queryIsValid()){
+      return;
+    }
+    const ruleset = this.data as RuleSet;
+    this.oldRulesetName = ruleset.name;
+    ruleset.name = ruleset.name || "";
+    this.editingRulesetName = true;
+  }
+
+  public cancelEditRulesetName() : void {
+    const ruleset = this.data as RuleSet;
+    ruleset.name = this.oldRulesetName;
+    this.editingRulesetName = false;
+  }
+
+  public acceptRulesetName() : void {
+    const ruleset : Ruleset = new Ruleset();
+    ruleset.name = (this.data as any).name;
+    ruleset.jsonString = JSON.stringify(this.data);
+    this.subscribeToSaveRulesetResponse(this.rulesetService.create(ruleset));    
+  }
+
+  public queryIsValid() : boolean {
+    const parserService = this.birthdayQueryParserService;
+    const query = parserService.queryAsString(this.data as IQuery);
+    if (query === ""){
+      return false;
+    }
+    const obj : any = JSON.parse(parserService.parse(query));
+    if (obj.Invalid){
+      return false;
+    }
+    return true;
+  }
+
+  protected subscribeToSaveRulesetResponse(result: Observable<HttpResponse<IRuleset>>): void {
+    result.subscribe(
+      () => this.onSaveRulesetSuccess(),
+      () => this.onSaveRulesetError()
+    );
+  }
+  
+  protected onSaveRulesetSuccess(): void {
+    this.editingRulesetName = false;
+  }
+
+  protected onSaveRulesetError(): void {
+    this.editingRulesetName = false;
   }
 
   toOdataFilter(filter: any, useOdataFour: boolean): any {
@@ -306,8 +348,116 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
         const regEx = new RegExp("\\{" + (i - 1) + "\\}", "gm");
         theString = theString.replace(regEx, args[i]);
     }
-
     return theString;
   }
-  
+
+  addNamedRuleSet(): void {
+    if (this.disabled) {
+      return;
+    }
+    this.selectedRuleset = null;
+    this.rulesets = [];
+    const pathNames = this.getPathNames();
+    this.rulesetService.query().pipe(map(res  => {
+      this.rulesets = [];
+      const returnedRulesets = res.body || [];
+      returnedRulesets.forEach(r=>{
+        if (!pathNames.includes(r.name as string)){
+          this.rulesets.push(r);
+        }
+      });
+      this.selectingRuleset = true;
+    })).subscribe();
+  }
+
+  getPathNames() : string[]{
+    // this routine iterates up the tree
+    const pathNames : string[] = [];
+    let pathData : RuleSet | null = this.data;
+    let looping = true;
+    while (looping){
+      if (pathData?.name){
+        pathNames.push(pathData.name);
+      }
+      if (pathData === BirthdayQueryBuilderComponent.topLevelRuleset){
+         looping = false;
+      } else {
+        pathData = this.getParentData(pathData as RuleSet, BirthdayQueryBuilderComponent.topLevelRuleset);
+      }
+    }
+    return pathNames;
+  }
+
+  getParentData(data : RuleSet, level : RuleSet) : RuleSet | null{
+    // this routine goes down the tree to find the parent of data
+    let ret : RuleSet | null = null;
+    level.rules.forEach(r=>{
+      if (r === data){
+        ret = level;
+      } else if ((r as any).rules){
+        const levelParent = this.getParentData(data, r as RuleSet);
+        if (levelParent){
+          ret = levelParent;
+        }
+      }
+    });
+    return ret;
+  }
+
+  onClearSelectingRuleset():void{
+    this.selectingRuleset = false;
+  }
+
+  onRulesetSelected():void{
+    this.selectingRuleset = false;
+    const parent = this.data;
+    (parent as RuleSet).rules = (parent as RuleSet).rules.concat([JSON.parse(this.selectedRuleset?.jsonString as string)]);
+    this.localChangeDetectorRef.markForCheck();
+    if (this.onChangeCallback) {
+      this.onChangeCallback();
+    }
+    if (this.parentChangeCallback) {
+      this.parentChangeCallback();
+    }
+    if (this.onTouchedCallback) {
+      this.onTouchedCallback();
+    }
+    if (this.parentTouchedCallback) {
+      this.parentTouchedCallback();
+    }    
+  }
+}
+
+@Directive({
+  selector: '[jhiValidateRulesetName]',
+  providers: [{provide: NG_ASYNC_VALIDATORS, useExisting: RulesetNameValidatorDirective, multi: true}]
+})
+
+export class RulesetNameValidatorDirective implements AsyncValidator {
+  rulesets : IRuleset[] = [];
+  constructor(private rulesetService: RulesetService ) {}
+
+  validate(control: AbstractControl): Observable<ValidationErrors | null> {
+      const obs = this.rulesetService.query().pipe(map(res  => {
+        (this.rulesets = res.body || []);
+        let bFound = false;
+        this.rulesets.forEach(r =>{
+          if (r.name === control.value){
+            bFound = true;
+          }
+        });
+        if (bFound){
+          return {
+            error: "Name already used"
+          }
+        }
+        if (/^[A-Z][A-Z_\d]*$/.test(control.value)){
+          return null;
+        }
+        return {
+          error: "Invalid name"
+        };
+      }));
+      return obs;
+  }
 }
