@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Renderer2, Input } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { QueryBuilderConfig, Rule, QueryBuilderComponent } from "angular2-query-builder";
 import { Directive } from '@angular/core';
@@ -41,7 +41,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   private oldRulesetName : string | undefined;
 
-  public query: RuleSet | null = null;
+  public query: RuleSet = {condition:"", rules:[]};
 
   public oDataFilter  = "hello";
 
@@ -134,6 +134,8 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
 
+  @Input() public sublevel = false;
+
   constructor(private formBuilder: FormBuilder, private localChangeDetectorRef:ChangeDetectorRef, private renderer : Renderer2, private rulesetService: RulesetService, private birthdayQueryParserService : BirthdayQueryParserService) {
     super(localChangeDetectorRef);
     this.queryCtrl = this.formBuilder.control(this.query); 
@@ -148,6 +150,11 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     this.queryCtrl.valueChanges.subscribe(ruleSet => {
       this.oDataFilter = `${this.BASE_URL}?$filter=${this.toODataString(ruleSet)}`;
     });
+    setTimeout(()=>{                           // <<<---using ()=> syntax
+      if (!this.sublevel){
+        BirthdayQueryBuilderComponent.topLevelRuleset = this.data as RuleSet;
+      }
+    }, 0);    
   }
 
   ngOnInit() : any{
