@@ -3,7 +3,7 @@
     <i [ngClass]="getClassNames('arrowIcon')"></i>
   </ng-template>
 
-  <a *ngIf="allowCollapse" (click)="toggleCollapse()" [ngClass]="getClassNames('arrowIconButton', data.collapsed ? 'collapsed' : null)">
+  <a *ngIf="allowCollapse" (click)="toggleCollapse()" [ngClass]="getClassNames('arrowIconButton', data && data.collapsed ? 'collapsed' : null)">
     <ng-container *ngIf="getArrowIconTemplate() as template; else defaultArrowIcon">
       <ng-container *ngTemplateOutlet="template; context: getArrowIconContext()"></ng-container>
     </ng-container>
@@ -92,7 +92,7 @@
   </ng-template>
 </div>
 
-<div #treeContainer (transitionend)="transitionEnd($event)" [ngClass]="getClassNames('treeContainer', data.collapsed ? 'collapsed' : null)">
+<div #treeContainer (transitionend)="transitionEnd($event)" [ngClass]="getClassNames('treeContainer', data && data.collapsed ? 'collapsed' : null)">
   <ul [ngClass]="getClassNames('tree')" *ngIf="data && $any(data).rules">
     <ng-container *ngFor="let rule of $any(data).rules;let i=index">
 
