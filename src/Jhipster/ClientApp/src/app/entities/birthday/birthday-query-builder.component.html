@@ -18,13 +18,13 @@
     <div [ngClass]="getClassNames('buttonGroup', 'rightAlign')">
       <span style="display: inline-flex;">
         <span *ngIf="!editingRulesetName && !selectingRuleset" style="align-self:center;">
-          <span *ngIf="$any(data).name == null || $any(data).name.length == 0" class="p-component" style="font-weight: 100; padding-top: 10px;" (click)="editRulesetName()"><i>{{queryIsValid() ? "Click to name ruleset" : "Invalid Query"}}</i></span>
+          <span *ngIf="$any(data).name == null || $any(data).name.length == 0" class="p-component" style="font-weight: 100; padding-top: 10px;" (click)="editRulesetName()"><i>{{queryIsValid() ? "Click to name query" : "Invalid Query"}}</i></span>
           <span *ngIf="$any(data).name != null && $any(data).name.length > 0" ((click)="editRulesetName()" style="font-size: 16px;font-weight: 200;">
             <span *ngIf="queryIsValid()" (click)="editRulesetName()">
-              Ruleset: {{$any(data).name}}
+              Query: {{$any(data).name}}
             </span>
             <span *ngIf="!queryIsValid()" style="font-weight: 100; padding-top: 10px; font-size: 10px">
-              <i>Invalid Ruleset: {{$any(data).name}}</i>
+              <i>Invalid query: {{$any(data).name}}</i>
             </span>
           </span>
         </span>        
@@ -47,21 +47,18 @@
           </span>
      
         </span>
-        <button type="button" (click)="addRule()" [ngClass]="getClassNames('button')" [disabled]=disabled>
-          <i [ngClass]="getClassNames('addIcon')"></i> Rule
+        <button title="Add an additional expression to this query" type="button" (click)="addRule()" [ngClass]="getClassNames('button')" [disabled]=disabled>
+          <i [ngClass]="getClassNames('addIcon')"></i> Expression
         </button>
-        <button type="button" (click)="addRuleSet()" [ngClass]="getClassNames('button')" *ngIf="allowRuleset" [disabled]=disabled>
-          <i [ngClass]="getClassNames('addIcon')"></i> Ruleset
+        <button title="Add a named query to this query" type="button" (click)="addNamedRuleSet()" [ngClass]="getClassNames('button')" *ngIf="allowRuleset" [disabled]=disabled>
+          <i [ngClass]="getClassNames('addIcon')"></i> Named query
         </button>
-        <button type="button" (click)="addNamedRuleSet()" [ngClass]="getClassNames('button')" *ngIf="allowRuleset" [disabled]=disabled>
-          <i [ngClass]="getClassNames('addIcon')"></i> Named Ruleset
-        </button>
+        <ng-container *ngIf="!!parentValue && allowRuleset">
+          <button title="Remove this query" type="button" (click)="removeRuleSet()" [ngClass]="getClassNames('button', 'removeButton')" [disabled]=disabled>
+            <i [ngClass]="getClassNames('removeIcon')"></i>
+          </button>
+        </ng-container>        
       </span>
-      <ng-container *ngIf="!!parentValue && allowRuleset">
-        <button type="button" (click)="removeRuleSet()" [ngClass]="getClassNames('button', 'removeButton')" [disabled]=disabled>
-          <i [ngClass]="getClassNames('removeIcon')"></i>
-        </button>
-      </ng-container>
     </div>
   </ng-template>
 
@@ -108,7 +105,7 @@
 
             <ng-template #defaultRemoveButton>
               <div [ngClass]="getClassNames('removeButtonSize', 'rightAlign')">
-                <button type="button" [ngClass]="getClassNames('button', 'removeButton')" (click)="removeRule(rule, data)" [disabled]=disabled>
+                <button title="Remove this expression" type="button" [ngClass]="getClassNames('button', 'removeButton')" (click)="removeRule(rule, data)" [disabled]=disabled>
                   <i [ngClass]="getClassNames('removeIcon')"></i>
                 </button>
               </div>
@@ -193,7 +190,10 @@
                   [disabled]="disabled" *ngSwitchCase="'boolean'" type="checkbox">
               </div>
             </ng-template>
-
+            <button title="Convert expression to a query to allow multiple expressions" (click)="convertToRuleset(rule, data)" style="border-width: thin; border-color: rgba(0, 0, 0, 0.2); background: none;">
+              <i [ngClass]="getClassNames('arrowIcon')"></i>
+              Query
+            </button>
           </ng-container>
           <jhi-birthday-query-builder *ngIf="local.ruleset" [data]="rule" [disabled]="disabled" [parentTouchedCallback]="parentTouchedCallback || onTouchedCallback"
             [parentChangeCallback]="parentChangeCallback || onChangeCallback" [parentInputTemplates]="parentInputTemplates || inputTemplates"
@@ -231,11 +231,11 @@
     <textarea class="output">{{oDataFilter}}</textarea>
   </div>
 </div>
-<p-dialog header="Select a Ruleset" [modal]="true" [baseZIndex]="10000" [(visible)]="selectingRuleset" [style]="{width: '20vw'}" [baseZIndex]="20000">
+<p-dialog header="Select a named query" [modal]="true" [baseZIndex]="10000" [(visible)]="selectingRuleset" [style]="{width: '20vw'}" [baseZIndex]="20000">
   <p-dropdown *ngIf="selectingRuleset"
     [options]="rulesets" 
     [(ngModel)]="selectedRuleset" 
-    placeholder="Select a ruleset" 
+    placeholder="Select a named query" 
     optionLabel="name"
   >
   </p-dropdown>

@@ -358,6 +358,28 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     return theString;
   }
 
+  convertToRuleset(rule: any, data: RuleSet): void {
+    if (this.disabled) {
+      return;
+    }
+    const rules = data.rules;
+    data.rules = [];
+    rules.forEach(r =>{
+      if (r === rule){
+        data.rules.push({ condition: 'and', rules: [rule] })
+      } else {
+        data.rules.push(r);
+      }
+    });
+    this.localChangeDetectorRef.markForCheck();
+    if (this.onTouchedCallback) {
+      this.onTouchedCallback();
+    }
+    if (this.parentTouchedCallback) {
+      this.parentTouchedCallback();
+    } 
+  }
+
   addNamedRuleSet(): void {
     if (this.disabled) {
       return;
