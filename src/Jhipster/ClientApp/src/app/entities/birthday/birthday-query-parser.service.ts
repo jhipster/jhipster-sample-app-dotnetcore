@@ -22,15 +22,15 @@ export class BirthdayQueryParserService {
         return '{"condition":"or","not":false,"rules":[]}';
     }
     query = query.replace(/\\\\/g,'\x01').replace(/\\"/g, '\x02').replace(/`/g,'\x03');
-    const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|(AND|OR|!)|[\w\d".*-]+)\s*/g, '`$1').split('`');
+    const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|(&|\||!)|[\w\d".*-]+)\s*/g, '`$1').split('`');
     // join adjacent words
     let looping = tokens.length > 2;
     while (looping){
       for (let iTokens = 1; iTokens < (tokens.length - 1); iTokens++){
         looping = false;
-        if (!/^(AND|OR|CONTAINS|LIKE|AN|CO|CON|CONT|CONTA|CONTAI|CONTAIN|LI|LIK)$/.test(tokens[iTokens]) 
+        if (!/^(&|\||CONTAINS|LIKE|AN|CO|CON|CONT|CONTA|CONTAI|CONTAIN|LI|LIK)$/.test(tokens[iTokens]) 
           && /^[\w\d".*-]+/.test(tokens[iTokens])
-          && !/^(AND|OR|CONTAINS|LIKE|AN|CO|CON|CONT|CONTA|CONTAI|CONTAIN|LI|LIK)$/.test(tokens[iTokens + 1]) 
+          && !/^(&|\||CONTAINS|LIKE|AN|CO|CON|CONT|CONTA|CONTAI|CONTAIN|LI|LIK)$/.test(tokens[iTokens + 1]) 
           && /^[\w\d".*-]+/.test(tokens[iTokens + 1])){
             tokens[iTokens] += (" " + tokens[iTokens + 1]);
             tokens.splice(iTokens + 1, 1);
@@ -41,7 +41,7 @@ export class BirthdayQueryParserService {
       }
     }
     const i = 1;
-    let ret = this.parseRuleset(tokens, i);
+    let ret = this.parseRuleset(tokens, i, false);
     if (!ret.matches){
       ret = this.parseRule(tokens, i);
     }
@@ -158,8 +158,8 @@ export class BirthdayQueryParserService {
     return parse;
   }
 
-  parseRuleset(tokens: string[], i: number):IParse{
-    let ret = this.parseAndOrRuleset(tokens, i);
+  parseRuleset(tokens: string[], i: number, not: boolean):IParse{
+    let ret = this.parseAndOrRuleset(tokens, i, not);
     if (!ret.matches){
       if (ret.string !== ""){
         return ret;
@@ -172,7 +172,7 @@ export class BirthdayQueryParserService {
     return ret;
   }
 
-  parseAndOrRuleset(tokens: string[], i: number):IParse{
+  parseAndOrRuleset(tokens: string[], i: number, not: boolean):IParse{
     const rules : string[] = [];
     const parse: IParse = {
       matches: false,
@@ -192,7 +192,7 @@ export class BirthdayQueryParserService {
         return parse;
       }
     }
-    if (!/^(AND|OR)$/.test(tokens[ret.i])){
+    if (!/^(&|\|)$/.test(tokens[ret.i])){
       return parse;
     }
     const condition = tokens[ret.i];
@@ -230,7 +230,7 @@ export class BirthdayQueryParserService {
         parse.matches = false;
         return parse;
     }
-    parse.string = '{"condition":"' + condition.toLowerCase() + '","rules":[' + rules.join(',') + '],"not":false}'
+    parse.string = '{"condition":"' + (condition === "&" ? "and" : "or") + '","rules":[' + rules.join(',') + '],"not":' + (not ? 'true' : 'false') + '}'
     return parse;
   }
 
@@ -271,7 +271,7 @@ export class BirthdayQueryParserService {
       return parse;
     }
     parse.i++;
-    let ret = this.parseRuleset(tokens, i);
+    let ret = this.parseRuleset(tokens, i, not);
     if (!ret.matches && ret.string === ""){
       ret = this.parseRule(tokens, i);
       if (ret.matches){
@@ -294,16 +294,16 @@ export class BirthdayQueryParserService {
     let multipleConditions = false;
     query.rules.forEach((r)=>{
       if (result.length > 0){
-        result += (' ' + query.condition.toUpperCase() + ' ');
+        result += (' ' + (query.condition === "and" ? "&" : "|") + ' ');
         multipleConditions = true;
       }
       if ((r as any).condition !== undefined){
-        result += this.queryAsString(r as unknown as IQuery, true);
+        result += this.queryAsString(r as unknown as IQuery, query.rules.length > 1); // note: is only one rule, treat it as a top level
       } else if (r.field === "document" && r.value !== undefined) { 
         result += (r.value.toString().toLowerCase());
       } else if (r.value !== undefined) {
         result += r.field;
-        result += (' ' + r.operator.toUpperCase() + ' ');
+        result += (' ' +  r.operator.toUpperCase() + ' ');
         result += (r.value.toString().toLowerCase());
       }
     });
@@ -313,5 +313,17 @@ export class BirthdayQueryParserService {
       result = '(' + result + ')';
     }
     return result;
-  }  
+  }
+  simplifyQuery(query: IQuery):void{
+    query.rules.forEach(r=>{
+      if ((r as any).rules !== undefined){
+        // rule is a query
+        this.simplifyQuery(r as unknown as IQuery);
+      } 
+    });
+    if (query.rules.length === 1 && (query.rules[0] as any).rules !== undefined && (query.rules[0] as any).rules.length === 1){
+      // remove one level
+      query.rules = [(query.rules[0] as any).rules[0]];
+    }
+  }
 }
