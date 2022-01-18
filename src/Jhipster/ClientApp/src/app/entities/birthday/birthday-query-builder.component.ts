@@ -26,6 +26,8 @@ interface RuleSet {
 })
 
 export class BirthdayQueryBuilderComponent extends QueryBuilderComponent implements OnInit {
+
+  static rulesetMap: Map<string, IRuleset> = new Map<string, IRuleset>();
   
   public static firstTimeDiv : any = null;
 
@@ -226,11 +228,11 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   public queryIsValid() : boolean {
     const parserService = this.birthdayQueryParserService;
-    const query = parserService.queryAsString(this.data as IQuery);
+    const query = parserService.queryAsString(this.data as IQuery, BirthdayQueryBuilderComponent.rulesetMap);
     if (query === ""){
       return false;
     }
-    const obj : any = JSON.parse(parserService.parse(query));
+    const obj : any = JSON.parse(parserService.parse(query, BirthdayQueryBuilderComponent.rulesetMap));
     if (obj.Invalid){
       return false;
     }

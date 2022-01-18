@@ -1,3 +1,4 @@
+import { IRuleset} from 'app/shared/model/ruleset.model';
 interface IQueryRule {
     field: string,
     operator: string,
@@ -17,12 +18,20 @@ interface IParse {
 }
 
 export class BirthdayQueryParserService {
-  parse(query: string): string{
+  queryNames: string[] = [];
+  rulesetMap: Map<string, IRuleset> | null = null;
+  parse(query: string, rulesetMap: Map<string, IRuleset>): string{
+    this.rulesetMap = rulesetMap;
     if (query.trim() === ""){
         return '{"condition":"or","not":false,"rules":[]}';
     }
+    this.queryNames = [...rulesetMap.keys()].sort((a, b) => a > b ? -1 : 1);;
+    const queryNameRegexString = this.queryNames.length > 0 ? "|(" + this.queryNames.join("|") + ")": "";
     query = query.replace(/\\\\/g,'\x01').replace(/\\"/g, '\x02').replace(/`/g,'\x03');
-    const tokens = query.replace(/\s*([()]|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|(&|\||!)|[\w\d".*-]+)\s*/g, '`$1').split('`');
+    // const tokens = query.replace(/\s*([()]|"" (sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|(&|\||!)|[A-Z_]+|[\w\d".*-]+)\s*/g, '`$1').split('`');
+    const regexString = "\\s*([()]" + queryNameRegexString + "|(sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|(&|\\||!)|[\\w\\d\".*-]+)\\s*";
+    const regex = new RegExp(regexString, "g");
+    const tokens = query.replace(regex, '`$1').split('`');
     // join adjacent words
     let looping = tokens.length > 2;
     while (looping){
@@ -193,6 +202,13 @@ export class BirthdayQueryParserService {
       }
     }
     if (!/^(&|\|)$/.test(tokens[ret.i])){
+      if (not && tokens[ret.i] === ")"){ // strange condition caused by !(named_query)
+        return {
+          matches: true,
+          i: ret.i,
+          string: '{"condition":"or","rules":[' + ret.string + '],"not": true}'
+        }        
+      }
       return parse;
     }
     const condition = tokens[ret.i];
@@ -240,7 +256,7 @@ export class BirthdayQueryParserService {
       string: "",
       i
     }
-    if (tokens[i++] !== "NOT"){
+    if (tokens[i++] !== "!"){
       return parse;
     }
     const ret = this.parseParened(tokens, i);
@@ -267,6 +283,21 @@ export class BirthdayQueryParserService {
       i++;
       not = true;
     }
+    if (this.queryNames.includes(tokens[i])){
+      if (not){
+        // the named query must be nested in a parenthis to add NOT
+        return {
+          matches: true,
+          i: i + 1,
+          string: '{"condition":"or","rules":[' + this.rulesetMap?.get(tokens[i])?.jsonString + '],"not": true}'
+        }
+      }
+      return {
+        matches: true,
+        string: this.rulesetMap?.get(tokens[i])?.jsonString as string,
+        i: i + 1
+      };
+    }     
     if (tokens[i++] !== "("){
       return parse;
     }
@@ -289,7 +320,7 @@ export class BirthdayQueryParserService {
     return ret;
   }
 
-  queryAsString(query : IQuery, recurse?: boolean): string{
+  queryAsString(query : IQuery, rulesetMap?: Map<string, IRuleset>, recurse?: boolean): string{
     let result = "";
     let multipleConditions = false;
     query.rules.forEach((r)=>{
@@ -298,7 +329,12 @@ export class BirthdayQueryParserService {
         multipleConditions = true;
       }
       if ((r as any).condition !== undefined){
-        result += this.queryAsString(r as unknown as IQuery, query.rules.length > 1); // note: is only one rule, treat it as a top level
+        if ((r as any).name){
+          result += (r as any).name;
+          rulesetMap?.set((r as any).name, {name: (r as any).name, jsonString: JSON.stringify(r)});
+        } else {
+          result += this.queryAsString(r as unknown as IQuery, rulesetMap, query.rules.length > 1); // note: is only one rule, treat it as a top level
+        }
       } else if (r.field === "document" && r.value !== undefined) { 
         result += (r.value.toString().toLowerCase());
       } else if (r.value !== undefined) {
@@ -321,7 +357,10 @@ export class BirthdayQueryParserService {
         this.simplifyQuery(r as unknown as IQuery);
       } 
     });
-    if (query.rules.length === 1 && (query.rules[0] as any).rules !== undefined && (query.rules[0] as any).rules.length === 1){
+    if (query.rules.length === 1 && 
+        (query.rules[0] as any).rules !== undefined && 
+        (query.rules[0] as any).rules.length === 1 &&
+        (query as any).name !== undefined){
       // remove one level
       query.rules = [(query.rules[0] as any).rules[0]];
     }

@@ -12,6 +12,9 @@ import { ICategory } from 'app/shared/model/category.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { BirthdayService } from '../birthday/birthday.service';
 import { CategoryService } from './category.service';
+import { RulesetService } from '../ruleset/ruleset.service';
+import { map } from 'rxjs/operators';
+import { IRuleset } from 'app/shared/model/ruleset.model';
 
 // import { CategoryDeleteDialogComponent } from './category-delete-dialog.component';
 import { Observable } from 'rxjs';
@@ -56,6 +59,7 @@ interface IQuery {
 })
 
 export class CategoryComponent implements OnInit, OnDestroy {
+  static rulesetMap: Map<string, IRuleset> = new Map<string, IRuleset>();
   categories: ICategory[] = [];
   categoriesMap : {} = {};
   eventSubscriber?: Subscription;
@@ -152,7 +156,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
     protected messageService: MessageService,
     public sanitizer:DomSanitizer,
     private primeNGConfig : PrimeNGConfig,
-    protected birthdayQueryParserService : BirthdayQueryParserService
+    protected birthdayQueryParserService : BirthdayQueryParserService,
+    private rulesetService: RulesetService
   ) {
     this.refresh = this.refreshData.bind(this);
     this.categoryComponent = this;
@@ -205,29 +210,38 @@ export class CategoryComponent implements OnInit, OnDestroy {
     const tolerance = 3;
     return element.offsetWidth + tolerance < element.scrollWidth
   }
+
   showSearchDialog(queryBuilder : any) : void {
-    let queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
-    if (queryObject.Invalid){
-      if (this.editingQuery){
-        this.searchQueryAsString = this.searchQueryBeforeEdit;
-        queryObject = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
+    let rulesets : IRuleset[] = [];
+    const rulesetMap = new Map<string, IRuleset>();
+    this.rulesetService.query().pipe(map((res: any): void=> {
+      rulesets = res.body || [];
+      rulesets?.forEach(r=>{
+        rulesetMap.set(r.name as string, r);
+      }); 
+      let queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString, rulesetMap));
+      if (queryObject.Invalid){
+        if (this.editingQuery){
+          this.searchQueryAsString = this.searchQueryBeforeEdit;
+          queryObject = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString, rulesetMap));
+        }
       }
-    }
-    if (this.searchQueryAsString === ""){
-      queryObject = queryObject = {
-        "condition": "and",
-        "rules": [
-          {
-            "field": "document",
-            "operator": "contains",
-            "value": ""
-          }
-        ]
+      if (this.searchQueryAsString === ""){
+        queryObject = queryObject = {
+          "condition": "and",
+          "rules": [
+            {
+              "field": "document",
+              "operator": "contains",
+              "value": ""
+            }
+          ]
+        }
       }
-    }
-    queryBuilder.initialize(JSON.stringify(queryObject));
-    this.bDisplaySearchDialog = true;
-    this.editingQuery = false;
+      queryBuilder.initialize(JSON.stringify(queryObject));
+      this.bDisplaySearchDialog = true;
+      this.editingQuery = false;
+    })).subscribe();
   }
 
   cancelSearchDialog() : void {
@@ -248,7 +262,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     if (this.searchQueryAsString.length === 0){
       this.databaseQuery = "";
     } else {
-      this.databaseQuery = this.birthdayQueryParserService.parse(this.searchQueryAsString);
+      this.databaseQuery = this.birthdayQueryParserService.parse(this.searchQueryAsString, CategoryComponent.rulesetMap);
     }
     this.editingQuery = false;
     this.refreshData();
@@ -260,10 +274,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
       this.searchQueryAsString = "";
     } else {
       this.databaseQuery = JSON.stringify(queryBuilder.query);
-      this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery);
+      this.birthdayQueryParserService.simplifyQuery(queryBuilder.query as IQuery);
+      this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery, CategoryComponent.rulesetMap);
     }
     this.bDisplaySearchDialog = false;
-    const queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString));
+    const queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString, CategoryComponent.rulesetMap));
     if (queryObject.Invalid){
       this.editingQuery = true;
       setTimeout(function() : void{
