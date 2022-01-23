@@ -43,7 +43,7 @@
             <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 
-        <button type="Submit" aria-label="submit" class="btn btn-primary" [disabled]="queryBuilder.queryCtrl.errors">
+        <button type="Submit" aria-label="submit" class="btn btn-primary" [disabled]="!queryBuilder.queryIsValid() || queryBuilder.containsDirtyNamedQueries()">
           <fa-icon [icon]="faCheck"></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok" (click)="okSearchDialog(queryBuilder, queryEditbox)"></span>
         </button>
       </div>

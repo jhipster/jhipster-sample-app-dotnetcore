@@ -14,7 +14,7 @@ import { BirthdayService } from '../birthday/birthday.service';
 import { CategoryService } from './category.service';
 import { RulesetService } from '../ruleset/ruleset.service';
 import { map } from 'rxjs/operators';
-import { IRuleset } from 'app/shared/model/ruleset.model';
+import { IStoredRuleset } from 'app/shared/model/ruleset.model';
 
 // import { CategoryDeleteDialogComponent } from './category-delete-dialog.component';
 import { Observable } from 'rxjs';
@@ -59,7 +59,7 @@ interface IQuery {
 })
 
 export class CategoryComponent implements OnInit, OnDestroy {
-  static rulesetMap: Map<string, IRuleset> = new Map<string, IRuleset>();
+  static rulesetMap: Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
   categories: ICategory[] = [];
   categoriesMap : {} = {};
   eventSubscriber?: Subscription;
@@ -212,8 +212,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   showSearchDialog(queryBuilder : any) : void {
-    let rulesets : IRuleset[] = [];
-    const rulesetMap = new Map<string, IRuleset>();
+    let rulesets : IStoredRuleset[] = [];
+    const rulesetMap = new Map<string, IStoredRuleset>();
     this.rulesetService.query().pipe(map((res: any): void=> {
       rulesets = res.body || [];
       rulesets?.forEach(r=>{
@@ -227,7 +227,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
         }
       }
       if (this.searchQueryAsString === ""){
-        queryObject = queryObject = {
+        queryObject = {
           "condition": "and",
           "rules": [
             {
@@ -269,13 +269,21 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   okSearchDialog(queryBuilder : any, queryEditbox : any) : void {
+    if (!queryBuilder.queryIsValid() || queryBuilder.containsDirtyNamedQueries()){
+      return;
+    }
     if (queryBuilder.query.rules && queryBuilder.query.rules.length === 0){
       this.databaseQuery = "";
       this.searchQueryAsString = "";
     } else {
       this.databaseQuery = JSON.stringify(queryBuilder.query);
       this.birthdayQueryParserService.simplifyQuery(queryBuilder.query as IQuery);
-      this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery, CategoryComponent.rulesetMap);
+      if (queryBuilder.query.name){
+        // top level of the query is named
+        this.searchQueryAsString = queryBuilder.query.name;
+      } else {
+        this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery, CategoryComponent.rulesetMap);
+      }
     }
     this.bDisplaySearchDialog = false;
     const queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString, CategoryComponent.rulesetMap));

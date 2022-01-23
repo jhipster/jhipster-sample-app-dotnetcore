@@ -1,7 +1,7 @@
 {'/data':#build.@MissingValue('')}
 Subtemplates:
 {#build:[{#condition}]}
-{#condition:[{not->[NOT ]}({condition.Case('and',#and,'or',#or)})]}
+{#condition:[{not->[( NOT]}({condition.Case('and',#and,'or',#or)}){not->[)]}]}
 {#and:[{rules:[{field=>#operator,#condition}].Join( ' AND ')}]}
 {#or:[{rules:[{field=>#operator,#condition}].Join(' OR ')}]}
 {#operator:[{operator.Case('=',#equals,'>=',#gte,'<=',#lte,'>',#gt,'<',#lt,'contains',#contains,'is null',#isnull,'is not null',#isnotnull,[NOT HANDLED: {field} {operator} {value}])}]}

@@ -4,7 +4,7 @@ import { BirthdayQueryParserService } from '../birthday/birthday-query-parser.se
 import { RulesetService } from '../ruleset/ruleset.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IRuleset } from 'app/shared/model/ruleset.model';
+import { IStoredRuleset } from 'app/shared/model/ruleset.model';
 
 @Directive({
     selector: '[jhiValidateBirthdayQuery]',
@@ -12,8 +12,8 @@ import { IRuleset } from 'app/shared/model/ruleset.model';
 })
 
 export class BirthdayQueryValidatorDirective implements AsyncValidator {
-  static rulesets : IRuleset[] | null = null;
-  static rulesetMap: Map<string, IRuleset> = new Map<string, IRuleset>();
+  static rulesets : IStoredRuleset[] | null = null;
+  static rulesetMap: Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
   static lastRequestTime: Date | null = null;
   constructor(protected birthdayQueryParserService : BirthdayQueryParserService,private rulesetService: RulesetService) {}
 
@@ -21,7 +21,7 @@ export class BirthdayQueryValidatorDirective implements AsyncValidator {
     const funct = (res: any): ValidationErrors | null => {
       if (!res.reuse){
         BirthdayQueryValidatorDirective.rulesets = res.body || [];
-        BirthdayQueryValidatorDirective.rulesetMap = new Map<string, IRuleset>();
+        BirthdayQueryValidatorDirective.rulesetMap = new Map<string, IStoredRuleset>();
         BirthdayQueryValidatorDirective.lastRequestTime = new Date();
       }
       BirthdayQueryValidatorDirective.rulesets?.forEach(r=>{

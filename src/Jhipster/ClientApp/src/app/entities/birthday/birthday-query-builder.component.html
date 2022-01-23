@@ -21,7 +21,7 @@
           <span *ngIf="$any(data).name == null || $any(data).name.length == 0" class="p-component" style="font-weight: 100; padding-top: 10px;" (click)="editRulesetName()"><i>{{queryIsValid() ? "Click to name query" : "Invalid Query"}}</i></span>
           <span *ngIf="$any(data).name != null && $any(data).name.length > 0" ((click)="editRulesetName()" style="font-size: 16px;font-weight: 200;">
             <span *ngIf="queryIsValid()" (click)="editRulesetName()">
-              Query: {{$any(data).name}}
+              <span *ngIf="data?.dirty">MODIFIED </span>Query: {{$any(data).name}}
             </span>
             <span *ngIf="!queryIsValid()" style="font-weight: 100; padding-top: 10px; font-size: 10px">
               <i>Invalid query: {{$any(data).name}}</i>
@@ -233,7 +233,7 @@
 </div>
 <p-dialog header="Select a named query" [modal]="true" [baseZIndex]="10000" [(visible)]="selectingRuleset" [style]="{width: '20vw'}" [baseZIndex]="20000">
   <p-dropdown *ngIf="selectingRuleset"
-    [options]="rulesets" 
+    [options]="storedRulesets" 
     [(ngModel)]="selectedRuleset" 
     placeholder="Select a named query" 
     optionLabel="name"

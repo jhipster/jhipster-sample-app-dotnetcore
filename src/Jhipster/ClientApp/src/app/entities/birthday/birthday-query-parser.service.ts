@@ -1,4 +1,4 @@
-import { IRuleset} from 'app/shared/model/ruleset.model';
+import { IStoredRuleset} from 'app/shared/model/ruleset.model';
 interface IQueryRule {
     field: string,
     operator: string,
@@ -19,8 +19,8 @@ interface IParse {
 
 export class BirthdayQueryParserService {
   queryNames: string[] = [];
-  rulesetMap: Map<string, IRuleset> | null = null;
-  parse(query: string, rulesetMap: Map<string, IRuleset>): string{
+  rulesetMap: Map<string, IStoredRuleset> | null = null;
+  parse(query: string, rulesetMap: Map<string, IStoredRuleset>): string{
     this.rulesetMap = rulesetMap;
     if (query.trim() === ""){
         return '{"condition":"or","not":false,"rules":[]}';
@@ -73,7 +73,7 @@ export class BirthdayQueryParserService {
       return parse;
     }
     if (!/^(sign|dob|lname|fname|isAlive|document)$/.test(tokens[parse.i])){
-        if (/^[\w\d.* -]+$/.test(tokens[i]) || /^"[^"]+"$/.test(tokens[i])){
+        if ((/^[\w\d.* -]+$/.test(tokens[i]) && /[a-z0-9]/.test(tokens[i])) || /^"[^"]+"$/.test(tokens[i])){
             const documentValue = '"' + (tokens[i].replace(/\x03/g,'`').replace(/\x02/g,'"').replace(/\x01/g,"\\\\").replace(/"/g,"\\\"")) + '"';
             parse.matches = true;
             parse.string = '{"field":"document", "operator":"contains","value":' + documentValue + '}';
@@ -267,7 +267,9 @@ export class BirthdayQueryParserService {
       parse.string = "[! is not followed by parenthesized expression]";
       return parse;
     } else {
-      ret.string.replace('"not":false', '"not":true')
+      const obj = JSON.parse(ret.string);
+      obj.not = true;
+      ret.string = JSON.stringify(obj);
     }
     return ret;
   }
@@ -320,7 +322,7 @@ export class BirthdayQueryParserService {
     return ret;
   }
 
-  queryAsString(query : IQuery, rulesetMap?: Map<string, IRuleset>, recurse?: boolean): string{
+  queryAsString(query : IQuery, rulesetMap?: Map<string, IStoredRuleset>, recurse?: boolean): string{
     let result = "";
     let multipleConditions = false;
     query.rules.forEach((r)=>{
@@ -337,10 +339,12 @@ export class BirthdayQueryParserService {
         }
       } else if (r.field === "document" && r.value !== undefined) { 
         result += (r.value.toString().toLowerCase());
-      } else if (r.value !== undefined) {
+      } else {
         result += r.field;
         result += (' ' +  r.operator.toUpperCase() + ' ');
-        result += (r.value.toString().toLowerCase());
+        if (r.value !== undefined) {
+          result += (r.value.toString().toLowerCase());
+        }
       }
     });
     if (query.not){

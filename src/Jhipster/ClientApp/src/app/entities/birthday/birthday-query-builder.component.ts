@@ -1,22 +1,21 @@
 import { Component, OnInit, ChangeDetectorRef, Renderer2, Input } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { QueryBuilderConfig, Rule, QueryBuilderComponent } from "angular2-query-builder";
+import { QueryBuilderConfig, QueryBuilderComponent, RuleSet } from "angular2-query-builder";
 import { Directive } from '@angular/core';
 import { AbstractControl, NG_ASYNC_VALIDATORS, ValidationErrors, AsyncValidator } from '@angular/forms';
 import { RulesetService } from '../ruleset/ruleset.service';
 import { HttpResponse } from '@angular/common/http';
-import { IRuleset, Ruleset } from 'app/shared/model/ruleset.model';
+import { IStoredRuleset, StoredRuleset } from 'app/shared/model/ruleset.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BirthdayQueryParserService, IQuery } from './birthday-query-parser.service';
 
-interface RuleSet {
-  condition: string;
-  rules: Array<RuleSet | Rule>;
-  collapsed?: boolean;
-  isChild?: boolean;
+export interface ExtendedRuleSet extends RuleSet {
   not?: boolean;
   name?: string;
+  initialQueryAsString?: string;
+  usedBy?: Array<string>;
+  dirty?: boolean;
 }
 
 @Component({
@@ -27,7 +26,7 @@ interface RuleSet {
 
 export class BirthdayQueryBuilderComponent extends QueryBuilderComponent implements OnInit {
 
-  static rulesetMap: Map<string, IRuleset> = new Map<string, IRuleset>();
+  static rulesetMap: Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
   
   public static firstTimeDiv : any = null;
 
@@ -46,6 +45,8 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   public query: RuleSet = {condition:"", rules:[]};
 
   public oDataFilter  = "hello";
+
+  data: ExtendedRuleSet | null = null;
 
   odataFilters = {
     eq: 'eq',
@@ -128,11 +129,11 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     }
   };
 
-  public rulesets : IRuleset[] = [];
+  public storedRulesets : IStoredRuleset[] = [];
 
   public selectingRuleset = false;
 
-  public selectedRuleset: Ruleset | null = null;
+  public selectedRuleset: StoredRuleset | null = null;
 
   private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
 
@@ -166,7 +167,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   toggleNot(el : any) : void{
     el.checked = el.checked ? false : true;
-    const ruleset = this.data as RuleSet;
+    const ruleset = this.data as ExtendedRuleSet;
     ruleset.not = el.checked;
     this.localChangeDetectorRef.markForCheck();
     if (this.onChangeCallback) {
@@ -204,7 +205,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   }
 
   public editRulesetName() : void {
-    if (!this.queryIsValid()){
+    if (!this.queryIsValidOrDirty(false)){
       return;
     }
     const ruleset = this.data as RuleSet;
@@ -220,26 +221,70 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   }
 
   public acceptRulesetName() : void {
-    const ruleset : Ruleset = new Ruleset();
-    ruleset.name = (this.data as any).name;
-    ruleset.jsonString = JSON.stringify(this.data);
-    this.subscribeToSaveRulesetResponse(this.rulesetService.create(ruleset));    
+    const storedRuleset :StoredRuleset = new StoredRuleset();
+    storedRuleset.name = (this.data as any).name;
+    storedRuleset.jsonString = JSON.stringify(this.data);
+    this.subscribeToSaveRulesetResponse(this.rulesetService.create(storedRuleset));
+    this.data
   }
 
-  public queryIsValid() : boolean {
+  public queryIsValid(): boolean{
+    return this.queryIsValidOrDirty(false);
+  }
+
+  public containsDirtyNamedQueries(): boolean{
+    return this.queryIsValidOrDirty(true);
+  }
+
+  private queryIsValidOrDirty(bTestingDirty:boolean) : boolean {
     const parserService = this.birthdayQueryParserService;
     const query = parserService.queryAsString(this.data as IQuery, BirthdayQueryBuilderComponent.rulesetMap);
+    const queryObject = this.data as ExtendedRuleSet;
+    if (queryObject.name && !queryObject.initialQueryAsString){
+      queryObject.initialQueryAsString = query;
+    }
     if (query === ""){
       return false;
     }
-    const obj : any = JSON.parse(parserService.parse(query, BirthdayQueryBuilderComponent.rulesetMap));
-    if (obj.Invalid){
-      return false;
+    if (!bTestingDirty){
+      const obj : any = JSON.parse(parserService.parse(query, BirthdayQueryBuilderComponent.rulesetMap));
+      return !obj.Invalid;
     }
-    return true;
+    // testing for dirty
+    if (queryObject.name){
+      /*
+      const bDirty = queryObject.initialQueryAsString !== query;
+      if (bDirty !== queryObject.dirty){
+        setTimeout(()=>{
+          queryObject.dirty = bDirty
+        }, 0); 
+      }
+      return bDirty;
+      */
+      queryObject.dirty = queryObject.initialQueryAsString !== query;
+      return queryObject.dirty;
+    }
+    return false;
   }
 
-  protected subscribeToSaveRulesetResponse(result: Observable<HttpResponse<IRuleset>>): void {
+  public containsDirtyNamedQuery(rule : any): boolean{
+    if (!rule.rules){
+      return false; // not a ruleset
+    }
+    const query : ExtendedRuleSet = rule as ExtendedRuleSet;
+    if (query.name && query.dirty){
+      return true;
+    }
+    let bDirty = false;
+    query.rules.forEach(r=>{
+      if (this.containsDirtyNamedQuery(r)){
+        bDirty = true;
+      }
+    });
+    return bDirty;
+  }
+
+  protected subscribeToSaveRulesetResponse(result: Observable<HttpResponse<IStoredRuleset>>): void {
     result.subscribe(
       () => this.onSaveRulesetSuccess(),
       () => this.onSaveRulesetError()
@@ -387,14 +432,14 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
       return;
     }
     this.selectedRuleset = null;
-    this.rulesets = [];
+    this.storedRulesets = [];
     const pathNames = this.getPathNames();
     this.rulesetService.query().pipe(map(res  => {
-      this.rulesets = [];
+      this.storedRulesets = [];
       const returnedRulesets = res.body || [];
       returnedRulesets.forEach(r=>{
         if (!pathNames.includes(r.name as string)){
-          this.rulesets.push(r);
+          this.storedRulesets.push(r);
         }
       });
       this.selectingRuleset = true;
@@ -465,14 +510,14 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 })
 
 export class RulesetNameValidatorDirective implements AsyncValidator {
-  rulesets : IRuleset[] = [];
+  storedRulesets : IStoredRuleset[] = [];
   constructor(private rulesetService: RulesetService ) {}
 
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
       const obs = this.rulesetService.query().pipe(map(res  => {
-        (this.rulesets = res.body || []);
+        (this.storedRulesets = res.body || []);
         let bFound = false;
-        this.rulesets.forEach(r =>{
+        this.storedRulesets.forEach(r =>{
           if (r.name === control.value){
             bFound = true;
           }

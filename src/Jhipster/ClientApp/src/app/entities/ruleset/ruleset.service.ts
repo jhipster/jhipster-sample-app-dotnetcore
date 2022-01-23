@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
-import { IRuleset } from 'app/shared/model/ruleset.model';
+import { IStoredRuleset } from 'app/shared/model/ruleset.model';
 
-type EntityResponseType = HttpResponse<IRuleset>;
-type EntityArrayResponseType = HttpResponse<IRuleset[]>;
+type EntityResponseType = HttpResponse<IStoredRuleset>;
+type EntityArrayResponseType = HttpResponse<IStoredRuleset[]>;
 
 @Injectable({ providedIn: 'root' })
 export class RulesetService {
@@ -15,21 +15,21 @@ export class RulesetService {
 
   constructor(protected http: HttpClient) {}
 
-  create(ruleset: IRuleset): Observable<EntityResponseType> {
-    return this.http.post<IRuleset>(this.resourceUrl, ruleset, { observe: 'response' });
+  create(ruleset: IStoredRuleset): Observable<EntityResponseType> {
+    return this.http.post<IStoredRuleset>(this.resourceUrl, ruleset, { observe: 'response' });
   }
 
-  update(ruleset: IRuleset): Observable<EntityResponseType> {
-    return this.http.put<IRuleset>(this.resourceUrl, ruleset, { observe: 'response' });
+  update(ruleset: IStoredRuleset): Observable<EntityResponseType> {
+    return this.http.put<IStoredRuleset>(this.resourceUrl, ruleset, { observe: 'response' });
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IRuleset>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http.get<IStoredRuleset>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IRuleset[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<IStoredRuleset[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
