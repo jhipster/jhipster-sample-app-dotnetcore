@@ -29,6 +29,13 @@ namespace Jhipster.Domain.Services
             return page;
         }
 
+        public virtual async Task<Ruleset> FindOneByName(string name)
+        {
+            var result = await _rulesetRepository.QueryHelper().AsNoTracking()
+                .GetOneAsync(ruleset => ruleset.Name == name);
+            return result;
+        }
+
         public virtual async Task<Ruleset> FindOne(long id)
         {
             var result = await _rulesetRepository.QueryHelper()

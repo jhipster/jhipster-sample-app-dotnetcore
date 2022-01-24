@@ -6,8 +6,8 @@ import { AbstractControl, NG_ASYNC_VALIDATORS, ValidationErrors, AsyncValidator 
 import { RulesetService } from '../ruleset/ruleset.service';
 import { HttpResponse } from '@angular/common/http';
 import { IStoredRuleset, StoredRuleset } from 'app/shared/model/ruleset.model';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { BirthdayQueryParserService, IQuery } from './birthday-query-parser.service';
 
 export interface ExtendedRuleSet extends RuleSet {
@@ -45,6 +45,12 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   public query: RuleSet = {condition:"", rules:[]};
 
   public oDataFilter  = "hello";
+
+  public updatingNamedQuery = false;
+
+  public namedQuery = "";
+
+  public updatingNamedQueryError = "";
 
   data: ExtendedRuleSet | null = null;
 
@@ -205,7 +211,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   }
 
   public editRulesetName() : void {
-    if (!this.queryIsValidOrDirty(false)){
+    if (!this.queryIsValid() || this.data?.name){
       return;
     }
     const ruleset = this.data as RuleSet;
@@ -228,43 +234,93 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     this.data
   }
 
-  public queryIsValid(): boolean{
-    return this.queryIsValidOrDirty(false);
+  public undoQueryMods(event: Event) : void {
+    event.stopPropagation();
+    const obj : ExtendedRuleSet = JSON.parse(this.birthdayQueryParserService.parse(this.data?.initialQueryAsString as string, BirthdayQueryBuilderComponent.rulesetMap));
+    const query = this.data as ExtendedRuleSet;
+    query.condition = obj.condition;
+    query.dirty = false;
+    query.not = obj.not;
+    query.rules = obj.rules;
+  }
+
+  public onUpdateNamedQuery(event: Event): void{
+    event.stopPropagation();
+    this.namedQuery = (this.data as ExtendedRuleSet).name as string;
+    this.updatingNamedQuery = true;
+  }
+
+  public onCancelSavingNamedQuery(): void{
+    this.updatingNamedQuery = false;
+  }
+
+  public onRemoveNameFromQuery(): void{
+    delete (this.data as ExtendedRuleSet).name;
+    this.updatingNamedQuery = false;
+  }
+
+  public onConfirmUpdatingNamedQuery(): void{
+    const queryAsString = this.birthdayQueryParserService.queryAsString(this.data as IQuery, BirthdayQueryBuilderComponent.rulesetMap); 
+    let jsonString = JSON.stringify(this.data as ExtendedRuleSet);
+    const updated : ExtendedRuleSet = JSON.parse(jsonString); // clone
+    updated.initialQueryAsString = queryAsString;
+    delete updated.dirty;
+    delete updated.collapsed;
+    jsonString = JSON.stringify(updated);
+    const storedRuleset = new StoredRuleset(undefined, (this.data as ExtendedRuleSet).name, jsonString);
+    this.updatingNamedQueryError = "";
+    this.rulesetService.update(storedRuleset).pipe(map(()  => {
+      this.updateNamedQueries(updated.name as string, BirthdayQueryBuilderComponent.topLevelRuleset, jsonString, queryAsString);
+      (this.data as ExtendedRuleSet).initialQueryAsString = queryAsString;
+      this.updatingNamedQuery = false;
+    }),
+    catchError((error) => {
+      // server error from the update
+      this.updatingNamedQueryError = error.error?.detail;
+      return of([]);
+    })).subscribe();
+  }
+
+  private updateNamedQueries(name: string, currentRule: any, jsonString : string, queryAsString: string): void{
+    if (!currentRule.rules){
+      return;
+    }
+    const query : ExtendedRuleSet = currentRule as ExtendedRuleSet;
+    const updated = JSON.parse(jsonString);
+    if (query.name && query.name === name){
+      query.condition = updated.condition;
+      query.dirty = false;
+      query.initialQueryAsString = queryAsString;
+      query.not = updated.not;
+      query.rules = updated.rules;
+    }
+    query.rules.forEach(r=>{
+      this.updateNamedQueries(name, r, jsonString, queryAsString);
+    });
   }
 
   public containsDirtyNamedQueries(): boolean{
-    return this.queryIsValidOrDirty(true);
+    return this.containsDirtyNamedQuery(this.data);
   }
 
-  private queryIsValidOrDirty(bTestingDirty:boolean) : boolean {
+  public containsDirtyNamedQueriesBelow(): boolean{
+    const fakeRuleset = {rules: (this.data as ExtendedRuleSet).rules}
+    return this.containsDirtyNamedQuery(fakeRuleset);
+  }
+
+  public queryIsValid() : boolean {
     const parserService = this.birthdayQueryParserService;
     const query = parserService.queryAsString(this.data as IQuery, BirthdayQueryBuilderComponent.rulesetMap);
     const queryObject = this.data as ExtendedRuleSet;
     if (queryObject.name && !queryObject.initialQueryAsString){
       queryObject.initialQueryAsString = query;
     }
+    queryObject.dirty = queryObject.initialQueryAsString !== query;
     if (query === ""){
       return false;
     }
-    if (!bTestingDirty){
-      const obj : any = JSON.parse(parserService.parse(query, BirthdayQueryBuilderComponent.rulesetMap));
-      return !obj.Invalid;
-    }
-    // testing for dirty
-    if (queryObject.name){
-      /*
-      const bDirty = queryObject.initialQueryAsString !== query;
-      if (bDirty !== queryObject.dirty){
-        setTimeout(()=>{
-          queryObject.dirty = bDirty
-        }, 0); 
-      }
-      return bDirty;
-      */
-      queryObject.dirty = queryObject.initialQueryAsString !== query;
-      return queryObject.dirty;
-    }
-    return false;
+    const obj : any = JSON.parse(parserService.parse(query, BirthdayQueryBuilderComponent.rulesetMap));
+    return !obj.Invalid;
   }
 
   public containsDirtyNamedQuery(rule : any): boolean{

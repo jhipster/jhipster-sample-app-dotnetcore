@@ -56,6 +56,10 @@ namespace Jhipster.Controllers
         public async Task<IActionResult> UpdateRuleset([FromBody] RulesetDto rulesetDto)
         {
             _log.LogDebug($"REST request to update Ruleset : {rulesetDto}");
+            if (rulesetDto.Id == 0){
+                var result = await _rulesetService.FindOneByName(rulesetDto.Name);
+                rulesetDto.Id = result.Id;
+            }
             if (rulesetDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
             Ruleset ruleset = _mapper.Map<Ruleset>(rulesetDto);
             await _rulesetService.Save(ruleset);

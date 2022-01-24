@@ -19,14 +19,19 @@
       <span style="display: inline-flex;">
         <span *ngIf="!editingRulesetName && !selectingRuleset" style="align-self:center;">
           <span *ngIf="$any(data).name == null || $any(data).name.length == 0" class="p-component" style="font-weight: 100; padding-top: 10px;" (click)="editRulesetName()"><i>{{queryIsValid() ? "Click to name query" : "Invalid Query"}}</i></span>
-          <span *ngIf="$any(data).name != null && $any(data).name.length > 0" ((click)="editRulesetName()" style="font-size: 16px;font-weight: 200;">
-            <span *ngIf="queryIsValid()" (click)="editRulesetName()">
-              <span *ngIf="data?.dirty">MODIFIED </span>Query: {{$any(data).name}}
+            <span *ngIf="$any(data).name != null && $any(data).name.length > 0" ((click)="editRulesetName()" style="font-size: 16px;font-weight: 200;">
+              <span *ngIf="queryIsValid()" (click)="editRulesetName()">
+                <span *ngIf="containsDirtyNamedQueries()">
+                  <button title="Click to update query" style="border-width: thin; border-color: rgba(0, 0, 0, 0.2); background: none;" (click)="onUpdateNamedQuery($event)" [disabled]="containsDirtyNamedQueriesBelow()">
+                    <fa-icon icon="save" class="ng-fa-icon" ng-reflect-icon="save"></fa-icon>
+                    Modified
+                  </button><span title="Undo modification" aria-label="Undo" class="pi pi-times" style="cursor: pointer;" (click)="undoQueryMods($event)"></span>&nbsp;
+                </span>Query: {{$any(data).name}}
+              </span>
+              <span *ngIf="!queryIsValid()" style="font-weight: 100; padding-top: 10px; font-size: 10px">
+                <i>Invalid query: {{$any(data).name}}</i>
+              </span>
             </span>
-            <span *ngIf="!queryIsValid()" style="font-weight: 100; padding-top: 10px; font-size: 10px">
-              <i>Invalid query: {{$any(data).name}}</i>
-            </span>
-          </span>
         </span>        
         <span #queryEditbox style="padding-top:7px">
           <span *ngIf="editingRulesetName && !selectingRuleset">
@@ -231,6 +236,15 @@
     <textarea class="output">{{oDataFilter}}</textarea>
   </div>
 </div>
+<p-dialog header="Update named query {{namedQuery}}" [modal]="true" [baseZIndex]="10000" [(visible)]="updatingNamedQuery" [style]="{width: '80vw'}" [baseZIndex]="20000">
+  <span style='color: red'>{{updatingNamedQueryError}}</span>
+  <div style="height:60px"></div>
+  <div class="modal-footer">
+    <p-button label="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onCancelSavingNamedQuery()"></p-button>
+    <p-button label="Remove name from query" type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onRemoveNameFromQuery()"></p-button>
+    <p-button label="Update" type="Submit" class="btn btn-primary" (click)="onConfirmUpdatingNamedQuery()"></p-button>
+  </div> 
+</p-dialog>
 <p-dialog header="Select a named query" [modal]="true" [baseZIndex]="10000" [(visible)]="selectingRuleset" [style]="{width: '20vw'}" [baseZIndex]="20000">
   <p-dropdown *ngIf="selectingRuleset"
     [options]="storedRulesets" 
