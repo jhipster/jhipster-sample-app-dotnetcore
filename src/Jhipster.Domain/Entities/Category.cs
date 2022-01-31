@@ -17,6 +17,7 @@ namespace Jhipster.Domain
         public bool notCategorized {get; set;}
         public string focusId {get; set;}
         public FocusType focusType {get; set;}
+        public string jsonString {get; set;}
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 

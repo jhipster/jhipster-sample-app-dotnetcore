@@ -23,6 +23,7 @@
             size="130"
             minlength="0"
             jhiValidateBirthdayQuery
+            [rulesetMap]="rulesetMap"
             #queryEditor="ngModel"
           />
           <span aria-label="Search" class="pi pi-check" *ngIf="queryEditor.valid" style="cursor:pointer;" (click)="acceptEditQuery()"></span>

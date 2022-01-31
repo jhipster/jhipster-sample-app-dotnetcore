@@ -6,8 +6,9 @@ export interface ICategory {
   notCategorized?: boolean;
   focusType?: string;
   focusId?: string;
+  jsonString?: string;
 }
 
 export class Category implements ICategory {
-  constructor(public id?: number, public categoryName?: string, public selected?: boolean, public focusType?: string, public focus?: string) {}
+  constructor(public id?: number, public categoryName?: string, public selected?: boolean, public focusType?: string, public focus?: string, public jsonString?: string) {}
 }

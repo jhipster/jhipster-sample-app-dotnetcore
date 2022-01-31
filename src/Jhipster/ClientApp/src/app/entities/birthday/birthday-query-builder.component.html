@@ -208,7 +208,8 @@
             [parentEmptyWarningTemplate]="parentEmptyWarningTemplate || emptyWarningTemplate" [parentArrowIconTemplate]="parentArrowIconTemplate || arrowIconTemplate"
             [parentValue]="data" [classNames]="classNames" [config]="config" [allowRuleset]="allowRuleset"
             [allowCollapse]="allowCollapse" [emptyMessage]="emptyMessage" [operatorMap]="operatorMap"
-            [sublevel]="true">
+            [sublevel]="true"
+            [rulesetMap]="rulesetMap">
           </jhi-birthday-query-builder>
 
           <ng-container *ngIf="getEmptyWarningTemplate() as template; else defaultEmptyWarning">

@@ -8,11 +8,14 @@ using Jhipster.Domain.Repositories.Interfaces;
 using Jhipster.Infrastructure.Data.Extensions;
 using System;
 using Nest;
+using AutoMapper;
 using Jhipster.Infrastructure.Data;
+
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using Jhipster.Domain.Services.Interfaces;
+using Jhipster.Dto;
 
 namespace Jhipster.Infrastructure.Data.Repositories
 {
@@ -22,9 +25,13 @@ namespace Jhipster.Infrastructure.Data.Repositories
         private static Nest.ConnectionSettings setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9", "4cdkz0o14").DefaultIndex("birthdays");
         private static ElasticClient elastic = new ElasticClient(setting);
         protected readonly IBirthdayService _birthdayService;
-        public CategoryRepository(IUnitOfWork context, IBirthdayService birthdayService) : base(context)
+        private readonly IRulesetService _rulesetService;
+        private readonly IMapper _mapper;
+        public CategoryRepository(IUnitOfWork context, IBirthdayService birthdayService, IRulesetService rulesetService, IMapper mapper) : base(context)
         {
             _birthdayService = birthdayService;
+            _rulesetService = rulesetService;
+            _mapper = mapper;
         }
 
 
@@ -139,6 +146,65 @@ namespace Jhipster.Infrastructure.Data.Repositories
                             });
                         }
                     }
+                } else if (view.field.StartsWith("ruleset")){
+                    // special view of rulesets
+                    var result = await _rulesetService.FindAll(pageable);{}
+                    List<RulesetDto> lstRuleset = result.Content.Select(entity => _mapper.Map<RulesetDto>(entity)).ToList();
+                    SortedDictionary<string, RulesetDto> dictRuleset = new SortedDictionary<string, RulesetDto>();
+                    lstRuleset.ForEach((r)=>{
+                        dictRuleset.Add(r.Name, r);
+                    });
+                    if (view.field == "ruleset"){
+                        dictRuleset.Keys.ToList().ForEach((k)=>{
+                            content.Add(new Category
+                            {
+                                CategoryName = dictRuleset[k].Name,
+                                Id = ++id
+                            });
+                        });
+                    } else {
+                        // ruleset2
+                        List<object> usedBy = new List<object>();
+                        List<object> uses = new List<object>();
+                        lstRuleset.ForEach((r)=>{
+                            Dictionary<string, object> categoryRequest = JsonConvert.DeserializeObject<Dictionary<string, object>>(r.JsonString);
+                            SortedDictionary<string, object> dictRulesetUses = new SortedDictionary<string, object>();
+                            RulesetUses(categoryRequest, dictRulesetUses);                            
+                            if (r.Name == view.topLevelCategory){
+                                content.Add(new Category
+                                {
+                                    CategoryName = "Query: \"" + queryAsString(categoryRequest) + "\"",
+                                    jsonString = r.JsonString,
+                                    Id = ++id
+                                });
+                                dictRulesetUses.Keys.ToList().ForEach((k=>{
+                                    uses.Add(dictRulesetUses[k]);
+                                }));
+                            } else {
+                                if (dictRulesetUses.ContainsKey(view.topLevelCategory)){
+                                    usedBy.Add(categoryRequest);
+                                }
+                            }
+                        });
+                        uses.ForEach((u)=>{
+                            Dictionary<string, object> ruleset = (Dictionary<string, object>)u;
+                            content.Add(new Category
+                            {
+                                CategoryName = "Uses " + (string)ruleset["name"] + ": \"" + queryAsString(ruleset) + "\"",
+                                jsonString = JsonConvert.SerializeObject(ruleset),
+                                Id = ++id
+                            });                            
+                        });
+                        usedBy.ForEach((u)=>{
+                            Dictionary<string, object> ruleset = (Dictionary<string, object>)u;
+                            content.Add(new Category
+                            {
+                                CategoryName = "Used by " + (string)ruleset["name"] + ": \"" + queryAsString(ruleset) + "\"",
+                                jsonString = JsonConvert.SerializeObject(ruleset),
+                                Id = ++id
+                            });                            
+                        });                        
+                    }
                 } else {
                     aggregationKey = view.aggregation;
                     query = view.query + ((string)categoryRequest["query"] != "" ? " AND " + categoryRequest["query"] : "");
@@ -204,6 +270,53 @@ namespace Jhipster.Infrastructure.Data.Repositories
             return new Page<Category>(content, pageable, content.Count);
         }
 
+        private void RulesetUses(Dictionary<string, object> dictRuleset, SortedDictionary<string, object> dictRulesetUses){
+            if (dictRuleset.ContainsKey("rules")){
+                List<Dictionary<string, object>> rules = ((Newtonsoft.Json.Linq.JArray)dictRuleset["rules"]).ToObject<List<Dictionary<string, object>>>();
+                rules.ForEach((r)=>{
+                    if (r.ContainsKey("name") && !dictRuleset.ContainsKey((string)r["name"])){
+                        dictRulesetUses.Add((string)r["name"], (Dictionary<string, object>) r);
+                    }
+                    if (r.ContainsKey("rules")){
+                        RulesetUses(r, dictRulesetUses);
+                    }
+                });
+            }
+        }
+
+        private string queryAsString(Dictionary<string, object> query, bool bRecurse = false){
+            string result = "";
+            bool multipleConditions = false;
+            Newtonsoft.Json.Linq.JArray ja = null;
+            List<Dictionary<string, object>> rules = ((Newtonsoft.Json.Linq.JArray)query["rules"]).ToObject<List<Dictionary<string, object>>>();
+            rules.ForEach((r)=>{
+                if (result.Length > 0){
+                    result += (' ' + ((string)query["condition"] == "and" ? "&" : "|") + ' ');
+                    multipleConditions = true;
+                }
+                if (r.ContainsKey("condition")){
+                    if (r.ContainsKey("name")){
+                        result += (string)r["name"];
+                    } else {
+                        result += this.queryAsString((Dictionary<string, object>)r, rules.Count > 1); // note: if only one rule, treat it as a top level
+                    }
+                } else if (r.ContainsKey("field") && (string)r["field"] == "document" && r.ContainsKey("value")) { 
+                    result += (string)r["value"];
+                } else {
+                    result += (string)r["field"];
+                    result += (" " +  (string)r["operator"] + " ");
+                    if (r.ContainsKey("value")) {
+                        result += (string)r["value"];
+                    }
+                }
+            });
+            if (query.ContainsKey("not") && ((bool)query["not"])){
+                result = "!(" + result + ")";
+            } else if (bRecurse && multipleConditions){
+                result = "(" + result + ")";
+            }
+            return result;            
+        }
         class Aggregation
         {
             string key { get; set; }

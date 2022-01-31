@@ -25,8 +25,6 @@ export interface ExtendedRuleSet extends RuleSet {
 })
 
 export class BirthdayQueryBuilderComponent extends QueryBuilderComponent implements OnInit {
-
-  static rulesetMap: Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
   
   public static firstTimeDiv : any = null;
 
@@ -145,6 +143,8 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   @Input() public sublevel = false;
 
+  @Input() public rulesetMap : Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
+
   constructor(private formBuilder: FormBuilder, private localChangeDetectorRef:ChangeDetectorRef, private renderer : Renderer2, private rulesetService: RulesetService, private birthdayQueryParserService : BirthdayQueryParserService) {
     super(localChangeDetectorRef);
     this.queryCtrl = this.formBuilder.control(this.query); 
@@ -224,6 +224,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     const ruleset = this.data as RuleSet;
     ruleset.name = this.oldRulesetName;
     this.editingRulesetName = false;
+    
   }
 
   public acceptRulesetName() : void {
@@ -231,12 +232,12 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     storedRuleset.name = (this.data as any).name;
     storedRuleset.jsonString = JSON.stringify(this.data);
     this.subscribeToSaveRulesetResponse(this.rulesetService.create(storedRuleset));
-    this.data
+    this.rulesetMap[storedRuleset.name as string] = storedRuleset;
   }
 
   public undoQueryMods(event: Event) : void {
     event.stopPropagation();
-    const obj : ExtendedRuleSet = JSON.parse(this.birthdayQueryParserService.parse(this.data?.initialQueryAsString as string, BirthdayQueryBuilderComponent.rulesetMap));
+    const obj : ExtendedRuleSet = JSON.parse(this.birthdayQueryParserService.parse(this.data?.initialQueryAsString as string, this.rulesetMap));
     const query = this.data as ExtendedRuleSet;
     query.condition = obj.condition;
     query.dirty = false;
@@ -260,7 +261,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   }
 
   public onConfirmUpdatingNamedQuery(): void{
-    const queryAsString = this.birthdayQueryParserService.queryAsString(this.data as IQuery, BirthdayQueryBuilderComponent.rulesetMap); 
+    const queryAsString = this.birthdayQueryParserService.queryAsString(this.data as IQuery, this.rulesetMap); 
     let jsonString = JSON.stringify(this.data as ExtendedRuleSet);
     const updated : ExtendedRuleSet = JSON.parse(jsonString); // clone
     updated.initialQueryAsString = queryAsString;
@@ -310,7 +311,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   public queryIsValid() : boolean {
     const parserService = this.birthdayQueryParserService;
-    const query = parserService.queryAsString(this.data as IQuery, BirthdayQueryBuilderComponent.rulesetMap);
+    const query = parserService.queryAsString(this.data as IQuery, this.rulesetMap);
     const queryObject = this.data as ExtendedRuleSet;
     if (queryObject.name && !queryObject.initialQueryAsString){
       queryObject.initialQueryAsString = query;
@@ -319,7 +320,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     if (query === ""){
       return false;
     }
-    const obj : any = JSON.parse(parserService.parse(query, BirthdayQueryBuilderComponent.rulesetMap));
+    const obj : any = JSON.parse(parserService.parse(query, this.rulesetMap));
     return !obj.Invalid;
   }
 

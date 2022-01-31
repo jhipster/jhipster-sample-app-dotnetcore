@@ -59,7 +59,7 @@ interface IQuery {
 })
 
 export class CategoryComponent implements OnInit, OnDestroy {
-  static rulesetMap: Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
+  rulesetMap: Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
   categories: ICategory[] = [];
   categoriesMap : {} = {};
   eventSubscriber?: Subscription;
@@ -143,7 +143,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
     ,{name:"Birth Year", field: "dob", aggregation: "dob", query: "*", categoryQuery: "dob:[{}-01-01 TO {}-12-31]", script: "\n            String st = doc['dob'].value.getYear().toString();\n            if (st==null){\n              return \"\";\n            } else {\n              return st.substring(0, 4);\n            }\n          "}
     ,{name:"Sign", field: "sign", aggregation: "sign.keyword", query: "sign:*"}
     ,{name: "First Name", field: "fname", aggregation: "fname.keyword", query: "fname:*"}
-    ,{name:"Sign/Birth Year", field: "sign", aggregation: "sign.keyword", query: "sign:*", secondLevelView:{name:"Year of Birth", field: "dob", aggregation: "dob", query: "*", categoryQuery: "dob:[{}-01-01 TO {}-12-31]", script: "\n            String st = doc['dob'].value.getYear().toString();\n            if (st==null){\n              return \"\";\n            } else {\n              return st.substring(0, 4);\n            }\n          "}}
+    ,{name: "Sign/Birth Year", field: "sign", aggregation: "sign.keyword", query: "sign:*", secondLevelView:{name:"Year of Birth", field: "dob", aggregation: "dob", query: "*", categoryQuery: "dob:[{}-01-01 TO {}-12-31]", script: "\n            String st = doc['dob'].value.getYear().toString();\n            if (st==null){\n              return \"\";\n            } else {\n              return st.substring(0, 4);\n            }\n          "}}
+    ,{name: "Query", field: "ruleset", aggregation: "", query: "", secondLevelView:{name: "SecondLevel", field: "ruleset2", aggregation: "", query: ""}}
   ];
 
   constructor(
@@ -249,8 +250,13 @@ export class CategoryComponent implements OnInit, OnDestroy {
  }
 
   editQuery() : void {
-    this.editingQuery = true;
-    this.searchQueryBeforeEdit = this.searchQueryAsString;
+    this.rulesetService.query().pipe(map((res: any): void=> {
+      ((res.body || []) as IStoredRuleset[]).forEach(r=>{
+        this.rulesetMap.set(r.name as string, r);
+      });
+      this.editingQuery = true;
+      this.searchQueryBeforeEdit = this.searchQueryAsString;
+    })).subscribe();  
   }
 
   cancelEditQuery() : void{
@@ -262,10 +268,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
     if (this.searchQueryAsString.length === 0){
       this.databaseQuery = "";
     } else {
-      this.databaseQuery = this.birthdayQueryParserService.parse(this.searchQueryAsString, CategoryComponent.rulesetMap);
+      this.databaseQuery = this.birthdayQueryParserService.parse(this.searchQueryAsString, this.rulesetMap);
+      this.editingQuery = false;
+      this.refreshData();
     }
-    this.editingQuery = false;
-    this.refreshData();
   }
 
   okSearchDialog(queryBuilder : any, queryEditbox : any) : void {
@@ -282,11 +288,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
         // top level of the query is named
         this.searchQueryAsString = queryBuilder.query.name;
       } else {
-        this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery, CategoryComponent.rulesetMap);
+        this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery, this.rulesetMap);
       }
     }
     this.bDisplaySearchDialog = false;
-    const queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString, CategoryComponent.rulesetMap));
+    const queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString, this.rulesetMap));
     if (queryObject.Invalid){
       this.editingQuery = true;
       setTimeout(function() : void{
@@ -630,7 +636,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     if (data) {
       this.rowData = of(this.categories);
     }
-    this.displayAsCategories = this.categories?.length !== 1 || !!this.views[this.views.length - 1].focus;
+    this.displayAsCategories = this.categories?.length !== 1 || !!this.views[this.views.length - 1].focus || (this.selectedView !== null && this.selectedView.field.startsWith("ruleset"));
     if (this.categoriesTable != null){
       const categoriesTable = this.categoriesTable;
       setTimeout(function() : void{
