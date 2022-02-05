@@ -13,6 +13,7 @@ namespace Jhipster.Dto
 
         public string Name { get; set; }
         public string JsonString { get; set; }
+        public string Description { get; set; }
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove
     }

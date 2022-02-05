@@ -85,7 +85,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   menuItems: MenuItem[] = [];
 
-  contextSelectedRow: IBirthday | null = null;
+  contextSelectedRow: ICategory | null = null;
 
   checkboxSelectedRows : IBirthday[] = [];
 
@@ -370,20 +370,31 @@ export class CategoryComponent implements OnInit, OnDestroy {
     }
   }
 
-  setMenu(birthday : any):void{
-    this.menuItems[0].label = `Select action for ${birthday.fname} ${birthday.lname}`;
-    let alternate : any = null;
-    this.chipSelectedRows.forEach((selectedRow)=>{
-      if ((selectedRow as IBirthday).id !== birthday.id){
-        alternate = selectedRow as IBirthday;
-      }
-    });
-    if (alternate != null){
-      this.menuItems[1].label = `Relate to ${alternate.fname} ${alternate.lname}`;
-    } else {
-      this.menuItems[1].label = `Select another birthday to relate`;
+  setMenu(categoryAny : any):void{
+    if (this.selectedView?.name !== "Query" && this.selectedView?.name !== "SecondLevel"){
+      return;
     }
-    this.contextSelectedRow = birthday;
+    const category = categoryAny as ICategory;
+    const query: any= JSON.parse(category.jsonString as string);
+    this.menuItems = [{
+      label: 'Edit query '+query.name,
+      icon: 'pi pi-bookmark',      
+      command: ()=>{
+        this.menuItems.length = this.menuItems.length + 0;
+      }
+    },{
+      label: 'Rename query '+query.name,
+      icon: 'pi pi-bookmark',      
+      command: ()=>{
+        this.menuItems.length = this.menuItems.length + 0;
+      }
+    },{
+      label: 'Delete query '+query.name,
+      icon: 'pi pi-bookmark',      
+      command: ()=>{
+        this.menuItems.length = this.menuItems.length + 0;
+      }
+    }];    
   }
 
   onMenuShow(menu : any, chips : any): void{
@@ -476,69 +487,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.handleNavigation();
     this.registerChangeInCategories();
     this.primeNGConfig.ripple = true;
-    this.menuItems = [{
-      label: 'Options',
-      items: [
-        {
-          label: 'Categorize',
-          icon: 'pi pi-bookmark',
-          command: ()=>{
-            setTimeout(()=>{
-              this.selectedCategories = [];
-              const selectedRow = this.contextSelectedRow;
-              this.birthdayDialogId = selectedRow ? selectedRow?.id?.toString() : "";
-              this.birthdayDialogTitle = selectedRow ? selectedRow?.fname + " " + selectedRow?.lname : "";
-              this.categoryService
-              .query({
-                page: 0,
-                size: 10000,
-                sort: this.sortCategory(),
-                query: this.birthdayDialogId
-              })
-              .subscribe(
-                (res: HttpResponse<IBirthday[]>) => this.onCategorySuccess(res.body, res.headers),
-                () => this.onError()
-              );
-            }, 0);
-          }
-        },
-        {
-          label: 'Display',
-          icon: 'pi pi-book',
-          command: ()=>{
-            setTimeout(()=>{
-              this.birthdayDialogId = this.contextSelectedRow ? this.contextSelectedRow?.id?.toString() : "";
-              this.birthdayDialogTitle = this.contextSelectedRow ? this.contextSelectedRow?.lname as string : "";
-              this.bDisplayBirthday = true;
-            }, 0);
-          },
-        },
-        {
-            label: 'Ingest',
-            icon: 'pi pi-upload',
-        },
-
-      ]},
-      {
-        label: 'Relationship',
-        items: [{
-            label: 'Favorable',
-            icon: 'pi pi-thumbs-up'
-        },
-        {
-            label: 'Unfavorable',
-            icon: 'pi pi-thumbs-down'
-        },
-        {
-            label: 'Iden',
-            icon: 'pi pi-id-card'
-        },
-        {
-            label: 'Revision',
-            icon: 'pi pi-pencil'
-        }]
-      }
-    ];
   }
   onCategorySuccess(data: ICategory[] | null, headers: HttpHeaders) : void{
     const totalItems = Number(headers.get('X-Total-Count'));

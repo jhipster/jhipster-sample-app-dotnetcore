@@ -16,6 +16,7 @@ namespace Jhipster.Dto
         public object focusType { get; set; }
         public string focusId{ get; set; }
         public string jsonString{ get; set; }
+        public string description{ get; set; }
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove
     }

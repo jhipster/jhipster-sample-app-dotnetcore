@@ -7,6 +7,7 @@ export interface ICategory {
   focusType?: string;
   focusId?: string;
   jsonString?: string;
+  description?: string;
 }
 
 export class Category implements ICategory {

@@ -56,18 +56,22 @@
   <jhi-alert></jhi-alert>
 
   <ng-container *ngIf="rowData | async as category">
+      <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>    
       <p-confirmPopup></p-confirmPopup>
       <p-messages></p-messages>
       <super-table #categoriesTable [value]="category" 
           [resizableColumns]="true" 
           [globalFilterFields]="['categoryName']" 
-          dataKey="id" 
+          dataKey="id"
+          [(contextMenuSelection)]="contextSelectedRow" 
+          [contextMenu]="contextMenu"          
           selectionMode="multiple" 
           [(selection)]="checkboxSelectedRows"
           [expandedRowKeys]="expandedRows"
           (onRowExpand)="onExpandChange(true)" 
           (onRowCollapse)="onExpandChange(false)"
           (selectionChange)="onCheckboxChange()"
+          (onContextMenuSelect)="setMenu(contextSelectedRow)"
           [selectedView]="selectedView"
           [displayingAsCategories]="displayAsCategories"
           (setTableReference)="setCategoriesTable($event)"
@@ -149,7 +153,7 @@
               <td>
                 <span>{{firstColumnIndent}}</span><button aria-label="Expand" type="button" pButton pRipple [super-RowToggler]="category" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
               </td>          
-              <td #tt pTooltip="{{ category.categoryName }}" [tooltipDisabled]='false' style="overflow:unset; border:none;font-weight: 700; ">{{firstColumnIndent}}{{ category.categoryName }}</td>
+              <td #tt pTooltip="{{ category.description ? category.description : category.categoryName }}" [tooltipDisabled]='false' style="overflow:unset; border:none;font-weight: 700; ">{{firstColumnIndent}}{{ category.categoryName }}</td>
           </tr>
           <tr *ngIf="!displayAsCategories">
             <td colspan="7" style="padding:unset; background-color: white;">

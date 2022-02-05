@@ -156,9 +156,11 @@ namespace Jhipster.Infrastructure.Data.Repositories
                     });
                     if (view.field == "ruleset"){
                         dictRuleset.Keys.ToList().ForEach((k)=>{
+                            Dictionary<string, object> dictCategory = JsonConvert.DeserializeObject<Dictionary<string, object>>(dictRuleset[k].JsonString);
                             content.Add(new Category
                             {
                                 CategoryName = dictRuleset[k].Name,
+                                description = queryAsString(dictCategory),
                                 Id = ++id
                             });
                         });
@@ -173,7 +175,8 @@ namespace Jhipster.Infrastructure.Data.Repositories
                             if (r.Name == view.topLevelCategory){
                                 content.Add(new Category
                                 {
-                                    CategoryName = "Query: \"" + queryAsString(categoryRequest) + "\"",
+                                    CategoryName = "Query " + view.topLevelCategory,
+                                    description = queryAsString(categoryRequest),
                                     jsonString = r.JsonString,
                                     Id = ++id
                                 });
@@ -190,7 +193,8 @@ namespace Jhipster.Infrastructure.Data.Repositories
                             Dictionary<string, object> ruleset = (Dictionary<string, object>)u;
                             content.Add(new Category
                             {
-                                CategoryName = "Uses " + (string)ruleset["name"] + ": \"" + queryAsString(ruleset) + "\"",
+                                CategoryName = "Query " + (string)ruleset["name"] + ", which is used by " + "query " + view.topLevelCategory,
+                                description = queryAsString(ruleset),
                                 jsonString = JsonConvert.SerializeObject(ruleset),
                                 Id = ++id
                             });                            
@@ -199,7 +203,8 @@ namespace Jhipster.Infrastructure.Data.Repositories
                             Dictionary<string, object> ruleset = (Dictionary<string, object>)u;
                             content.Add(new Category
                             {
-                                CategoryName = "Used by " + (string)ruleset["name"] + ": \"" + queryAsString(ruleset) + "\"",
+                                CategoryName = "Query " + (string)ruleset["name"] + ", which uses " + "query " + view.topLevelCategory,
+                                description = queryAsString(ruleset),
                                 jsonString = JsonConvert.SerializeObject(ruleset),
                                 Id = ++id
                             });                            
