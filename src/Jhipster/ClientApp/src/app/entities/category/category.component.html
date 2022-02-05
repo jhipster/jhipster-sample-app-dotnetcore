@@ -38,7 +38,7 @@
       [draggable]="true" 
       [resizable]="false"
     >
-      <jhi-birthday-query-builder #queryBuilder></jhi-birthday-query-builder>
+      <jhi-birthday-query-builder #queryBuilder [rulesetMap]="rulesetMap"></jhi-birthday-query-builder>
       <div class="modal-footer">
         <button aria-label="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelSearchDialog()">
             <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
