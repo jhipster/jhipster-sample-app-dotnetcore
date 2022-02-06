@@ -15,8 +15,7 @@ export class BirthdayQueryValidatorDirective implements Validator {
     if (control.value === null || control.value.length === 0){
       return null;
     }
-    const json = this.birthdayQueryParserService.parse(control.value, this.rulesetMap as any);
-    const validation = JSON.parse(json);      
+    const validation = this.birthdayQueryParserService.parse(control.value, this.rulesetMap as any);   
     if (!validation.Invalid){
         return null;
     }

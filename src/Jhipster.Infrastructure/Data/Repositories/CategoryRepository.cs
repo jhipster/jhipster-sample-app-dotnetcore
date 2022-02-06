@@ -279,7 +279,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
             if (dictRuleset.ContainsKey("rules")){
                 List<Dictionary<string, object>> rules = ((Newtonsoft.Json.Linq.JArray)dictRuleset["rules"]).ToObject<List<Dictionary<string, object>>>();
                 rules.ForEach((r)=>{
-                    if (r.ContainsKey("name") && !dictRuleset.ContainsKey((string)r["name"])){
+                    if (r.ContainsKey("name") && !dictRulesetUses.ContainsKey((string)r["name"])){
                         dictRulesetUses.Add((string)r["name"], (Dictionary<string, object>) r);
                     }
                     if (r.ContainsKey("rules")){

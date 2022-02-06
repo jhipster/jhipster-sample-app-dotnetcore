@@ -8,7 +8,9 @@ export interface IQuery {
     condition: string,
     rules: IQueryRule[],
     not: boolean,
-    name?: string
+    name?: string,
+    Invalid?: boolean,
+    position?: number
 }
 
 interface IParse {
@@ -20,10 +22,10 @@ interface IParse {
 export class BirthdayQueryParserService {
   queryNames: string[] = [];
   rulesetMap: Map<string, IQuery | IQueryRule> | null = null;
-  parse(query: string, rulesetMap: Map<string, IQuery | IQueryRule>): string{
+  parse(query: string, rulesetMap: Map<string, IQuery | IQueryRule>): IQuery {
     this.rulesetMap = rulesetMap;
     if (query.trim() === ""){
-        return '{"condition":"or","not":false,"rules":[]}';
+        return {"condition":"or","not":false,"rules":[]};
     }
     this.queryNames = [...rulesetMap.keys()].sort((a, b) => a > b ? -1 : 1);;
     const queryNameRegexString = this.queryNames.length > 0 ? "|(" + this.queryNames.join("|") + ")": "";
@@ -58,9 +60,9 @@ export class BirthdayQueryParserService {
       ret.string = '{"condition":"or","rules":[' + ret.string + '],"not":false}';
     }
     if (!ret.matches || ret.i < tokens.length){
-      return '{"Invalid":true, "position": ' + ret.i + '}'
+      return { Invalid :true, position: ret.i, condition: "", rules:[], not: false}
     }
-    return ret.string;
+    return JSON.parse(ret.string);
   }
 
   parseRule(tokens: string[], i: number):IParse{
