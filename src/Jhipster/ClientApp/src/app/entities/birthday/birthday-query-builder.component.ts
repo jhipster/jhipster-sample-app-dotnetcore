@@ -232,7 +232,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     storedRuleset.name = (this.data as any).name;
     storedRuleset.jsonString = JSON.stringify(this.data);
     this.subscribeToSaveRulesetResponse(this.rulesetService.create(storedRuleset));
-    this.rulesetMap.set((this.data as any).name as string, this.data as IQuery);
+    this.rulesetMap.set((this.data as any).name as string, this.birthdayQueryParserService.normalize(this.data as IQuery));
   }
 
   public undoQueryMods(event: Event) : void {

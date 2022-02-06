@@ -219,7 +219,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
       rulesets = res.body || [];
       rulesets?.forEach(r=>{
         const query : IQuery = JSON.parse(r.jsonString as string) as IQuery;
-        rulesetMap.set(r.name as string, query);
+        rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(query));
       }); 
       let queryObject : any = this.birthdayQueryParserService.parse(this.searchQueryAsString, rulesetMap);
       if (queryObject.Invalid){

@@ -62,7 +62,20 @@ export class BirthdayQueryParserService {
     if (!ret.matches || ret.i < tokens.length){
       return { Invalid :true, position: ret.i, condition: "", rules:[], not: false}
     }
-    return JSON.parse(ret.string);
+    return this.normalize(JSON.parse(ret.string));
+  }
+
+  normalize(query: IQuery): IQuery{
+    if (query.name){
+      return this.rulesetMap?.get(query.name) as IQuery;
+    }
+    for (let i = 0; i < query.rules.length; i++){
+      const testQuery = query.rules[i] as any as IQuery;
+      if (testQuery.rules){
+        (query.rules[i] as any) = this.normalize(testQuery);
+      }
+    }
+    return query;
   }
 
   parseRule(tokens: string[], i: number):IParse{
