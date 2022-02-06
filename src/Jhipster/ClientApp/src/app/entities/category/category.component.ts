@@ -59,7 +59,7 @@ interface IQuery {
 })
 
 export class CategoryComponent implements OnInit, OnDestroy {
-  rulesetMap: Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
+  rulesetMap: Map<string, IQuery | IQueryRule> = new Map<string, IQuery | IQueryRule>();
   categories: ICategory[] = [];
   categoriesMap : {} = {};
   eventSubscriber?: Subscription;
@@ -214,11 +214,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   showSearchDialog(queryBuilder : any) : void {
     let rulesets : IStoredRuleset[] = [];
-    const rulesetMap = new Map<string, IStoredRuleset>();
+    const rulesetMap = new Map<string, IQuery | IQueryRule>();
     this.rulesetService.query().pipe(map((res: any): void=> {
       rulesets = res.body || [];
       rulesets?.forEach(r=>{
-        rulesetMap.set(r.name as string, r);
+        const query : IQuery = JSON.parse(r.jsonString as string) as IQuery;
+        rulesetMap.set(r.name as string, query);
       }); 
       let queryObject : any = JSON.parse(this.birthdayQueryParserService.parse(this.searchQueryAsString, rulesetMap));
       if (queryObject.Invalid){
@@ -252,7 +253,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
   editQuery() : void {
     this.rulesetService.query().pipe(map((res: any): void=> {
       ((res.body || []) as IStoredRuleset[]).forEach(r=>{
-        this.rulesetMap.set(r.name as string, r);
+        const query : IQuery = JSON.parse(r.jsonString as string) as IQuery;
+        this.rulesetMap.set(r.name as string, query);
       });
       this.editingQuery = true;
       this.searchQueryBeforeEdit = this.searchQueryAsString;

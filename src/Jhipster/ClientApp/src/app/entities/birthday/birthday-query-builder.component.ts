@@ -8,7 +8,7 @@ import { HttpResponse } from '@angular/common/http';
 import { IStoredRuleset, StoredRuleset } from 'app/shared/model/ruleset.model';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { BirthdayQueryParserService, IQuery } from './birthday-query-parser.service';
+import { BirthdayQueryParserService, IQuery, IQueryRule } from './birthday-query-parser.service';
 
 export interface ExtendedRuleSet extends RuleSet {
   not?: boolean;
@@ -143,7 +143,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   @Input() public sublevel = false;
 
-  @Input() public rulesetMap : Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
+  @Input() public rulesetMap : Map<string, IQuery | IQueryRule> = new Map<string, IQuery | IQueryRule>();
 
   constructor(private formBuilder: FormBuilder, private localChangeDetectorRef:ChangeDetectorRef, private renderer : Renderer2, private rulesetService: RulesetService, private birthdayQueryParserService : BirthdayQueryParserService) {
     super(localChangeDetectorRef);
@@ -232,7 +232,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     storedRuleset.name = (this.data as any).name;
     storedRuleset.jsonString = JSON.stringify(this.data);
     this.subscribeToSaveRulesetResponse(this.rulesetService.create(storedRuleset));
-    this.rulesetMap.set(storedRuleset.name as string, storedRuleset);
+    this.rulesetMap.set((this.data as any).name as string, this.data as IQuery);
   }
 
   public undoQueryMods(event: Event) : void {

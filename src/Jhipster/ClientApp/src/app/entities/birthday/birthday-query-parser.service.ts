@@ -1,5 +1,4 @@
-import { IStoredRuleset} from 'app/shared/model/ruleset.model';
-interface IQueryRule {
+export interface IQueryRule {
     field: string,
     operator: string,
     value: string
@@ -8,7 +7,8 @@ interface IQueryRule {
 export interface IQuery {
     condition: string,
     rules: IQueryRule[],
-    not: boolean
+    not: boolean,
+    name?: string
 }
 
 interface IParse {
@@ -19,8 +19,8 @@ interface IParse {
 
 export class BirthdayQueryParserService {
   queryNames: string[] = [];
-  rulesetMap: Map<string, IStoredRuleset> | null = null;
-  parse(query: string, rulesetMap: Map<string, IStoredRuleset>): string{
+  rulesetMap: Map<string, IQuery | IQueryRule> | null = null;
+  parse(query: string, rulesetMap: Map<string, IQuery | IQueryRule>): string{
     this.rulesetMap = rulesetMap;
     if (query.trim() === ""){
         return '{"condition":"or","not":false,"rules":[]}';
@@ -291,12 +291,12 @@ export class BirthdayQueryParserService {
         return {
           matches: true,
           i: i + 1,
-          string: '{"condition":"or","rules":[' + this.rulesetMap?.get(tokens[i])?.jsonString + '],"not": true}'
+          string: '{"condition":"or","rules":[' + JSON.stringify(this.rulesetMap?.get(tokens[i])) + '],"not": true}'
         }
       }
       return {
         matches: true,
-        string: this.rulesetMap?.get(tokens[i])?.jsonString as string,
+        string: JSON.stringify(this.rulesetMap?.get(tokens[i])) ,
         i: i + 1
       };
     }     
@@ -322,7 +322,7 @@ export class BirthdayQueryParserService {
     return ret;
   }
 
-  queryAsString(query : IQuery, rulesetMap?: Map<string, IStoredRuleset>, recurse?: boolean): string{
+  queryAsString(query : IQuery, rulesetMap?: Map<string, IQuery | IQueryRule>, recurse?: boolean): string{
     let result = "";
     let multipleConditions = false;
     query.rules.forEach((r)=>{
@@ -331,9 +331,10 @@ export class BirthdayQueryParserService {
         multipleConditions = true;
       }
       if ((r as any).condition !== undefined){
-        if ((r as any).name){
-          result += (r as any).name;
-          rulesetMap?.set((r as any).name, {name: (r as any).name, jsonString: JSON.stringify(r)});
+        const ruleQuery: IQuery = r as any as IQuery;
+        if (ruleQuery.name){
+          result += ruleQuery.name;
+          rulesetMap?.set(ruleQuery.name, ruleQuery);
         } else {
           result += this.queryAsString(r as unknown as IQuery, rulesetMap, query.rules.length > 1); // note: is only one rule, treat it as a top level
         }

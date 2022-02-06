@@ -1,7 +1,6 @@
 import { Directive, Input } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
-import { BirthdayQueryParserService } from '../birthday/birthday-query-parser.service';
-import { IStoredRuleset } from 'app/shared/model/ruleset.model';
+import { BirthdayQueryParserService, IQuery, IQueryRule } from './birthday-query-parser.service';
 
 @Directive({
     selector: '[jhiValidateBirthdayQuery]',
@@ -9,7 +8,7 @@ import { IStoredRuleset } from 'app/shared/model/ruleset.model';
 })
 
 export class BirthdayQueryValidatorDirective implements Validator {
-  @Input() rulesetMap: Map<string, IStoredRuleset> = new Map<string, IStoredRuleset>();
+  @Input() rulesetMap: Map<string, IQuery | IQueryRule> = new Map<string, IQuery | IQueryRule>();
   constructor(protected birthdayQueryParserService : BirthdayQueryParserService) {}
 
   validate(control: AbstractControl): any {
