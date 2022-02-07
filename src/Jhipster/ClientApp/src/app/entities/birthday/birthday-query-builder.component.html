@@ -239,6 +239,7 @@
 </div>
 <p-dialog header="Update named query {{namedQuery}}" [modal]="true" [baseZIndex]="10000" [(visible)]="updatingNamedQuery" [style]="{width: '80vw'}" [baseZIndex]="20000">
   <span style='color: red'>{{updatingNamedQueryError}}</span>
+  <h6>{{namedQueryUsedIn.length > 0 ? namedQuery+" is used in "+namedQueryUsedIn.join(", ")+ ", which will also be updated" : ""}}</h6>
   <div style="height:60px"></div>
   <div class="modal-footer">
     <p-button label="Cancel" type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onCancelSavingNamedQuery()"></p-button>

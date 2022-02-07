@@ -66,7 +66,7 @@ export class BirthdayQueryParserService {
   }
 
   normalize(query: IQuery): IQuery{
-    if (query.name){
+    if (query.name && this.rulesetMap && (this.rulesetMap as Map<string, IQuery>).has(query.name)){
       return this.rulesetMap?.get(query.name) as IQuery;
     }
     for (let i = 0; i < query.rules.length; i++){
@@ -349,7 +349,7 @@ export class BirthdayQueryParserService {
         const ruleQuery: IQuery = r as any as IQuery;
         if (ruleQuery.name){
           result += ruleQuery.name;
-          rulesetMap?.set(ruleQuery.name, ruleQuery);
+          // rulesetMap?.set(ruleQuery.name, ruleQuery);
         } else {
           result += this.queryAsString(r as unknown as IQuery, rulesetMap, query.rules.length > 1); // note: is only one rule, treat it as a top level
         }

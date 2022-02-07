@@ -141,6 +141,8 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
 
+  public namedQueryUsedIn : string[] = [];
+
   @Input() public sublevel = false;
 
   @Input() public rulesetMap : Map<string, IQuery | IQueryRule> = new Map<string, IQuery | IQueryRule>();
@@ -248,7 +250,32 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   public onUpdateNamedQuery(event: Event): void{
     event.stopPropagation();
     this.namedQuery = (this.data as ExtendedRuleSet).name as string;
+    this.namedQueryUsedIn = [];
+    this.rulesetMap.forEach((value: any, key: string) => {
+      if (key !== this.namedQuery){ 
+        const namedQuery = value as IQuery;
+        if (this.containsNamedRule(namedQuery, this.namedQuery) && !this.namedQueryUsedIn.includes(namedQuery.name as string)){
+          this.namedQueryUsedIn.push(namedQuery.name as string);
+        }
+      }
+    });
     this.updatingNamedQuery = true;
+  }
+
+  private containsNamedRule(query: IQuery, key: string):boolean{
+    let ret = false;
+    query.rules.forEach((r)=>{
+      const testQuery: IQuery = r as any as IQuery;
+      if (testQuery.rules){
+        if (testQuery.name === key){
+          ret = ret || true;
+        }
+        if (this.containsNamedRule(testQuery, key)){
+          ret = ret || true;
+        }
+      }
+    });
+    return ret;
   }
 
   public onCancelSavingNamedQuery(): void{
@@ -263,41 +290,40 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   public onConfirmUpdatingNamedQuery(): void{
     const queryAsString = this.birthdayQueryParserService.queryAsString(this.data as IQuery, this.rulesetMap); 
     let jsonString = JSON.stringify(this.data as ExtendedRuleSet);
-    const updated : ExtendedRuleSet = JSON.parse(jsonString); // clone
+    let updated : ExtendedRuleSet = JSON.parse(jsonString); // clone
     updated.initialQueryAsString = queryAsString;
     delete updated.dirty;
     delete updated.collapsed;
     jsonString = JSON.stringify(updated);
-    const storedRuleset = new StoredRuleset(undefined, (this.data as ExtendedRuleSet).name, jsonString);
+    updated = JSON.parse(jsonString) as ExtendedRuleSet;
+    for (let i = 0; i < updated.rules.length; i++){
+      if ((updated.rules[i] as IQuery).rules){
+        updated.rules[i] = this.birthdayQueryParserService.normalize(updated.rules[i] as IQuery);
+      }
+    }
+    const original: IQuery  = this.rulesetMap.get(updated.name as string) as IQuery;
+    original.condition = updated.condition;
+    original.not = updated.not as boolean;
+    original.rules = updated.rules as IQueryRule[];
+    let storedRuleset = new StoredRuleset(undefined, original.name, jsonString);
     this.updatingNamedQueryError = "";
-    this.rulesetService.update(storedRuleset).pipe(map(()  => {
-      this.updateNamedQueries(updated.name as string, BirthdayQueryBuilderComponent.topLevelRuleset, jsonString, queryAsString);
-      (this.data as ExtendedRuleSet).initialQueryAsString = queryAsString;
-      this.updatingNamedQuery = false;
-    }),
-    catchError((error) => {
+    const updateSuccess = ()  => {
+      if (this.namedQueryUsedIn.length > 0){
+        const namedQueryToBeUpdated = this.rulesetMap.get(this.namedQueryUsedIn.pop() as string) as IQuery;
+        jsonString = JSON.stringify(namedQueryToBeUpdated);
+        storedRuleset = new StoredRuleset(undefined, namedQueryToBeUpdated.name, jsonString);
+        this.rulesetService.update(storedRuleset).pipe(map(updateSuccess),catchError(updateError)).subscribe();
+      } else {
+        (this.data as ExtendedRuleSet).initialQueryAsString = queryAsString;
+        this.updatingNamedQuery = false;
+      }
+    };
+    const updateError = (error: any) => {
       // server error from the update
       this.updatingNamedQueryError = error.error?.detail;
       return of([]);
-    })).subscribe();
-  }
-
-  private updateNamedQueries(name: string, currentRule: any, jsonString : string, queryAsString: string): void{
-    if (!currentRule.rules){
-      return;
-    }
-    const query : ExtendedRuleSet = currentRule as ExtendedRuleSet;
-    const updated = JSON.parse(jsonString);
-    if (query.name && query.name === name){
-      query.condition = updated.condition;
-      query.dirty = false;
-      query.initialQueryAsString = queryAsString;
-      query.not = updated.not;
-      query.rules = updated.rules;
-    }
-    query.rules.forEach(r=>{
-      this.updateNamedQueries(name, r, jsonString, queryAsString);
-    });
+    };
+    this.rulesetService.update(storedRuleset).pipe(map(updateSuccess), catchError(updateError)).subscribe();
   }
 
   public containsDirtyNamedQueries(): boolean{
