@@ -162,6 +162,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   ) {
     this.refresh = this.refreshData.bind(this);
     this.categoryComponent = this;
+    this.birthdayQueryParserService.rulesetMap = this.rulesetMap;
   }
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -221,11 +222,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
         const query : IQuery = JSON.parse(r.jsonString as string) as IQuery;
         rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(query));
       }); 
-      let queryObject : any = this.birthdayQueryParserService.parse(this.searchQueryAsString, rulesetMap);
+      let queryObject : any = this.birthdayQueryParserService.parse(this.searchQueryAsString);
       if (queryObject.Invalid){
         if (this.editingQuery){
           this.searchQueryAsString = this.searchQueryBeforeEdit;
-          queryObject = this.birthdayQueryParserService.parse(this.searchQueryAsString, rulesetMap);
+          queryObject = this.birthdayQueryParserService.parse(this.searchQueryAsString);
         }
       }
       if (this.searchQueryAsString === ""){
@@ -270,7 +271,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     if (this.searchQueryAsString.length === 0){
       this.databaseQuery = "";
     } else {
-      this.databaseQuery = JSON.stringify(this.birthdayQueryParserService.parse(this.searchQueryAsString, this.rulesetMap));
+      this.databaseQuery = JSON.stringify(this.birthdayQueryParserService.parse(this.searchQueryAsString));
       this.editingQuery = false;
       this.refreshData();
     }
@@ -290,11 +291,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
         // top level of the query is named
         this.searchQueryAsString = queryBuilder.query.name;
       } else {
-        this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery, this.rulesetMap);
+        this.searchQueryAsString = this.birthdayQueryParserService.queryAsString(queryBuilder.query as IQuery);
       }
     }
     this.bDisplaySearchDialog = false;
-    const queryObject : any = this.birthdayQueryParserService.parse(this.searchQueryAsString, this.rulesetMap);
+    const queryObject : any = this.birthdayQueryParserService.parse(this.searchQueryAsString);
     if (queryObject.Invalid){
       this.editingQuery = true;
       setTimeout(function() : void{

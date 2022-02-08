@@ -154,7 +154,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   }
 
   public initialize(query: string): void{
-    this.query = JSON.parse(query);
+    this.query = this.birthdayQueryParserService.normalize(JSON.parse(query));
     this.queryCtrl = this.formBuilder.control(this.query);
     this.data = this.query;
     BirthdayQueryBuilderComponent.topLevelRuleset = BirthdayQueryBuilderComponent.topLevelRuleset || this.data;
@@ -239,7 +239,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   public undoQueryMods(event: Event) : void {
     event.stopPropagation();
-    const obj : ExtendedRuleSet = this.birthdayQueryParserService.parse(this.data?.initialQueryAsString as string, this.rulesetMap);
+    const obj : ExtendedRuleSet = this.birthdayQueryParserService.parse(this.data?.initialQueryAsString as string);
     const query = this.data as ExtendedRuleSet;
     query.condition = obj.condition;
     query.dirty = false;
@@ -288,7 +288,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   }
 
   public onConfirmUpdatingNamedQuery(): void{
-    const queryAsString = this.birthdayQueryParserService.queryAsString(this.data as IQuery, this.rulesetMap); 
+    const queryAsString = this.birthdayQueryParserService.queryAsString(this.data as IQuery); 
     let jsonString = JSON.stringify(this.data as ExtendedRuleSet);
     let updated : ExtendedRuleSet = JSON.parse(jsonString); // clone
     updated.initialQueryAsString = queryAsString;
@@ -337,7 +337,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   public queryIsValid() : boolean {
     const parserService = this.birthdayQueryParserService;
-    const query = parserService.queryAsString(this.data as IQuery, this.rulesetMap);
+    const query = parserService.queryAsString(this.data as IQuery);
     const queryObject = this.data as ExtendedRuleSet;
     if (queryObject.name && !queryObject.initialQueryAsString){
       queryObject.initialQueryAsString = query;
@@ -346,7 +346,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     if (query === ""){
       return false;
     }
-    const obj : IQuery = parserService.parse(query, this.rulesetMap);
+    const obj : IQuery = parserService.parse(query);
     return !obj.Invalid;
   }
 

@@ -22,12 +22,11 @@ interface IParse {
 export class BirthdayQueryParserService {
   queryNames: string[] = [];
   rulesetMap: Map<string, IQuery | IQueryRule> | null = null;
-  parse(query: string, rulesetMap: Map<string, IQuery | IQueryRule>): IQuery {
-    this.rulesetMap = rulesetMap;
+  parse(query: string): IQuery {
     if (query.trim() === ""){
         return {"condition":"or","not":false,"rules":[]};
     }
-    this.queryNames = [...rulesetMap.keys()].sort((a, b) => a > b ? -1 : 1);;
+    this.queryNames = [...(this.rulesetMap as Map<string, IQuery>).keys()].sort((a, b) => a > b ? -1 : 1);;
     const queryNameRegexString = this.queryNames.length > 0 ? "|(" + this.queryNames.join("|") + ")": "";
     query = query.replace(/\\\\/g,'\x01').replace(/\\"/g, '\x02').replace(/`/g,'\x03');
     // const tokens = query.replace(/\s*([()]|"" (sign|dob|lname|fname|isAlive|document)|(=|!=|CONTAINS|LIKE|>=|<=|>|<)|(&|\||!)|[A-Z_]+|[\w\d".*-]+)\s*/g, '`$1').split('`');
@@ -337,7 +336,7 @@ export class BirthdayQueryParserService {
     return ret;
   }
 
-  queryAsString(query : IQuery, rulesetMap?: Map<string, IQuery | IQueryRule>, recurse?: boolean): string{
+  queryAsString(query : IQuery, recurse?: boolean): string{
     let result = "";
     let multipleConditions = false;
     query.rules.forEach((r)=>{
@@ -351,7 +350,7 @@ export class BirthdayQueryParserService {
           result += ruleQuery.name;
           // rulesetMap?.set(ruleQuery.name, ruleQuery);
         } else {
-          result += this.queryAsString(r as unknown as IQuery, rulesetMap, query.rules.length > 1); // note: is only one rule, treat it as a top level
+          result += this.queryAsString(r as unknown as IQuery, query.rules.length > 1); // note: is only one rule, treat it as a top level
         }
       } else if (r.field === "document" && r.value !== undefined) { 
         result += (r.value.toString().toLowerCase());
