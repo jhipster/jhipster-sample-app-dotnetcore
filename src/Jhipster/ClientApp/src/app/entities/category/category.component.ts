@@ -215,12 +215,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   showSearchDialog(queryBuilder : any) : void {
     let rulesets : IStoredRuleset[] = [];
-    const rulesetMap = new Map<string, IQuery | IQueryRule>();
     this.rulesetService.query().pipe(map((res: any): void=> {
       rulesets = res.body || [];
       rulesets?.forEach(r=>{
         const query : IQuery = JSON.parse(r.jsonString as string) as IQuery;
-        rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(query));
+        this.rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(query));
       }); 
       let queryObject : any = this.birthdayQueryParserService.parse(this.searchQueryAsString);
       if (queryObject.Invalid){
