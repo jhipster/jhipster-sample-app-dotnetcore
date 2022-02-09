@@ -570,7 +570,8 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   onRulesetSelected():void{
     this.selectingRuleset = false;
     const parent = this.data;
-    (parent as RuleSet).rules = (parent as RuleSet).rules.concat([JSON.parse(this.selectedRuleset?.jsonString as string)]);
+    const addedRuleset = this.rulesetMap.has(this.selectedRuleset?.name as string) ? this.rulesetMap.get(this.selectedRuleset?.name as string) : JSON.parse(this.selectedRuleset?.jsonString as string);
+    (parent as RuleSet).rules = (parent as RuleSet).rules.concat([addedRuleset]);
     this.localChangeDetectorRef.markForCheck();
     if (this.onChangeCallback) {
       this.onChangeCallback();
