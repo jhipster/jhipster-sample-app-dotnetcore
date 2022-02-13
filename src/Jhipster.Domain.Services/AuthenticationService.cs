@@ -11,11 +11,6 @@ using Jhipster.Domain.Services.Interfaces;
 using Jhipster.Crosscutting.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-using System.Text.Json;
-using System.Security.Cryptography.X509Certificates;
-using System.Net.Http;
-using System;
 
 namespace Jhipster.Domain.Services
 {
@@ -25,13 +20,10 @@ namespace Jhipster.Domain.Services
 
         private readonly UserManager<User> _userManager;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public AuthenticationService(ILogger<AuthenticationService> log, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
+        public AuthenticationService(ILogger<AuthenticationService> log, UserManager<User> userManager)
         {
             _log = log;
             _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public virtual async Task<IPrincipal> Authenticate(string username, string password)
@@ -41,12 +33,7 @@ namespace Jhipster.Domain.Services
             //=> https://stackoverflow.com/questions/53854051/usermanager-checkpasswordasync-vs-signinmanager-passwordsigninasync
             //https://github.com/openiddict/openiddict-core/issues/578
 
-            var certSubject = _httpContextAccessor.HttpContext.Connection.ClientCertificate.Subject;
-            Jhipster.Domain.User user = await GetAuthenticatedUser(certSubject);
-            if (certSubject != null){
-                return await CreatePrincipal(user);
-            }
-            user = await LoadUserByUsername(username);
+            var user = await LoadUserByUsername(username);
 
             if (!user.Activated) throw new UserNotActivatedException($"User {user.UserName} was not activated.");
 
@@ -86,59 +73,5 @@ namespace Jhipster.Domain.Services
             var identity = new ClaimsIdentity(claims);
             return new ClaimsPrincipal(identity);
         }
-        public virtual async Task<Jhipster.Domain.User> GetAuthenticatedUser(string certDN)
-        {
-            var cert = new X509Certificate2("C:\\OpenSSL\\client.p12", "pass");
-            var handler = new HttpClientHandler();
-            handler.ClientCertificates.Add(cert);
-            var client = new HttpClient(handler);
-            Dictionary<string, string> dict = new Dictionary<string, string>(){
-                {"DistinguishedName", certDN}
-            };
-            
-            var request = new HttpRequestMessage()
-            {
-                RequestUri = new Uri(@"https://serversite.com/GetUserInfo"),
-                Method = HttpMethod.Post,
-               
-            };
-            request.Content = new StringContent(JsonSerializer.Serialize(dict),
-                System.Text.Encoding.UTF8, "application/json");
-            var response = await client.SendAsync(request);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                JsonDocument jsonDocument = JsonDocument.Parse(responseContent);
-                var userRoot = jsonDocument.RootElement;
-                Jhipster.Domain.User user = new Jhipster.Domain.User{
-                    FirstName = userRoot.GetProperty("FirstName").GetString(),
-                    LastName = userRoot.GetProperty("LastName").GetString(),
-                    Activated = true,
-                    Id = "1",
-                    Login = userRoot.GetProperty("Login").GetString(),
-                    LangKey = "en",
-                    CreatedBy = "System",
-                    CreatedDate = new System.DateTime()
-                };
-                List<Role> roles = new List<Role> {
-                    new Role {Id = "role_admin", Name = "ROLE_ADMIN"},
-                    new Role {Id = "role_user",Name = "ROLE_USER"}
-                };
-                user.UserRoles = new List<UserRole>();
-                UserRole ur = new UserRole();
-                ur.User = user;
-                ur.Role = new Role {Id = "role_user",Name = "ROLE_USER"};
-                user.UserRoles.Add(ur);
-                if (userRoot.GetProperty("IsAdministrator").GetBoolean()){
-                    ur = new UserRole();
-                    ur.User = user;
-                    ur.Role = new Role {Id = "role_admin", Name = "ROLE_ADMIN"};
-                    user.UserRoles.Add(ur);
-                }                
-                return user;
-            }
-            throw new ApplicationException($"Status code: {response.StatusCode}, Error: {response.ReasonPhrase}");
-        }        
     }
-    
 }

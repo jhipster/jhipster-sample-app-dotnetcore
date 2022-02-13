@@ -23,18 +23,16 @@ namespace Jhipster.Domain.Services
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly RoleManager<Role> _roleManager;
         private readonly UserManager<User> _userManager;
-        private readonly IAuthenticationService _authenticationService;
 
         public UserService(ILogger<UserService> log, UserManager<User> userManager,
             IPasswordHasher<User> passwordHasher, RoleManager<Role> roleManager,
-            IHttpContextAccessor httpContextAccessor, IAuthenticationService authenticationService)
+            IHttpContextAccessor httpContextAccessor)
         {
             _log = log;
             _userManager = userManager;
             _passwordHasher = passwordHasher;
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
-            _authenticationService = authenticationService;
         }
 
         public virtual async Task<User> CreateUser(User userToCreate)
@@ -184,14 +182,8 @@ namespace Jhipster.Domain.Services
 
         public virtual async Task<User> GetUserWithUserRoles()
         {
-            var certSubject = _httpContextAccessor.HttpContext.Connection.ClientCertificate.Subject;
-            var user = await _authenticationService.GetAuthenticatedUser(certSubject);
-            if (certSubject != null){
-                return user;
-            }
             var userName = _userManager.GetUserName(_httpContextAccessor.HttpContext.User);
             if (userName == null) return null;
-
             return await GetUserWithUserRolesByName(userName);
         }
 

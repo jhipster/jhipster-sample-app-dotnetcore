@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj": {}
+    "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster/Jhipster.csproj": {}
   },
   "projects": {
-    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
+    "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj",
+        "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj",
         "projectName": "Jhipster.Crosscutting",
-        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj",
-        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\obj\\",
+        "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj",
+        "packagesPath": "/home/gitpod/.nuget/packages/",
+        "outputPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/gitpod/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
@@ -52,21 +52,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj": {
+    "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain.Services/Jhipster.Domain.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj",
+        "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain.Services/Jhipster.Domain.Services.csproj",
         "projectName": "Jhipster.Domain.Services",
-        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj",
-        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\obj\\",
+        "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain.Services/Jhipster.Domain.Services.csproj",
+        "packagesPath": "/home/gitpod/.nuget/packages/",
+        "outputPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain.Services/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/gitpod/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
@@ -78,14 +78,14 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj"
               }
             }
           }
@@ -128,21 +128,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
+    "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj",
+        "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj",
         "projectName": "Jhipster.Domain",
-        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj",
-        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\obj\\",
+        "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj",
+        "packagesPath": "/home/gitpod/.nuget/packages/",
+        "outputPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/gitpod/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
@@ -154,8 +154,8 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj"
               }
             }
           }
@@ -202,21 +202,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj": {
+    "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj",
+        "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj",
         "projectName": "Jhipster.Dto",
-        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj",
-        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\obj\\",
+        "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj",
+        "packagesPath": "/home/gitpod/.nuget/packages/",
+        "outputPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/gitpod/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
@@ -228,8 +228,8 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj"
               }
             }
           }
@@ -276,21 +276,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj": {
+    "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj",
+        "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj",
         "projectName": "Jhipster.Infrastructure",
-        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\obj\\",
+        "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj",
+        "packagesPath": "/home/gitpod/.nuget/packages/",
+        "outputPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/gitpod/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
@@ -302,14 +302,14 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj"
               }
             }
           }
@@ -368,21 +368,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj": {
+    "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster/Jhipster.csproj": {
       "version": "0.0.1",
       "restore": {
-        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj",
+        "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster/Jhipster.csproj",
         "projectName": "jhipster",
-        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj",
-        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\obj\\",
+        "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster/Jhipster.csproj",
+        "packagesPath": "/home/gitpod/.nuget/packages/",
+        "outputPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/gitpod/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -394,23 +394,23 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain.Services\\Jhipster.Domain.Services.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain.Services/Jhipster.Domain.Services.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain.Services/Jhipster.Domain.Services.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Infrastructure\\Jhipster.Infrastructure.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj"
               },
-              "C:\\git\\jhipster-sample-app-dotnetcore\\src\\TextTemplate\\TextTemplateCSharp.csproj": {
-                "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\TextTemplate\\TextTemplateCSharp.csproj"
+              "/workspace/jhipster-sample-app-dotnetcore/src/TextTemplate/TextTemplateCSharp.csproj": {
+                "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/TextTemplate/TextTemplateCSharp.csproj"
               }
             }
           }
@@ -524,21 +524,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\git\\jhipster-sample-app-dotnetcore\\src\\TextTemplate\\TextTemplateCSharp.csproj": {
+    "/workspace/jhipster-sample-app-dotnetcore/src/TextTemplate/TextTemplateCSharp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\TextTemplate\\TextTemplateCSharp.csproj",
+        "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/src/TextTemplate/TextTemplateCSharp.csproj",
         "projectName": "TextTemplateCSharp",
-        "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\TextTemplate\\TextTemplateCSharp.csproj",
-        "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-        "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\TextTemplate\\obj\\",
+        "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/TextTemplate/TextTemplateCSharp.csproj",
+        "packagesPath": "/home/gitpod/.nuget/packages/",
+        "outputPath": "/workspace/jhipster-sample-app-dotnetcore/src/TextTemplate/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/gitpod/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp5.0"
@@ -586,7 +586,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
         }
       }
     }

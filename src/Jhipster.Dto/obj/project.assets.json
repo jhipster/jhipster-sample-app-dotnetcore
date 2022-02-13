@@ -775,19 +775,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eisne\\.nuget\\packages\\": {}
+    "/home/gitpod/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj",
+      "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj",
       "projectName": "Jhipster.Dto",
-      "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj",
-      "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-      "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\obj\\",
+      "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj",
+      "packagesPath": "/home/gitpod/.nuget/packages/",
+      "outputPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/gitpod/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.1"
@@ -799,8 +799,8 @@
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
           "projectReferences": {
-            "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj": {
-              "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Crosscutting\\Jhipster.Crosscutting.csproj"
+            "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj": {
+              "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Crosscutting/Jhipster.Crosscutting.csproj"
             }
           }
         }
@@ -847,7 +847,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
       }
     }
   }

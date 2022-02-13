@@ -4,10 +4,10 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)xunit.core\2.4.1\build\xunit.core.targets" Condition="Exists('$(NuGetPackageRoot)xunit.core\2.4.1\build\xunit.core.targets')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.codecoverage\16.8.3\build\netstandard1.0\Microsoft.CodeCoverage.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.codecoverage\16.8.3\build\netstandard1.0\Microsoft.CodeCoverage.targets')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.net.test.sdk\16.8.3\build\netcoreapp2.1\Microsoft.NET.Test.Sdk.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.net.test.sdk\16.8.3\build\netcoreapp2.1\Microsoft.NET.Test.Sdk.targets')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.mvc.testing\5.0.0\build\net5.0\Microsoft.AspNetCore.Mvc.Testing.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.mvc.testing\5.0.0\build\net5.0\Microsoft.AspNetCore.Mvc.Testing.targets')" />
-    <Import Project="$(NuGetPackageRoot)coverlet.msbuild\2.9.0\build\coverlet.msbuild.targets" Condition="Exists('$(NuGetPackageRoot)coverlet.msbuild\2.9.0\build\coverlet.msbuild.targets')" />
+    <Import Project="$(NuGetPackageRoot)xunit.core/2.4.1/build/xunit.core.targets" Condition="Exists('$(NuGetPackageRoot)xunit.core/2.4.1/build/xunit.core.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.codecoverage/16.8.3/build/netstandard1.0/Microsoft.CodeCoverage.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.codecoverage/16.8.3/build/netstandard1.0/Microsoft.CodeCoverage.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.net.test.sdk/16.8.3/build/netcoreapp2.1/Microsoft.NET.Test.Sdk.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.net.test.sdk/16.8.3/build/netcoreapp2.1/Microsoft.NET.Test.Sdk.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.mvc.testing/5.0.0/build/net5.0/Microsoft.AspNetCore.Mvc.Testing.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.mvc.testing/5.0.0/build/net5.0/Microsoft.AspNetCore.Mvc.Testing.targets')" />
+    <Import Project="$(NuGetPackageRoot)coverlet.msbuild/2.9.0/build/coverlet.msbuild.targets" Condition="Exists('$(NuGetPackageRoot)coverlet.msbuild/2.9.0/build/coverlet.msbuild.targets')" />
   </ImportGroup>
 </Project>

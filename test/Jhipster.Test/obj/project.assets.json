@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net5.0": {
+      "Antlr4.Runtime.Standard/4.9.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Antlr4.Runtime.Standard.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Antlr4.Runtime.Standard.dll": {}
+        }
+      },
       "AutoMapper/10.1.0": {
         "type": "package",
         "dependencies": {
@@ -1550,6 +1559,15 @@
             "assetType": "runtime",
             "rid": "win"
           }
+        }
+      },
+      "MomentSharp/1.0.6149.39352": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MomentSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MomentSharp.dll": {}
         }
       },
       "Moq/4.15.2": {
@@ -3692,7 +3710,8 @@
           "Serilog.Sinks.Console": "3.1.1",
           "Serilog.Sinks.SyslogMessages": "2.0.1",
           "Swashbuckle.AspNetCore": "5.6.3",
-          "System.IdentityModel.Tokens.Jwt": "6.8.0"
+          "System.IdentityModel.Tokens.Jwt": "6.8.0",
+          "TextTemplateCSharp": "1.0.0"
         },
         "compile": {
           "bin/placeholder/jhipster.dll": {}
@@ -3787,10 +3806,39 @@
         "runtime": {
           "bin/placeholder/Jhipster.Infrastructure.dll": {}
         }
+      },
+      "TextTemplateCSharp/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Antlr4.Runtime.Standard": "4.9.1",
+          "MomentSharp": "1.0.6149.39352"
+        },
+        "compile": {
+          "bin/placeholder/TextTemplateCSharp.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TextTemplateCSharp.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "Antlr4.Runtime.Standard/4.9.1": {
+      "sha512": "2b6SrwXRa3lgJ7nQyG+EZFJHGDWRW0Bb8KfqdXaAVL3QoGOuXkFRLBxTIbRt1lNUop9k++SG2kid/pl1Q49UGw==",
+      "type": "package",
+      "path": "antlr4.runtime.standard/4.9.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "antlr4.runtime.standard.4.9.1.nupkg.sha512",
+        "antlr4.runtime.standard.nuspec",
+        "lib/netstandard2.0/Antlr4.Runtime.Standard.dll",
+        "lib/netstandard2.0/Antlr4.Runtime.Standard.xml",
+        "lib/netstandard2.1/Antlr4.Runtime.Standard.dll",
+        "lib/netstandard2.1/Antlr4.Runtime.Standard.xml"
+      ]
+    },
     "AutoMapper/10.1.0": {
       "sha512": "qxn9+PpQJD53PAUHGXW3HTcq6Rxbv3Pyq/jTcc60ZYwOygyqUfHIY3HBChKbDwtTHdlwlQqJeJ1ckVcaoytxxw==",
       "type": "package",
@@ -5883,6 +5931,23 @@
         "runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.xml",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "MomentSharp/1.0.6149.39352": {
+      "sha512": "PHFl0Y6rzTbhRm2FW2uCurvgy6Jk8sjuDH3sIET3JnU1QNynQmWFPS8jOtetLDf/qTQYcockTpJYHUxwnSLRFA==",
+      "type": "package",
+      "path": "momentsharp/1.0.6149.39352",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/MomentSharp.dll",
+        "lib/net40/MomentSharp.pdb",
+        "lib/net40/MomentSharp.xml",
+        "lib/net45/MomentSharp.dll",
+        "lib/net45/MomentSharp.pdb",
+        "lib/net45/MomentSharp.xml",
+        "momentsharp.1.0.6149.39352.nupkg.sha512",
+        "momentsharp.nuspec"
       ]
     },
     "Moq/4.15.2": {
@@ -11196,6 +11261,11 @@
       "type": "project",
       "path": "../../src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj",
       "msbuildProject": "../../src/Jhipster.Infrastructure/Jhipster.Infrastructure.csproj"
+    },
+    "TextTemplateCSharp/1.0.0": {
+      "type": "project",
+      "path": "../../src/TextTemplate/TextTemplateCSharp.csproj",
+      "msbuildProject": "../../src/TextTemplate/TextTemplateCSharp.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -11219,40 +11289,38 @@
     ]
   },
   "packageFolders": {
-    "..\\..\\packages\\": {}
+    "/home/gitpod/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\git\\jhipster-sample-app-dotnetcore\\test\\Jhipster.Test\\Jhipster.Test.csproj",
+      "projectUniqueName": "/workspace/jhipster-sample-app-dotnetcore/test/Jhipster.Test/Jhipster.Test.csproj",
       "projectName": "Jhipster.Test",
-      "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\test\\Jhipster.Test\\Jhipster.Test.csproj",
-      "packagesPath": "C:\\Users\\eisne\\.nuget\\packages\\",
-      "outputPath": "C:\\git\\jhipster-sample-app-dotnetcore\\test\\Jhipster.Test\\obj\\",
+      "projectPath": "/workspace/jhipster-sample-app-dotnetcore/test/Jhipster.Test/Jhipster.Test.csproj",
+      "packagesPath": "/home/gitpod/.nuget/packages/",
+      "outputPath": "/workspace/jhipster-sample-app-dotnetcore/test/Jhipster.Test/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\eisne\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/gitpod/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj": {
-              "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Domain\\Jhipster.Domain.csproj"
+            "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj": {
+              "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Domain/Jhipster.Domain.csproj"
             },
-            "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj": {
-              "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster.Dto\\Jhipster.Dto.csproj"
+            "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj": {
+              "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster.Dto/Jhipster.Dto.csproj"
             },
-            "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj": {
-              "projectPath": "C:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster\\Jhipster.csproj"
+            "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster/Jhipster.csproj": {
+              "projectPath": "/workspace/jhipster-sample-app-dotnetcore/src/Jhipster/Jhipster.csproj"
             }
           }
         }
@@ -11344,8 +11412,20 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/gitpod/dotnet/sdk/5.0.101/RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MomentSharp 1.0.6149.39352' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "libraryId": "MomentSharp",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
 }
