@@ -11,8 +11,6 @@ export class LoginModalService {
 
   open(): void {
 
-    // LOGIN MODAL SERVICE IS DISABLED; LOGON RELIES ON CLIENT CERTIFICATES AND IS AUTHOMATIC
-    return;
 
     if (this.isOpen) {
       return;

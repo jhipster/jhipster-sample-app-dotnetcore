@@ -50,7 +50,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   public updatingNamedQueryError = "";
 
-  data: ExtendedRuleSet | null = null;
+  data: any = null;
 
   odataFilters = {
     eq: 'eq',
@@ -216,14 +216,14 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     if (!this.queryIsValid() || this.data?.name){
       return;
     }
-    const ruleset = this.data as RuleSet;
+    const ruleset = this.data as ExtendedRuleSet;
     this.oldRulesetName = ruleset.name;
     ruleset.name = ruleset.name || "";
     this.editingRulesetName = true;
   }
 
   public cancelEditRulesetName() : void {
-    const ruleset = this.data as RuleSet;
+    const ruleset = this.data as ExtendedRuleSet;
     ruleset.name = this.oldRulesetName;
     this.editingRulesetName = false;
     
@@ -231,10 +231,10 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
 
   public acceptRulesetName() : void {
     const storedRuleset :StoredRuleset = new StoredRuleset();
-    storedRuleset.name = (this.data as any).name;
+    storedRuleset.name = this.data.name;
     storedRuleset.jsonString = JSON.stringify(this.data);
     this.subscribeToSaveRulesetResponse(this.rulesetService.create(storedRuleset));
-    this.rulesetMap.set((this.data as any).name as string, this.birthdayQueryParserService.normalize(this.data as IQuery));
+    this.rulesetMap.set(this.data.name as string, this.birthdayQueryParserService.normalize(this.data as IQuery));
   }
 
   public undoQueryMods(event: Event) : void {
@@ -535,8 +535,8 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     let pathData : RuleSet | null = this.data;
     let looping = true;
     while (looping){
-      if (pathData?.name){
-        pathNames.push(pathData.name);
+      if ((pathData as any).name){
+        pathNames.push((pathData as any).name);
       }
       if (pathData === BirthdayQueryBuilderComponent.topLevelRuleset){
          looping = false;
