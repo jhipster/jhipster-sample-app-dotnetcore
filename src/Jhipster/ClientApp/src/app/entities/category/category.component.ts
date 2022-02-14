@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, ParamMap, Router, Data } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -114,6 +114,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
   selectedView: IView | null = null ;
 
   secondLevel = false;
+
+  @ViewChild('queryBuilder') queryBuilder: any;
 
   @Input() firstColumnIndent = "";
 
@@ -380,9 +382,13 @@ export class CategoryComponent implements OnInit, OnDestroy {
     const query: any= JSON.parse(category.jsonString as string);
     this.menuItems = [{
       label: 'Edit query '+query.name,
-      icon: 'pi pi-bookmark',      
-      command: ()=>{
-        this.menuItems.length = this.menuItems.length + 0;
+      icon: 'pi pi-bookmark',
+      id: query.name,      
+      command: (event: any)=>{
+        const menuItem : MenuItem = event.item;
+        const parentComponent = (this.parentComponent as CategoryComponent);
+        parentComponent.searchQueryAsString = menuItem.id as string;;
+        parentComponent.showSearchDialog(parentComponent.queryBuilder);
       }
     },{
       label: 'Rename query '+query.name,
