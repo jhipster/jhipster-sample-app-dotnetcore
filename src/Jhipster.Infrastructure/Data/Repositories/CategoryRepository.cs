@@ -161,6 +161,7 @@ namespace Jhipster.Infrastructure.Data.Repositories
                             {
                                 CategoryName = dictRuleset[k].Name,
                                 description = queryAsString(dictCategory),
+                                jsonString = dictRuleset[k].JsonString,
                                 Id = ++id
                             });
                         });

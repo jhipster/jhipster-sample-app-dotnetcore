@@ -11,7 +11,6 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("jhipster, Version=0.0.1.0, Culture=neutral, PublicKeyToken=null", "c:\\git\\jhipster-sample-app-dotnetcore\\src\\Jhipster", "Jhipster.csproj", "0")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Jhipster.Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

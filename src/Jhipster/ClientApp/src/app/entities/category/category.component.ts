@@ -386,9 +386,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
       id: query.name,      
       command: (event: any)=>{
         const menuItem : MenuItem = event.item;
-        const parentComponent = (this.parentComponent as CategoryComponent);
-        parentComponent.searchQueryAsString = menuItem.id as string;;
-        parentComponent.showSearchDialog(parentComponent.queryBuilder);
+        const categoryComponent = this.parentComponent ? this.parentComponent : this;
+        categoryComponent.searchQueryAsString = menuItem.id as string;;
+        categoryComponent.showSearchDialog(categoryComponent.queryBuilder);
       }
     },{
       label: 'Rename query '+query.name,
