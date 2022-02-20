@@ -22,7 +22,7 @@ npm-debug.log.*
 # Vs & vscode
 ###########
 .vs
-.vscode
+## .vscode
 
 # Web
 **/ClientApp/dist/
