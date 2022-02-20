@@ -282,3 +282,8 @@ _Pvt_Extensions
 #IntelliJ
 .idea/
 src/Jhipster/workspace.code-workspace
+src/Jhipster/obj/Debug/net5.0/project.razor.json
+test/Jhipster.Test/obj/Jhipster.Test.csproj.nuget.dgspec.json
+test/Jhipster.Test/obj/Jhipster.Test.csproj.nuget.g.props
+test/Jhipster.Test/obj/Jhipster.Test.csproj.nuget.g.targets
+test/Jhipster.Test/obj/project.assets.json
