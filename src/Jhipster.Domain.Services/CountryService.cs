@@ -25,7 +25,7 @@ namespace Jhipster.Domain.Services
         public virtual async Task<IPage<Country>> FindAll(IPageable pageable)
         {
             var page = await _countryRepository.QueryHelper()
-                .Include(country => country.Region)
+                .Include(country => country.Category)
                 .GetPageAsync(pageable);
             return page;
         }
@@ -33,7 +33,7 @@ namespace Jhipster.Domain.Services
         public virtual async Task<Country> FindOne(long id)
         {
             var result = await _countryRepository.QueryHelper()
-                .Include(country => country.Region)
+                .Include(country => country.Category)
                 .GetOneAsync(country => country.Id == id);
             return result;
         }

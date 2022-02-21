@@ -1,0 +1,9 @@
+image: gitpod/workspace-dotnet
+
+tasks:
+  - init: dotnet build
+    command: dotnet run
+
+vscode:
+  extensions:
+    - muhammad-sammy.csharp@1.23.11:abbce152176cb417d759880513465a5b

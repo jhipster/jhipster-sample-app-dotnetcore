@@ -67,6 +67,12 @@ Generic styles
   border-left: 5px solid red;
 }
 
+.p-inputtext.ng-dirty.ng-invalid {
+    border: 1px solid red !important;
+    background: rgba(255, 0, 0, 0.35);
+    box-shadow: 0 0 5px 1px rgba(255, 0, 0, 0.2) inset !important;
+}
+
 /* other generic styles */
 
 .jh-card {

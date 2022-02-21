@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
-        path: 'region',
-        loadChildren: () => import('./region/region.module').then(m => m.JhipsterRegionModule),
+        path: 'category',
+        loadChildren: () => import('./category/category.module').then(m => m.JhipsterCategoryModule),
       },
       {
         path: 'country',
@@ -36,6 +36,10 @@ import { RouterModule } from '@angular/router';
         path: 'job-history',
         loadChildren: () => import('./job-history/job-history.module').then(m => m.JhipsterJobHistoryModule),
       },
+      {
+        path: 'birthday',
+        loadChildren: () => import('./birthday/birthday.module').then(m => m.JhipsterBirthdayModule),
+      },      
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

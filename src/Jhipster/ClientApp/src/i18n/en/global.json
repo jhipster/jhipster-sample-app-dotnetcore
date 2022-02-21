@@ -7,13 +7,14 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "region": "Region",
+        "category": "Category",
         "country": "Country",
         "location": "Location",
         "department": "Department",
         "pieceOfWork": "Piece Of Work",
         "employee": "Employee",
         "job": "Job",
+        "birthday" : "Birthday",        
         "jobHistory": "Job History",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
@@ -106,7 +107,8 @@
       "edit": "Edit",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "ok": "Ok"
     },
     "detail": {
       "field": "Field",

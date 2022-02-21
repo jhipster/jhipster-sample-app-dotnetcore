@@ -29,11 +29,12 @@ namespace Jhipster.Infrastructure.Data
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public DbSet<Region> Regions { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<PieceOfWork> PieceOfWorks { get; set; }
+        public DbSet<Ruleset> Rulesets { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<JobHistory> JobHistories { get; set; }

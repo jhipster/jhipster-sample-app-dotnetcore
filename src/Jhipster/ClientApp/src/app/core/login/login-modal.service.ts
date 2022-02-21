@@ -10,6 +10,8 @@ export class LoginModalService {
   constructor(private modalService: NgbModal) {}
 
   open(): void {
+
+
     if (this.isOpen) {
       return;
     }

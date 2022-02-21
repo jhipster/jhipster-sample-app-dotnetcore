@@ -9,6 +9,8 @@ using JHipsterNet.Web.Logging;
 using Serilog.Sinks.Syslog;
 using ILogger = Serilog.ILogger;
 using static JHipsterNet.Core.Boot.BannerPrinter;
+using Nest;
+using Jhipster.Domain;
 
 namespace Jhipster
 {
@@ -22,9 +24,41 @@ namespace Jhipster
 
         public static int Main(string[] args)
         {
-            PrintBanner(10 * 1000);
+            PrintBanner(1 * 1000);
+            //1. Setup Connection and ElasticClient
+            Console.WriteLine("Connecting to Elastic-Search");
+            var node = new Uri("https://texttemplate-testing-7087740692.us-east-1.bonsaisearch.net/");
 
-            try
+            var setting = new Nest.ConnectionSettings(node).BasicAuthentication("7303xa0iq9","4cdkz0o14").DefaultIndex("birthdays");
+
+            var elastic = new ElasticClient(setting);
+
+            var searchResponse = elastic.Search<Birthday>(s => s
+                .Query(q => q
+                    .MatchAll()
+                )
+            );
+            Console.WriteLine(searchResponse.Hits.Count + " hits");
+            foreach (var hit in searchResponse.Hits)
+            {
+                Console.WriteLine(hit.Source.ToString());
+            }
+             searchResponse = elastic.Search<Birthday>(s => s
+                .Size(1000)
+                .Query(q => q
+                    .DateRange(r => r
+                        .Field(f => f.Dob)
+                        .GreaterThanOrEquals(new DateTime(1941, 01, 01))
+                        .LessThan(new DateTime(1942, 01, 01))
+                    )
+                )
+            );            
+            Console.WriteLine(searchResponse.Hits.Count + " hits");
+            foreach (var hit in searchResponse.Hits)
+            {
+                Console.WriteLine(hit.Source.ToString());
+            }
+          try
             {
                 var appConfiguration = GetAppConfiguration();
                 Log.Logger = CreateLogger(appConfiguration);
@@ -52,7 +86,21 @@ namespace Jhipster
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseWebRoot(Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "dist"))
-                .UseSerilog();
+                .UseSerilog()
+                /*
+                // vvv requires client certificate when connecting vvv 
+                .ConfigureKestrel((context, options) =>
+                {
+                    options.ConfigureHttpsDefaults(configureOptions =>
+                    {
+                        configureOptions.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
+                        configureOptions.ClientCertificateValidation = ValidateClientCertificate;
+                            
+                    });
+                })
+                */
+                // ^^^ requires client certificate when connecting ^^^
+                ;                
         }
 
         /// <summary>
@@ -108,3 +156,4 @@ namespace Jhipster
         }
     }
 }
+

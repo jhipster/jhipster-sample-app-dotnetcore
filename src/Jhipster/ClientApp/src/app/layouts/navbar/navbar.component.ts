@@ -10,6 +10,8 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
@@ -21,17 +23,22 @@ export class NavbarComponent implements OnInit {
   languages = LANGUAGES;
   swaggerEnabled?: boolean;
   version: string;
+  bShowNav = true;
 
   constructor(
     private loginService: LoginService,
     private languageService: JhiLanguageService,
     private sessionStorage: SessionStorageService,
     private accountService: AccountService,
-    private loginModalService: LoginModalService,
+    private loginModalService:   LoginModalService,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
+    this.router.events.subscribe(() => {
+      this.bShowNav = !this.location.path().includes('navbar=false');
+    });
   }
 
   ngOnInit(): void {
@@ -39,6 +46,7 @@ export class NavbarComponent implements OnInit {
       this.inProduction = profileInfo.inProduction;
       this.swaggerEnabled = profileInfo.swaggerEnabled;
     });
+    
   }
 
   changeLanguage(languageKey: string): void {

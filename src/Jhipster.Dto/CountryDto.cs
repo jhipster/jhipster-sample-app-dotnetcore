@@ -11,7 +11,7 @@ namespace Jhipster.Dto
         public long Id { get; set; }
 
         public string CountryName { get; set; }
-        public long? RegionId { get; set; }
+        public long? CategoryId { get; set; }
 
 
         // jhipster-needle-dto-add-field - JHipster will add fields here, do not remove

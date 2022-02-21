@@ -1,0 +1,16 @@
+{'/data':#build.@MissingValue('')}
+Subtemplates:
+{#build:[{#condition}]}
+{#condition:[{not->[( NOT]}({condition.Case('and',#and,'or',#or)}){not->[)]}]}
+{#and:[{rules:[{field=>#operator,#condition}].Join( ' AND ')}]}
+{#or:[{rules:[{field=>#operator,#condition}].Join(' OR ')}]}
+{#operator:[{operator.Case('=',#equals,'>=',#gte,'<=',#lte,'>',#gt,'<',#lt,'contains',#contains,'is null',#isnull,'is not null',#isnotnull,[NOT HANDLED: {field} {operator} {value}])}]}
+{#equals:[{field}:({'"'}{value}{'"'} AND NOT /~({value})/)]}
+{#gte:[{field}:{'["'}{value}{'"'} TO *{']'}]}
+{#lte:[{field}:{'['}* TO {'"'}{value}{'"]'}]}
+{#gt:[{field}:{'{"'}{value}{'"'} TO *{'}'}]}
+{#lt:[{field}:{'{'}* TO {'"'}{value}{'"}'}]}
+{#contains:[{field != 'document'->[{field}:]}{#value}]}
+{#value:[{!value.Contains(' ') | value.Matches(/"[^"]+"/)=>[{value}],["{value}"~4]}]}
+{#isnull:[!{field}:*]}
+{#isnotnull:[{field}:*]}

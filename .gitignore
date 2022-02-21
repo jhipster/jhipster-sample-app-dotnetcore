@@ -22,7 +22,7 @@ npm-debug.log.*
 # Vs & vscode
 ###########
 .vs
-.vscode
+## .vscode
 
 # Web
 **/ClientApp/dist/
@@ -281,3 +281,12 @@ _Pvt_Extensions
 
 #IntelliJ
 .idea/
+src/Jhipster/workspace.code-workspace
+src/Jhipster/obj/Debug/net5.0/project.razor.json
+test/Jhipster.Test/obj/Jhipster.Test.csproj.nuget.dgspec.json
+test/Jhipster.Test/obj/Jhipster.Test.csproj.nuget.g.props
+test/Jhipster.Test/obj/Jhipster.Test.csproj.nuget.g.targets
+test/Jhipster.Test/obj/project.assets.json
+test/Jhipster.Test/bin/Debug/net5.0/jhipster.deps.json
+test/Jhipster.Test/obj/Debug/net5.0/Jhipster.Test.AssemblyInfo.cs
+test/Jhipster.Test/obj/Debug/net5.0/project.razor.json

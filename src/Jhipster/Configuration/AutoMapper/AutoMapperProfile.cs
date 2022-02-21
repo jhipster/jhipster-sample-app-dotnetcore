@@ -17,7 +17,7 @@ namespace Jhipster.Configuration.AutoMapper
             .ReverseMap()
                 .ForPath(user => user.UserRoles, opt => opt.MapFrom(userDto => userDto.Roles.Select(role => new UserRole { Role = new Role { Name = role }, UserId = userDto.Id }).ToHashSet()));
 
-            CreateMap<Region, RegionDto>().ReverseMap();
+            CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Country, CountryDto>().ReverseMap();
             CreateMap<Location, LocationDto>().ReverseMap();
             CreateMap<Department, DepartmentDto>().ReverseMap();
@@ -25,6 +25,8 @@ namespace Jhipster.Configuration.AutoMapper
             CreateMap<Employee, EmployeeDto>().ReverseMap();
             CreateMap<Job, JobDto>().ReverseMap();
             CreateMap<JobHistory, JobHistoryDto>().ReverseMap();
+            CreateMap<Birthday, BirthdayDto>().ReverseMap();
+            CreateMap<Ruleset, RulesetDto>().ReverseMap();
         }
     }
 }

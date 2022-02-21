@@ -1,5 +1,5 @@
-entity Region {
-	regionName String
+entity Category {
+	categoryName String
 }
 
 entity Country {
@@ -27,6 +27,16 @@ entity PieceOfWork {
 	title String,
 	description String
 }
+
+/**
+ * Ruleset entity.
+ * @author The JHipster team.
+ */
+entity Ruleset {
+	name String,
+	jsonString String
+}
+
 
 /**
  * The Employee entity.
@@ -63,7 +73,7 @@ enum Language {
 
 
 relationship OneToOne {
-	Country{region} to Region
+	Country{category} to Category
 }
 
 relationship OneToOne {

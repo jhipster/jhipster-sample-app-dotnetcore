@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <StartupObject>TextTemplate.Program</StartupObject>
+    <AssemblyName>TextTemplateCSharp</AssemblyName>
+    <RootNamespace>TestTextTemplate</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.9.1" />
+    <PackageReference Include="MomentSharp" Version="1.0.6149.39352" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Templates\LuceneQueryBuilder.template" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Templates\LuceneQueryBuilder.template">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+
+</Project>

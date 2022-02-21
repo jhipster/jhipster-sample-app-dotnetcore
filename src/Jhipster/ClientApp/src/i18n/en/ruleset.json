@@ -1,0 +1,24 @@
+{
+  "jhipsterApp": {
+    "ruleset": {
+      "home": {
+        "title": "Rulesets",
+        "createLabel": "Create a new Ruleset",
+        "createOrEditLabel": "Create or edit a Ruleset",
+        "notFound": "No Rulesets found"
+      },
+      "created": "A new Ruleset is created with identifier {{ param }}",
+      "updated": "A Ruleset is updated with identifier {{ param }}",
+      "deleted": "A Ruleset is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Ruleset {{ id }}?"
+      },
+      "detail": {
+        "title": "Ruleset"
+      },
+      "title": "Title",
+      "description": "Description",
+      "job": "Job"
+    }
+  }
+}

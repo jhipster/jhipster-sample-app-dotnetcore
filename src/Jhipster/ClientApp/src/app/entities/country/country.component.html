@@ -24,7 +24,7 @@
                 <tr>
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
                     <th scope="col" ><span jhiTranslate="jhipsterApp.country.countryName">Country Name</span></th>
-                    <th scope="col" ><span jhiTranslate="jhipsterApp.country.region">Region</span></th>
+                    <th scope="col" ><span jhiTranslate="jhipsterApp.country.category">Category</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -33,8 +33,8 @@
                     <td><a [routerLink]="['/country', country.id, 'view']">{{ country.id }}</a></td>
                     <td>{{ country.countryName }}</td>
                     <td>
-                        <div *ngIf="country.regionId">
-                            <a [routerLink]="['/region', country.regionId , 'view']" >{{ country.regionId }}</a>
+                        <div *ngIf="country.categoryId">
+                            <a [routerLink]="['/category', country.categoryId , 'view']" >{{ country.categoryId }}</a>
                         </div>
                     </td>
                     <td class="text-right">

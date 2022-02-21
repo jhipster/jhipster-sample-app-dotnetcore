@@ -1,0 +1,172 @@
+<div style="height: calc(100vh - 174px);overflow: auto;">
+  <h2 id="page-heading">
+    <span jhiTranslate="jhipsterApp.birthday.home.title">filled in by translate</span><span style="font-size: 16px;font-weight: 700;">... </span><span (click)="showSearchDialog()"><span class="pi pi-search" style="cursor:pointer;"></span></span>
+    <p-dialog 
+      header="Enter Search Criteria" 
+      [(visible)]="bDisplaySearchDialog" 
+      [modal]="true" [style]="{width: '50vw'}" 
+      [baseZIndex]="10000"
+      [draggable]="true" 
+      [resizable]="false"
+    >
+      <jhi-birthday-query-builder #queryBuilder></jhi-birthday-query-builder>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelSearchDialog()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button type="submit" class="btn btn-primary" [disabled]="queryBuilder.queryCtrl.errors">
+          <fa-icon [icon]="faCheck"></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok" (click)="okSearchDialog(queryBuilder)"></span>
+        </button>
+      </div>
+    </p-dialog>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <ng-container *ngIf="rowData | async as birthday">
+    <p-contextMenu #contextMenu [model]="menuItems" (mouseleave)="contextMenu.hide()" appendTo="body"></p-contextMenu>
+    <p-confirmPopup></p-confirmPopup>
+    <p-messages></p-messages>
+    <super-table #birthdays [value]="birthday" 
+      [resizableColumns]="true" 
+      [globalFilterFields]="['lname', 'fname', 'sign']" 
+      dataKey="id" 
+      [(contextMenuSelection)]="contextSelectedRow" 
+      [contextMenu]="contextMenu"
+      selectionMode="multiple" 
+      [(selection)]="checkboxSelectedRows"
+      [expandedRowKeys]="expandedRows"
+      (onRowExpand)="onExpandChange(true)" 
+      (onRowCollapse)="onExpandChange(false)"
+      (selectionChange)="onCheckboxChange()" 
+      (onContextMenuSelect)="setMenu(contextSelectedRow)"
+    >
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+          <button pButton class="p-button-outlined" style="margin-top:9px; height: 20px; width: 20px;" icon="pi pi-refresh" (click)="refreshData()"></button>
+          &nbsp;
+          <button pButton label="Clear" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearFilters(birthdays, searchInput)"></button>
+          <span *ngIf="checkboxSelectedRows.length > 2" style="font-weight: 100; padding-top: 10px;"><i>&nbsp;&nbsp;&nbsp;Too many rows selected</i></span>
+          <span *ngIf="chipSelectedRows.length > 0">
+            <p-menu #menu [popup]="true" [model]="menuItems" (onShow)="onMenuShow(menu, chips)" appendTo="body"></p-menu>
+            <p-chips #chips pRipple
+              [(ngModel)]="chipSelectedRows" 
+              (onRemove)="onRemoveChip($event.value)" 
+              (onChipClick)="onChipClick($event.originalEvent)" 
+            >
+              <ng-template let-item pTemplate="item">
+                <span  (mouseover)="setMenu(item);menu.show($event)" >
+                  {{item.fname}} {{item.lname}}<span style="display: none;">{{item.id}}</span>
+                </span>
+              </ng-template>
+            </p-chips>
+          </span>
+          <span class="p-input-icon-left p-ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              #searchInput
+              pInputText
+              type="text"
+              (input)="birthdays.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Search keyword"
+            />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 2rem">
+            <super-tableHeaderCheckbox></super-tableHeaderCheckbox>
+          </th>
+          <th super-ResizableColumn [super-SortableColumn]="'lname'">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Name
+              <super-sortIcon [field]="'lname'"></super-sortIcon>
+              <super-columnFilter type="text" field="lname" display="menu"></super-columnFilter>
+            </div>
+          </th>
+          <th super-ResizableColumn [super-SortableColumn]="'fname'">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              First
+              <super-sortIcon [field]="'fname'"></super-sortIcon>
+              <super-columnFilter type="text" field="fname" display="menu"></super-columnFilter>
+            </div>
+          </th>
+          <th super-ResizableColumn [super-SortableColumn]="'dob'">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Date of Birth
+              <super-sortIcon [field]="'dob'"></super-sortIcon>
+              <super-columnFilter type="date" field="dob" display="menu"></super-columnFilter>
+            </div>
+          </th>
+          <th super-ResizableColumn [super-SortableColumn]="'sign'">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Sign
+              <super-sortIcon [field]="'sign'"></super-sortIcon>
+              <super-columnFilter type="text" field="sign" display="menu"></super-columnFilter>
+            </div>
+          </th>
+          <th>Alive?</th>
+          <th style="width:25px;font-weight: 700;"><span class="p-button-icon pi pi-chevron-right" aria-hidden="true"></span></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-birthday let-expanded="expanded">
+        <tr [super-ContextMenuRow]="birthday">
+          <td><super-tableCheckbox [value]="birthday"></super-tableCheckbox></td>
+          <td #tt pTooltip="{{ birthday.lname }}" [tooltipDisabled]='false' style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">{{ birthday.lname }}</td>
+          <td>{{ birthday.fname }}</td>
+          <td>{{ birthday.dob | date: 'MM/dd/yyyy' }}</td>
+          <td>{{ birthday.sign }}</td>
+          <td *ngIf="birthday.isAlive">Yes</td>
+          <td *ngIf="!birthday.isAlive">No</td>
+          <td>
+            <button type="button" style="width:2rem" pButton pRipple [super-RowToggler]="birthday" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+          </td>          
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-birthday>
+        <td></td>
+        <td colspan="6">
+          <h3>{{ birthday.fname }} {{birthday.lname}}</h3>
+          <iframe style="width:100%; height:100%;" 
+            [src]= "sanitizer.bypassSecurityTrustResourceUrl('https://localhost:5001/api/birthdays/text/'+birthday.id)">"
+          </iframe>
+        </td>
+      </ng-template>
+    </super-table>
+    <p-dialog header="Categorize {{birthdayDialogTitle}}" [(visible)]="bDisplayCategories" >
+      <jhi-editable-multiselect *ngIf="bDisplayCategories"
+        [options]="categories" 
+        [(ngModel)]="selectedCategories" 
+        defaultLabel="Select or enter a new Category" 
+        optionLabel="categoryName"
+        ngDefaultControl
+        [virtualScroll]=true
+      >
+      </jhi-editable-multiselect>
+      <div class="modal-footer">
+        <button pButton label="Cancel" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-times" (click)="cancelCategorize()"></button>
+        <button pButton label="Ok" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-check" (click)="okCategorize()"></button>
+      </div>
+    </p-dialog>
+    <p-dialog header="{{ birthdayDialogTitle }}" [(visible)]="bDisplayBirthday" [style]="{width: '50vw'}" [baseZIndex]="10000">
+      <iframe style="width:100%; height:100%;border-width: 0;" 
+        [src]= "sanitizer.bypassSecurityTrustResourceUrl('https://localhost:5001/api/birthdays/text/'+birthdayDialogId)">
+      </iframe>
+      <ng-template pTemplate="footer">
+      </ng-template>      
+    </p-dialog>
+
+
+    <div class="alert alert-light" id="no-result" *ngIf="loading">
+      <span >loading ...</span>
+    </div>
+  </ng-container>
+  <p-scrollTop
+    target="parent"
+    icon="pi pi-arrow-up"
+  ></p-scrollTop>
+</div>

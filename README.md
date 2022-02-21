@@ -12,6 +12,10 @@ Before you can build this project, you must install and configure the following 
 After installing Node, you should be able to run the following command to install development tools.
 You will only need to run this command when dependencies change in [package.json](package.json).
 
+In the ./ directory run
+
+    dotnet restore
+
 In ./src/Jhipster/ClientApp run
 
     npm install
@@ -21,8 +25,12 @@ We use npm scripts and [Webpack][] as our build system.
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
-    dotnet run --verbosity normal --project ./src/Jhipster/Jhipster.csproj
+    dotnet run --verbosity normal --no-restore --project ./src/Jhipster/Jhipster.csproj
     npm --prefix ./src/Jhipster/ClientApp start
+
+To determine which process is running, you can use the powershell command:
+
+	get-nettcpconnection | where {($_.State -eq "Listen") -and ($_.RemoteAddress -eq "0.0.0.0")} | Select LocalAddress,LocalPort,RemoteAddress,RemotePort,State,OwningProcess | ft
 
 npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
 specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
