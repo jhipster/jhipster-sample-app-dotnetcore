@@ -146,15 +146,31 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
   @Input() public sublevel = false;
 
   @Input() public rulesetMap : Map<string, IQuery | IQueryRule> = new Map<string, IQuery | IQueryRule>();
-
+  
   constructor(private formBuilder: FormBuilder, private localChangeDetectorRef:ChangeDetectorRef, private renderer : Renderer2, private rulesetService: RulesetService, private birthdayQueryParserService : BirthdayQueryParserService) {
     super(localChangeDetectorRef);
     this.queryCtrl = this.formBuilder.control(this.query); 
     this.initialize(JSON.stringify(this.query));
   }
 
+  public static containsNamedRule(query: IQuery, key: string):boolean{
+    let ret = false;
+    query.rules.forEach((r)=>{
+      const testQuery: IQuery = r as any as IQuery;
+      if (testQuery.rules){
+        if (testQuery.name === key){
+          ret = ret || true;
+        }
+        if (BirthdayQueryBuilderComponent.containsNamedRule(testQuery, key)){
+          ret = ret || true;
+        }
+      }
+    });
+    return ret;
+  }
+
   public initialize(query: string): void{
-    this.query = this.birthdayQueryParserService.normalize(JSON.parse(query));
+    this.query = this.birthdayQueryParserService.normalize(JSON.parse(query), this.rulesetMap as Map<string,IQuery>);
     this.queryCtrl = this.formBuilder.control(this.query);
     this.data = this.query;
     BirthdayQueryBuilderComponent.topLevelRuleset = BirthdayQueryBuilderComponent.topLevelRuleset || this.data;
@@ -234,7 +250,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     storedRuleset.name = this.data.name;
     storedRuleset.jsonString = JSON.stringify(this.data);
     this.subscribeToSaveRulesetResponse(this.rulesetService.create(storedRuleset));
-    this.rulesetMap.set(this.data.name as string, this.birthdayQueryParserService.normalize(this.data as IQuery));
+    this.rulesetMap.set(this.data.name as string, this.birthdayQueryParserService.normalize(this.data as IQuery, this.rulesetMap as Map<string, IQuery>));
   }
 
   public undoQueryMods(event: Event) : void {
@@ -254,28 +270,12 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     this.rulesetMap.forEach((value: any, key: string) => {
       if (key !== this.namedQuery){ 
         const namedQuery = value as IQuery;
-        if (this.containsNamedRule(namedQuery, this.namedQuery) && !this.namedQueryUsedIn.includes(namedQuery.name as string)){
+        if (BirthdayQueryBuilderComponent.containsNamedRule(namedQuery, this.namedQuery) && !this.namedQueryUsedIn.includes(namedQuery.name as string)){
           this.namedQueryUsedIn.push(namedQuery.name as string);
         }
       }
     });
     this.updatingNamedQuery = true;
-  }
-
-  private containsNamedRule(query: IQuery, key: string):boolean{
-    let ret = false;
-    query.rules.forEach((r)=>{
-      const testQuery: IQuery = r as any as IQuery;
-      if (testQuery.rules){
-        if (testQuery.name === key){
-          ret = ret || true;
-        }
-        if (this.containsNamedRule(testQuery, key)){
-          ret = ret || true;
-        }
-      }
-    });
-    return ret;
   }
 
   public onCancelSavingNamedQuery(): void{
@@ -298,7 +298,7 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     updated = JSON.parse(jsonString) as ExtendedRuleSet;
     for (let i = 0; i < updated.rules.length; i++){
       if ((updated.rules[i] as IQuery).rules){
-        updated.rules[i] = this.birthdayQueryParserService.normalize(updated.rules[i] as IQuery);
+        updated.rules[i] = this.birthdayQueryParserService.normalize(updated.rules[i] as IQuery, this.rulesetMap as Map<string, IQuery>);
       }
     }
     const original: IQuery  = this.rulesetMap.get(updated.name as string) as IQuery;
@@ -339,6 +339,9 @@ export class BirthdayQueryBuilderComponent extends QueryBuilderComponent impleme
     const parserService = this.birthdayQueryParserService;
     const query = parserService.queryAsString(this.data as IQuery);
     const queryObject = this.data as ExtendedRuleSet;
+    if (this.editingRulesetName){
+      return false; // prevents saving when editing name
+    }
     if (queryObject.name && !queryObject.initialQueryAsString){
       queryObject.initialQueryAsString = query;
     }

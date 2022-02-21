@@ -3,6 +3,8 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, ParamMap, Router, Data } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
+import { Directive } from '@angular/core';
+import { AbstractControl, NG_ASYNC_VALIDATORS, ValidationErrors, AsyncValidator } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IBirthday } from 'app/shared/model/birthday.model';
@@ -13,8 +15,8 @@ import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { BirthdayService } from '../birthday/birthday.service';
 import { CategoryService } from './category.service';
 import { RulesetService } from '../ruleset/ruleset.service';
-import { map } from 'rxjs/operators';
-import { IStoredRuleset } from 'app/shared/model/ruleset.model';
+import { catchError, map } from 'rxjs/operators';
+import { IStoredRuleset, StoredRuleset } from 'app/shared/model/ruleset.model';
 
 // import { CategoryDeleteDialogComponent } from './category-delete-dialog.component';
 import { Observable } from 'rxjs';
@@ -25,7 +27,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { ConfirmationService, PrimeNGConfig} from "primeng/api";
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { SuperTable } from '../birthday/super-table';
-import { BirthdayQueryParserService } from '../birthday/birthday-query-parser.service';
+import { BirthdayQueryParserService, IQuery, IQueryRule } from '../birthday/birthday-query-parser.service';
+import { BirthdayQueryBuilderComponent } from '../birthday/birthday-query-builder.component';
 
 interface IView {
   name: string,
@@ -38,18 +41,6 @@ interface IView {
   secondLevelView? : IView
   topLevelView? : IView
   topLevelCategory? : string
-}
-
-interface IQueryRule {
-  field: string,
-  operator: string,
-  value: string
-}
-
-interface IQuery {
-  condition: string,
-  rules: IQueryRule[],
-  not: boolean
 }
 
 @Component({
@@ -140,6 +131,18 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   @Input() parentComponent: null | CategoryComponent  = null;
 
+  public bRenamingQuery = false;
+
+  public queryToRename = "";
+
+  public newQueryName = "";
+
+  public namedQueryUsedIn : string[] = [];
+
+  public storedQueryBeingRenamed : IQuery | null = null;
+
+  public updatingNamedQueryError = "";
+
   views: IView[] = [
     {name:"Category", field: "categories", aggregation: "categories.keyword", query: "categories:*"}
     ,{name:"Birth Year", field: "dob", aggregation: "dob", query: "*", categoryQuery: "dob:[{}-01-01 TO {}-12-31]", script: "\n            String st = doc['dob'].value.getYear().toString();\n            if (st==null){\n              return \"\";\n            } else {\n              return st.substring(0, 4);\n            }\n          "}
@@ -221,7 +224,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
       rulesets = res.body || [];
       rulesets?.forEach(r=>{
         const query : IQuery = JSON.parse(r.jsonString as string) as IQuery;
-        this.rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(query));
+        this.rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(query, this.rulesetMap as Map<string, IQuery>));
       }); 
       let queryObject : any = this.birthdayQueryParserService.parse(this.searchQueryAsString);
       if (queryObject.Invalid){
@@ -256,7 +259,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.rulesetService.query().pipe(map((res: any): void=> {
       ((res.body || []) as IStoredRuleset[]).forEach(r=>{
         const query : IQuery = JSON.parse(r.jsonString as string) as IQuery;
-        this.rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(query));
+        this.rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(query, this.rulesetMap as Map<string, IQuery>));
       });
       this.editingQuery = true;
       this.searchQueryBeforeEdit = this.searchQueryAsString;
@@ -394,7 +397,26 @@ export class CategoryComponent implements OnInit, OnDestroy {
       label: 'Rename query '+query.name,
       icon: 'pi pi-user-edit',      
       command: ()=>{
-        this.menuItems.length = this.menuItems.length + 0;
+        this.namedQueryUsedIn = []
+        let storedRulesets : IStoredRuleset[] = [];
+        this.rulesetService.query().pipe(map(res  => {
+          this.rulesetMap = new Map<string, IQuery | IQueryRule>();
+          (storedRulesets = res.body || []);
+          storedRulesets.forEach(r=>{
+            let q : IQuery = JSON.parse(r.jsonString as string) as IQuery;
+            this.rulesetMap.set(r.name as string, this.birthdayQueryParserService.normalize(q, this.rulesetMap as Map<string, IQuery>));   
+            if ((r.name as string) === query.name){
+              this.storedQueryBeingRenamed = this.rulesetMap.get(query.name) as IQuery;
+            }
+            q = this.rulesetMap.get(r.name as string) as IQuery;
+            if (BirthdayQueryBuilderComponent.containsNamedRule(q, query.name as string)){
+              this.namedQueryUsedIn.push(r.name as string);
+            }
+          })
+          this.bRenamingQuery = true;
+          this.queryToRename = query.name;
+          this.newQueryName = "";          
+        })).subscribe()        
       }
     },{
       label: 'Delete query '+query.name,
@@ -409,6 +431,37 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.menuItems.length = this.menuItems.length + 0;
       }
     }];    
+  }
+  
+  cancelRenameQuery():void{
+    this.bRenamingQuery = false;
+  }
+
+  okRenameQuery():void{
+    this.updatingNamedQueryError = "";
+    const oldname = this.storedQueryBeingRenamed?.name as string;
+    (this.storedQueryBeingRenamed as IQuery).name = this.newQueryName;
+    let jsonString = JSON.stringify(this.storedQueryBeingRenamed);
+    let storedRuleset = new StoredRuleset(undefined, oldname, jsonString); // note: jsonString has the new name, which will be detected by the server
+    const updateSuccess = ()  => {
+      if (this.namedQueryUsedIn.length > 0){
+        const namedQueryToBeUpdated = this.rulesetMap.get(this.namedQueryUsedIn.pop() as string) as IQuery;
+        jsonString = JSON.stringify(namedQueryToBeUpdated);
+        storedRuleset = new StoredRuleset(undefined, namedQueryToBeUpdated.name, jsonString);
+        this.rulesetService.update(storedRuleset).pipe(map(updateSuccess),catchError(updateError)).subscribe();
+      } else {
+        // all done
+        this.bRenamingQuery = false;
+        const topLevel = this.parentComponent ? this.parentComponent : this;
+        topLevel.refreshData();
+      }
+    };
+    const updateError = (error: any) => {
+      // server error from the update
+      this.updatingNamedQueryError = error.error?.detail;
+      return of([]);
+    };
+    this.rulesetService.update(storedRuleset).pipe(map(updateSuccess), catchError(updateError)).subscribe();
   }
 
   onMenuShow(menu : any, chips : any): void{
@@ -613,5 +666,39 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
+  }
+}
+
+@Directive({
+  selector: '[jhiValidateRulesetRename]',
+  providers: [{provide: NG_ASYNC_VALIDATORS, useExisting: RulesetRenameValidatorDirective, multi: true}]
+})
+
+export class RulesetRenameValidatorDirective implements AsyncValidator {
+  storedRulesets : IStoredRuleset[] = [];
+  constructor(private rulesetService: RulesetService ) {}
+
+  validate(control: AbstractControl): Observable<ValidationErrors | null> {
+      const obs = this.rulesetService.query().pipe(map(res  => {
+        (this.storedRulesets = res.body || []);
+        let bFound = false;
+        this.storedRulesets.forEach(r =>{
+          if (r.name === control.value){
+            bFound = true;
+          }
+        });
+        if (bFound){
+          return {
+            error: "Name already used"
+          }
+        }
+        if (/^[A-Z][A-Z_\d]*$/.test(control.value)){
+          return null;
+        }
+        return {
+          error: "Invalid name"
+        };
+      }));
+      return obs;
   }
 }

@@ -194,6 +194,26 @@
           </td>
         </ng-template>
       </super-table>
+      <p-dialog header="Rename query {{queryToRename}}" [(visible)]="bRenamingQuery">
+        <span style='color: red'>{{updatingNamedQueryError}}</span>        
+        <h6>{{namedQueryUsedIn.length > 0 ? queryToRename+" is used in "+namedQueryUsedIn.join(", ")+ ", which will be updated with the new name" : ""}}</h6>        
+        {{$any(renameEditor).control.errors != null ? $any(renameEditor).control.errors.error : ""}}    
+        <input 
+          pInputText
+          type="text"
+          [(ngModel)]="newQueryName"
+          placeholder="Enter a new query name"
+          size="30"
+          minlength="1"
+          oninput="this.value = this.value.toUpperCase();"
+          jhiValidateRulesetRename
+          #renameEditor="ngModel"
+        />        
+        <div class="modal-footer">
+          <button aria-label="Cancel" pButton label="Cancel" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-times" (click)="cancelRenameQuery()"></button>
+          <button aria-label="Ok" pButton label="Ok" style="margin-left: 9px;" class="p-button-outlined" icon="pi pi-check" [disabled]="renameEditor.errors" (click)="okRenameQuery()"></button>
+        </div>        
+      </p-dialog>
       <p-dialog header="Categorize {{birthdayDialogTitle}}" [(visible)]="bDisplayCategories" >
         <jhi-editable-multiselect *ngIf="bDisplayCategories"
           [options]="categories" 

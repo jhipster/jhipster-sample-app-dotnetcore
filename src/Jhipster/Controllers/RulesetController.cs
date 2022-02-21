@@ -14,6 +14,7 @@ using Jhipster.Web.Rest.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jhipster.Controllers
@@ -62,6 +63,10 @@ namespace Jhipster.Controllers
             }
             if (rulesetDto.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
             Ruleset ruleset = _mapper.Map<Ruleset>(rulesetDto);
+            Dictionary<string, object> deserialized = JsonConvert.DeserializeObject<Dictionary<string, object>>(ruleset.JsonString);
+            if (deserialized.ContainsKey("name") && ((string)deserialized["name"]) != ruleset.Name){
+                ruleset.Name = (string)deserialized["name"]; // the rule has been renamed
+            }
             await _rulesetService.Save(ruleset);
             return Ok(ruleset)
                 .WithHeaders(HeaderUtil.CreateEntityUpdateAlert(EntityName, ruleset.Id.ToString()));

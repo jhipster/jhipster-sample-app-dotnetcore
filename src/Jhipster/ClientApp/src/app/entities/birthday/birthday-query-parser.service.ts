@@ -61,17 +61,17 @@ export class BirthdayQueryParserService {
     if (!ret.matches || ret.i < tokens.length){
       return { Invalid :true, position: ret.i, condition: "", rules:[], not: false}
     }
-    return this.normalize(JSON.parse(ret.string));
+    return this.normalize(JSON.parse(ret.string), this.rulesetMap as Map<string, IQuery>);
   }
 
-  normalize(query: IQuery): IQuery{
-    if (query.name && this.rulesetMap && (this.rulesetMap as Map<string, IQuery>).has(query.name)){
-      return this.rulesetMap?.get(query.name) as IQuery;
+  normalize(query: IQuery, rulesetMap: Map<string, IQuery>): IQuery{
+    if (query.name && this.rulesetMap && rulesetMap.has(query.name)){
+      return rulesetMap?.get(query.name) as IQuery;
     }
     for (let i = 0; i < query.rules.length; i++){
       const testQuery = query.rules[i] as any as IQuery;
       if (testQuery.rules){
-        (query.rules[i] as any) = this.normalize(testQuery);
+        (query.rules[i] as any) = this.normalize(testQuery, rulesetMap);
       }
     }
     return query;
