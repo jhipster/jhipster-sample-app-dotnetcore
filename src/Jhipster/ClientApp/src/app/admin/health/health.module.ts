@@ -1,14 +1,13 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { JhipsterSharedModule } from 'app/shared/shared.module';
+import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { SharedModule } from "app/shared/shared.module";
 
-import { HealthComponent } from './health.component';
-import { HealthModalComponent } from './health-modal.component';
-
-import { healthRoute } from './health.route';
+import { HealthComponent } from "./health.component";
+import { HealthModalComponent } from "./modal/health-modal.component";
+import { healthRoute } from "./health.route";
 
 @NgModule({
-  imports: [JhipsterSharedModule, RouterModule.forChild([healthRoute])],
+  imports: [SharedModule, RouterModule.forChild([healthRoute])],
   declarations: [HealthComponent, HealthModalComponent],
   entryComponents: [HealthModalComponent],
 })

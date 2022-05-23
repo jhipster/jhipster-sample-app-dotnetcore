@@ -1,6 +1,6 @@
 # Jhipster
 
-This application was generated using JHipster 6.10.5 and JHipster .Net Core 2.1.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
+This application was generated using JHipster 7.8.1 and JHipster .Net Core 3.6.0, you can find documentation and help at https://jhipsternet.readthedocs.io/en/latest/index.html and [https://www.jhipster.tech/documentation-archive/v7.8.1](https://www.jhipster.tech/documentation-archive/v7.8.1).
 
 ## Development
 
@@ -30,24 +30,6 @@ Add the `help` flag on any command to see how you can use it. For example, `npm 
 
 The `npm --prefix ./src/Jhipster/ClientApp run` command will list all of the scripts available to run for this project.
 
-### Service workers
-
-Service workers are commented by default, to enable them please uncomment the following code.
-
-- The service worker registering script in index.html
-
-```html
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').then(function () {
-      console.log('Service Worker Registered');
-    });
-  }
-</script>
-```
-
-Note: workbox creates the respective service worker and dynamically generate the `service-worker.js`
-
 ### Managing dependencies
 
 For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
@@ -73,8 +55,6 @@ Edit [Jhipster/ClientApp/content/css/vendor.css](Jhipster/ClientApp/content/css/
 
 Note: there are still few other things remaining to do for Leaflet that we won't detail here.
 
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
-
 ### Using angular-cli
 
 You can also use [Angular CLI][] to generate some custom client code.
@@ -91,7 +71,7 @@ will generate few files:
 
 ## Building for production
 
-To build the arifacts and optimize the Jhipster application for production, run:
+To build the artifacts and optimize the Jhipster application for production, run:
 
     cd ./src/Jhipster
     rm -rf ./src/Jhipster/wwwroot
@@ -118,6 +98,20 @@ To launch your application's tests, run:
 In ClientApp folder run :
 
     npm test
+
+### Generate entities
+
+With cli
+
+```bash
+jhipster entity <entity-name>
+```
+
+or with jdl (https://start.jhipster.tech/jdl-studio/)
+
+```bash
+jhipster import-jdl my_file.jdl
+```
 
 ### Code quality
 
@@ -159,11 +153,27 @@ Manually :
 
 You can also fully dockerize your application and all the services that it depends on. To achieve this, first build a docker image of your app by running:
 
-    docker build -f ./src/Jhipster/Dockerfile -t Jhipster .
+```bash
+docker build -f ./Dockerfile-Back -t jhipster .
+```
 
 Then run:
 
-    docker run -p 80:80 Jhipster
+```bash
+docker run -p 8080:80 jhipster
+```
+
+Or you can simply run :
+
+```bash
+docker-compose -f .\docker\app.yml build
+```
+
+And
+
+```bash
+docker-compose -f .\docker\app.yml up
+```
 
 [node.js]: https://nodejs.org/
 [yarn]: https://yarnpkg.org/

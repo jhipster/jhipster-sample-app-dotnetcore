@@ -13,7 +13,6 @@ namespace Jhipster.Infrastructure.Data.Repositories
 {
     public class FluentRepository<TEntity> : IFluentRepository<TEntity> where TEntity : class
     {
-        private readonly IGenericRepository<TEntity> _repository;
         private readonly DbSet<TEntity> _dbSet;
         private List<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>> _include;
         private List<Expression<Func<TEntity, object>>> _includeProperties;
@@ -21,21 +20,20 @@ namespace Jhipster.Infrastructure.Data.Repositories
         private Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> _orderBy;
         private bool _disableTracking;
 
-        public FluentRepository(IGenericRepository<TEntity> repository, DbSet<TEntity> dbset)
+        public FluentRepository(DbSet<TEntity> dbset)
         {
-            _repository = repository;
             _dbSet = dbset;
             _include = new List<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>();
             _includeProperties = new List<Expression<Func<TEntity, object>>>();
         }
 
-        public IFluentRepository<TEntity> Filter(Expression<Func<TEntity, bool>> filter)
+        public INoSqlFluentRepository<TEntity> Filter(Expression<Func<TEntity, bool>> filter)
         {
             _filter = filter;
             return this;
         }
 
-        public IFluentRepository<TEntity> OrderBy(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy)
+        public INoSqlFluentRepository<TEntity> OrderBy(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy)
         {
             _orderBy = orderBy;
             return this;

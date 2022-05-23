@@ -21,8 +21,8 @@ datasources:
       tlsAuth: false
       tlsAuthWithCACert: false
     secureJsonData:
-      tlsCACert: ''
-      tlsClientCert: ''
-      tlsClientKey: ''
+      tlsCACert: ""
+      tlsClientCert: ""
+      tlsClientKey: ""
     version: 1
     editable: true

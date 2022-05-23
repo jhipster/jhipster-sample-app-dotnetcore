@@ -1,0 +1,19 @@
+{
+  "baseUrl": "https://localhost:5001/",
+  "testFiles": "**/*.spec.ts",
+  "supportFile": "test/cypress/support/index.ts",
+  "video": false,
+  "integrationFolder": "test/cypress/integration",
+  "fixturesFolder": "test/cypress/fixtures",
+  "pluginsFile": "test/cypress/plugins/index.ts",
+  "screenshotsFolder": "dist/cypress/screenshots",
+  "chromeWebSecurity": true,
+  "viewportWidth": 1200,
+  "viewportHeight": 720,
+  "retries": 2,
+  "env": {
+    "authenticationUrl": "/api/authenticate",
+    "jwtStorageName": "jhi-authenticationToken"
+  },
+  "experimentalSessionSupport": true
+}

@@ -1,4 +1,4 @@
-export type Level = 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'OFF';
+export type Level = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "OFF";
 
 export interface Logger {
   configuredLevel: Level | null;

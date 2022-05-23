@@ -15,7 +15,10 @@ namespace Jhipster.Test.Setup
     {
         public TestStartup(IConfiguration configuration, IHostEnvironment environment) : base(configuration, environment)
         {
+            Configuration = configuration;
         }
+
+        private IConfiguration Configuration { get; }
 
         public override void Configure(IApplicationBuilder app, IHostEnvironment env, IServiceProvider serviceProvider,
             ApplicationDatabaseContext context, IOptions<SecuritySettings> securitySettingsOptions)

@@ -1,12 +1,11 @@
-import { Route } from '@angular/router';
+import { Route } from "@angular/router";
 
-import { ActivateComponent } from './activate.component';
+import { ActivateComponent } from "./activate.component";
 
 export const activateRoute: Route = {
-  path: 'activate',
+  path: "activate",
   component: ActivateComponent,
   data: {
-    authorities: [],
-    pageTitle: 'activate.title',
+    pageTitle: "activate.title",
   },
 };

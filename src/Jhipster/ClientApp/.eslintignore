@@ -1,8 +1,8 @@
 node_modules/
 src/main/docker/
-/test/protractor.conf.js
-/test/jest.conf.js
+jest.conf.js
 webpack/
+test/cypress/
 dist/
 build/
 node/

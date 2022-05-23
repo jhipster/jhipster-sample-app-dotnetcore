@@ -86,7 +86,7 @@
 }
 
 .app-loading {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -133,7 +133,7 @@
   left: -8px;
   width: 24px;
   height: 10px;
-  background-image: url('../images/logo-jhipster.png');
+  background-image: url("../images/logo-jhipster.png");
   background-size: contain;
   -webkit-animation: lds-pacman-3 1s linear infinite;
   animation: lds-pacman-3 1.5s linear infinite;

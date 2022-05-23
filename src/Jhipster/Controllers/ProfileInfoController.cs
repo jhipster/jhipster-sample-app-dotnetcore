@@ -35,7 +35,7 @@ namespace Jhipster.Controllers
         {
             var activeProfiles = new List<string>
             {
-                "swagger"
+                "api-docs"
             };
 
             if (_environment.IsDevelopment())

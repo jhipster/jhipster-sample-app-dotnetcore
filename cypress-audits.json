@@ -1,0 +1,14 @@
+{
+  "baseUrl": "http://localhost:5000/",
+  "testFiles": "**/*.audits.ts",
+  "supportFile": "src/Jhipster/ClientApp/test/cypress/support/index.ts",
+  "video": false,
+  "integrationFolder": "src/Jhipster/ClientApp/test/cypress/integration",
+  "fixturesFolder": "src/Jhipster/ClientApp/test/cypress/fixtures",
+  "pluginsFile": "src/Jhipster/ClientApp/test/cypress/plugins/index.ts",
+  "screenshotsFolder": "target/cypress/screenshots",
+  "chromeWebSecurity": true,
+  "viewportWidth": 1200,
+  "viewportHeight": 720,
+  "retries": 2
+}

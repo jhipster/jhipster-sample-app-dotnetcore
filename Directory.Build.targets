@@ -1,54 +1,54 @@
 <Project>
   <PropertyGroup>
-		<AspNetCorePackageVersion>5.0.0</AspNetCorePackageVersion>
-		<JHipsterNetPackageVersion>1.0.7</JHipsterNetPackageVersion>
+		<AspNetCorePackageVersion>6.0.5</AspNetCorePackageVersion>
+		<EntityFrameworkPackageVersion>6.0.4</EntityFrameworkPackageVersion>
+		<JHipsterNetPackageVersion>1.0.9</JHipsterNetPackageVersion>
   </PropertyGroup>
 
-  <ItemGroup>	
-	
+  <ItemGroup>
+
 	<PackageReference Update="JHipsterNet.Core" Version="$(JHipsterNetPackageVersion)" />
 	<PackageReference Update="JHipsterNet.Web" Version="$(JHipsterNetPackageVersion)" />
-	<PackageReference Update="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-	<PackageReference Update="Hellang.Middleware.ProblemDetails" Version="5.1.1" />
+	<PackageReference Update="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+	<PackageReference Update="Hellang.Middleware.ProblemDetails" Version="6.4.2" />
 	<PackageReference Update="Microsoft.AspNetCore.SpaServices.Extensions" Version="$(AspNetCorePackageVersion)" />
 	<PackageReference Update="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="Scrutor" Version="3.3.0" />
-	<PackageReference Update="Serilog.AspNetCore" Version="3.4.0" />
-	<PackageReference Update="Serilog.Settings.Configuration" Version="3.1.0" />
-	<PackageReference Update="Serilog.Sinks.Console" Version="3.1.1" />
-	<PackageReference Update="Serilog.Enrichers.Process" Version="2.0.1" />
+	<PackageReference Update="Scrutor" Version="4.1.0" />
+	<PackageReference Update="Serilog.AspNetCore" Version="5.0.0" />
+	<PackageReference Update="Serilog.Settings.Configuration" Version="3.3.0" />
+	<PackageReference Update="Serilog.Sinks.Console" Version="4.0.1" />
+	<PackageReference Update="Serilog.Enrichers.Process" Version="2.0.2" />
 	<PackageReference Update="Serilog.Enrichers.Thread" Version="3.1.0" />
-	<PackageReference Update="Serilog.Sinks.SyslogMessages" Version="2.0.1" />
-	<PackageReference Update="Swashbuckle.AspNetCore" Version="5.6.3" />
-	<PackageReference Update="LanguageExt.Core" Version="3.4.15" />
-	<PackageReference Update="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+	<PackageReference Update="Serilog.Sinks.SyslogMessages" Version="2.0.6" />
+	<PackageReference Update="Swashbuckle.AspNetCore" Version="6.3.1" />
+	<PackageReference Update="LanguageExt.Core" Version="4.1.0" />
+	<PackageReference Update="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
 	<PackageReference Update="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="BCrypt.Net-Next" Version="4.0.2" />
-	
-	<PackageReference Update="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-	<PackageReference Update="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="Newtonsoft.Json" Version="12.0.3" />
-	<PackageReference Update="System.ComponentModel.Annotations" Version="5.0.0" />
-	<PackageReference Update="System.Text.Json" Version="$(AspNetCorePackageVersion)" />	
-	<PackageReference Update="Serilog" Version="2.10.0" />
+	<PackageReference Update="BCrypt.Net-Next" Version="4.0.3" />
 
-	<PackageReference Update="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="Microsoft.EntityFrameworkCore.Sqlite" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="Microsoft.EntityFrameworkCore" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="Microsoft.EntityFrameworkCore.Tools" Version="$(AspNetCorePackageVersion)" />
-	 
-	<PackageReference Update="coverlet.msbuild" Version="2.9.0"/>
-	<PackageReference Update="FakeItEasy" Version="6.2.1" />
+	<PackageReference Update="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+	<PackageReference Update="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageReference Update="Newtonsoft.Json" Version="13.0.1" />
+	<PackageReference Update="System.ComponentModel.Annotations" Version="5.0.0" />
+	<PackageReference Update="System.Text.Json" Version="6.0.4" />
+	<PackageReference Update="Serilog" Version="2.11.0" />
+
+	<PackageReference Update="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageReference Update="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageReference Update="Microsoft.EntityFrameworkCore" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageReference Update="Microsoft.EntityFrameworkCore.Tools" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageReference Update="coverlet.msbuild" Version="3.1.2"/>
+	<PackageReference Update="FakeItEasy" Version="7.3.1" />
 	<PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="Microsoft.Data.Sqlite.Core" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="Microsoft.EntityFrameworkCore.Sqlite" Version="$(AspNetCorePackageVersion)" />
-	<PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.8.3" />
-	<PackageReference Update="Moq" Version="4.15.2" />
+	<PackageReference Update="Microsoft.Data.Sqlite.Core" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageReference Update="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+	<PackageReference Update="Moq" Version="4.17.2" />
 	<PackageReference Update="xunit" Version="2.4.1" />
-	<PackageReference Update="xunit.runner.visualstudio" Version="2.4.3"/>
+	<PackageReference Update="xunit.runner.visualstudio" Version="2.4.5"/>
 	<PackageReference Update="xunit.runner.console" Version="2.4.1"/>
 	<PackageReference Update="FluentAssertions" Version="5.10.3" />
 	<PackageReference Update="FluentAssertions.AspNetCore.Mvc" Version="3.2.0" />
-	<PackageReference Update="FluentAssertions.Json" Version="5.5.0" />	
+	<PackageReference Update="FluentAssertions.Json" Version="5.5.0" />
   </ItemGroup>
 </Project>

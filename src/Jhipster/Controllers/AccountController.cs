@@ -1,6 +1,7 @@
 using AutoMapper;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Jhipster.Domain;
@@ -26,18 +27,18 @@ namespace Jhipster.Controllers
     {
 
         private readonly ILogger<AccountController> _log;
+        private readonly IMapper _userMapper;
         private readonly IMailService _mailService;
         private readonly UserManager<User> _userManager;
-        private readonly IMapper _userMapper;
         private readonly IUserService _userService;
 
         public AccountController(ILogger<AccountController> log, UserManager<User> userManager, IUserService userService,
             IMapper userMapper, IMailService mailService)
         {
             _log = log;
+            _userMapper = userMapper;
             _userManager = userManager;
             _userService = userService;
-            _userMapper = userMapper;
             _mailService = mailService;
         }
 
@@ -46,7 +47,6 @@ namespace Jhipster.Controllers
         public async Task<IActionResult> RegisterAccount([FromBody] ManagedUserDto managedUserDto)
         {
             if (!CheckPasswordLength(managedUserDto.Password)) throw new InvalidPasswordException();
-
             var user = await _userService.RegisterUser(_userMapper.Map<User>(managedUserDto), managedUserDto.Password);
             await _mailService.SendActivationEmail(user);
             return CreatedAtAction(nameof(GetAccount), user);
@@ -65,6 +65,13 @@ namespace Jhipster.Controllers
         {
             _log.LogDebug("REST request to check if the current user is authenticated");
             return _userManager.GetUserName(User);
+        }
+
+        [HttpGet("authorities")]
+        [Authorize(Roles = RolesConstants.ADMIN)]
+        public ActionResult<IEnumerable<string>> GetAuthorities()
+        {
+            return Ok(_userService.GetAuthorities());
         }
 
         [Authorize]
@@ -104,7 +111,6 @@ namespace Jhipster.Controllers
         public async Task<ActionResult> ChangePassword([FromBody] PasswordChangeDto passwordChangeDto)
         {
             if (!CheckPasswordLength(passwordChangeDto.NewPassword)) throw new InvalidPasswordException();
-
             await _userService.ChangePassword(passwordChangeDto.CurrentPassword, passwordChangeDto.NewPassword);
             return Ok();
         }
@@ -115,7 +121,6 @@ namespace Jhipster.Controllers
             var mail = await Request.BodyAsStringAsync();
             var user = await _userService.RequestPasswordReset(mail);
             if (user == null) throw new EmailNotFoundException();
-
             await _mailService.SendPasswordResetMail(user);
             return Ok();
         }
@@ -125,9 +130,7 @@ namespace Jhipster.Controllers
         public async Task RequestPasswordReset([FromBody] KeyAndPasswordDto keyAndPasswordDto)
         {
             if (!CheckPasswordLength(keyAndPasswordDto.NewPassword)) throw new InvalidPasswordException();
-
             var user = await _userService.CompletePasswordReset(keyAndPasswordDto.NewPassword, keyAndPasswordDto.Key);
-
             if (user == null) throw new InternalServerErrorException("No user was found for this reset key");
         }
 

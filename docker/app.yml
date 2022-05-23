@@ -1,6 +1,8 @@
-version: '2'
+version: "2.2"
 services:
   jhipster-app:
-    image: jhipster
+    build:
+      context: ../
+      dockerfile: Dockerfile-Back
     ports:
-      - 80:80
+      - 8080:80

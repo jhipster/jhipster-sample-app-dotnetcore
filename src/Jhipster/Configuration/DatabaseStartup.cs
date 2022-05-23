@@ -6,6 +6,8 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Jhipster.Infrastructure.Configuration;
 
 namespace Jhipster.Configuration
 {
@@ -13,14 +15,47 @@ namespace Jhipster.Configuration
     {
         public static IServiceCollection AddDatabaseModule(this IServiceCollection services, IConfiguration configuration)
         {
-            var entityFrameworkConfiguration = configuration.GetSection("EntityFramework");
+            string connectionString = null;
+            string databaseUrl = configuration.GetValue<string>("DATABASE_URL");
 
-            var connection = new SqliteConnection(new SqliteConnectionStringBuilder
+            if (!String.IsNullOrEmpty(databaseUrl) && Uri.IsWellFormedUriString(databaseUrl, UriKind.RelativeOrAbsolute))
+            {
+                Console.WriteLine("DATABASE_URL will be used to create the connection string.");
+                //  Parse the connection string
+                var databaseUri = new Uri(databaseUrl);
+                string db = databaseUri.LocalPath.TrimStart('/');
+                string[] userInfo = databaseUri.UserInfo.Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+                switch (databaseUri.Scheme)
+                {
+                    case "postgres":
+                        connectionString = $"Server={databaseUri.Host};Port={databaseUri.Port};Database={db};User Id={userInfo[0]};Password={userInfo[1]};Integrated Security=true;Pooling=true;MinPoolSize=0;MaxPoolSize=20;";
+                        break;
+                    case "mysql":
+                        connectionString = $"Server={databaseUri.Host};Port={databaseUri.Port};Database={db};User={userInfo[0]};Password={userInfo[1]};Pooling=true;MinimumPoolSize=0;MaximumPoolsize=10;";
+                        break;
+                    case "mssql":
+                        connectionString = $"Server={databaseUri.Host};Port={databaseUri.Port};Database={db};User={userInfo[0]};Password={userInfo[1]};Trusted_Connection=False;Pooling=true;";
+                        break;
+                    case "mongodb":
+                        connectionString = $"Server={databaseUri.Host};Port={databaseUri.Port};Database={db};User={userInfo[0]};Password={userInfo[1]};Pooling=true;MinimumPoolSize=0;MaximumPoolsize=10;";
+                        break;
+                    default:
+                        Console.WriteLine("It was not possible to determine the database type provided by DATABASE_URL");
+                        break;
+                }
+            }
+            else
+            {
+                connectionString = configuration.GetConnectionString("AppDbContext");
+            }
+
+            var entityFrameworkConfiguration = configuration.GetSection("EntityFramework");
+            var sqliteConnection = new SqliteConnection(new SqliteConnectionStringBuilder
             {
                 DataSource = entityFrameworkConfiguration["DataSource"]
             }.ToString());
-
-            services.AddDbContext<ApplicationDatabaseContext>(context => { context.UseSqlite(connection); });
+            services.AddDbContext<ApplicationDatabaseContext>(context => { context.UseSqlite(sqliteConnection); });
 
             services.AddScoped<DbContext>(provider => provider.GetService<ApplicationDatabaseContext>());
 

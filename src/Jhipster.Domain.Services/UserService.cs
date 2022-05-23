@@ -199,7 +199,7 @@ namespace Jhipster.Domain.Services
             {
                 await DeleteUserRoles(user);
                 await _userManager.DeleteAsync(user);
-                _log.LogDebug("Deleted User: {user}");
+                _log.LogDebug($"Deleted User: {user}");
             }
         }
 

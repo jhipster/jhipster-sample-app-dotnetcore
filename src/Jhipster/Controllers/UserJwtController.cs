@@ -27,10 +27,10 @@ namespace Jhipster.Controllers
 
         [HttpPost("authenticate")]
         [ValidateModel]
-        public async Task<ActionResult<JwtToken>> Authorize([FromBody] LoginDto LoginDto)
+        public async Task<ActionResult<JwtToken>> Authorize([FromBody] LoginDto loginDto)
         {
-            var user = await _authenticationService.Authenticate(LoginDto.Username, LoginDto.Password);
-            var rememberMe = LoginDto.RememberMe;
+            var user = await _authenticationService.Authenticate(loginDto.Username, loginDto.Password);
+            var rememberMe = loginDto.RememberMe;
             var jwt = _tokenProvider.CreateToken(user, rememberMe);
             var httpHeaders = new HeaderDictionary
             {

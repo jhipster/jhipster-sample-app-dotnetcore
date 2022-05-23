@@ -1,15 +1,13 @@
-import { Route } from '@angular/router';
+import { Route } from "@angular/router";
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { PasswordComponent } from './password.component';
-import { Authority } from 'app/shared/constants/authority.constants';
+import { UserRouteAccessService } from "app/core/auth/user-route-access.service";
+import { PasswordComponent } from "./password.component";
 
 export const passwordRoute: Route = {
-  path: 'password',
+  path: "password",
   component: PasswordComponent,
   data: {
-    authorities: [Authority.USER],
-    pageTitle: 'global.menu.account.password',
+    pageTitle: "global.menu.account.password",
   },
   canActivate: [UserRouteAccessService],
 };

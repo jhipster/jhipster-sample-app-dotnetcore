@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using JHipsterNet.Web.Pagination.Swagger;
 
 namespace Jhipster.Configuration
 {
@@ -12,6 +13,7 @@ namespace Jhipster.Configuration
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "Jhipster API", Version = "0.0.1" });
+                c.OperationFilter<PageableModelFilter>();
             });
 
             return services;

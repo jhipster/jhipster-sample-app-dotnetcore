@@ -1,11 +1,11 @@
-import { Route } from '@angular/router';
+import { Route } from "@angular/router";
 
-import { DocsComponent } from './docs.component';
+import { DocsComponent } from "./docs.component";
 
 export const docsRoute: Route = {
-  path: '',
+  path: "",
   component: DocsComponent,
   data: {
-    pageTitle: 'global.menu.admin.apidocs',
+    pageTitle: "global.menu.admin.apidocs",
   },
 };
