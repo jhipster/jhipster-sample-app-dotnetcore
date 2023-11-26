@@ -1,4 +1,4 @@
-version: '2'
+version: '3.8'
 services:
   jhipster-influxdb:
     # Full tag list: https://hub.docker.com/r/library/influxdb/tags/

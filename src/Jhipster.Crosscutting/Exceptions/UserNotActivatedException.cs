@@ -1,11 +1,10 @@
 using System.Security.Authentication;
 
-namespace Jhipster.Crosscutting.Exceptions
+namespace Jhipster.Crosscutting.Exceptions;
+
+public class UserNotActivatedException : AuthenticationException
 {
-    public class UserNotActivatedException : AuthenticationException
+    public UserNotActivatedException(string message) : base(message)
     {
-        public UserNotActivatedException(string message) : base(message)
-        {
-        }
     }
 }

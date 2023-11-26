@@ -1,12 +1,11 @@
 using Jhipster.Crosscutting.Constants;
 
-namespace Jhipster.Crosscutting.Exceptions
+namespace Jhipster.Crosscutting.Exceptions;
+
+public class InvalidPasswordException : BaseException
 {
-    public class InvalidPasswordException : BaseException
+    public InvalidPasswordException() : base(ErrorConstants.InvalidPasswordType, "Incorrect Password")
     {
-        public InvalidPasswordException() : base(ErrorConstants.InvalidPasswordType, "Incorrect Password")
-        {
-            //Status = StatusCodes.Status400BadRequest
-        }
+        //Status = StatusCodes.Status400BadRequest
     }
 }

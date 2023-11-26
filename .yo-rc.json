@@ -1,40 +1,44 @@
 {
   "generator-jhipster": {
-    "namespace": "Jhipster",
     "applicationType": "monolith",
-    "promptValues": {
-      "nativeLanguage": "en"
-    },
-    "databaseType": "sqllite",
     "authenticationType": "jwt",
-    "serverPort": "5000",
-    "prodDatabaseType": "mysql",
-    "jhipsterVersion": "6.10.5",
     "baseName": "Jhipster",
-    "useSass": true,
+    "blueprints": [
+      {
+        "name": "generator-jhipster-dotnetcore",
+        "version": "4.0.0"
+      }
+    ],
+    "clientFramework": "angular",
     "clientPackageManager": "npm",
-    "clientFramework": "angularX",
     "clientTheme": "none",
     "clientThemeVariant": "",
     "creationTimestamp": 1606077078363,
-    "testFrameworks": [],
-    "jhiPrefix": "jhi",
-    "entitySuffix": "",
+    "databaseType": "sqllite",
+    "devServerPort": 4200,
     "dtoSuffix": "DTO",
+    "enableTranslation": true,
+    "entities": ["Region", "Country", "Location", "Department", "PieceOfWork", "Employee", "Job", "JobHistory"],
+    "entitySuffix": "",
+    "jhiPrefix": "jhi",
+    "jhipsterVersion": "6.10.5",
+    "jwtSecretKey": "MGFjN2M4YjYxYTY2MmU1MGQ2MGQyNDM1NmYxNDE5MTQ2NjIyMzA4MjU4YTc4YTMyODFlMDc3ZDU4YjY5Yzk1MWE5NjFiMjNhNmIwMzczMDE3NDNmMDg1MzVhODE0NGM1MzA3MA==",
+    "languages": ["en"],
+    "lastLiquibaseTimestamp": 1606077558000,
+    "namespace": "Jhipster",
+    "nativeLanguage": "en",
     "otherModules": [
       {
         "name": "generator-jhipster-dotnetcore",
         "version": "2.1.0"
       }
     ],
-    "enableTranslation": true,
-    "nativeLanguage": "en",
-    "languages": ["en"],
-    "blueprints": [
-      {
-        "name": "generator-jhipster-dotnetcore",
-        "version": "2.1.0"
-      }
-    ]
+    "prodDatabaseType": "mysql",
+    "promptValues": {
+      "nativeLanguage": "en"
+    },
+    "serverPort": "5000",
+    "testFrameworks": [],
+    "useSass": true
   }
 }

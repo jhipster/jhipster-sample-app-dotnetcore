@@ -3,21 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jhipster.Domain
+namespace Jhipster.Domain.Entities
 {
     [Table("location")]
-    public class Location
+    public class Location : BaseEntity<long>
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
-
         public string StreetAddress { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
         public string StateProvince { get; set; }
         public long? CountryId { get; set; }
-
         public Country Country { get; set; }
 
         // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -3,6 +3,7 @@
     "employee": {
       "home": {
         "title": "Employees",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Employee",
         "createOrEditLabel": "Create or edit a Employee",
         "notFound": "No Employees found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Employee"
       },
+      "id": "ID",
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",

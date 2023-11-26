@@ -1,61 +1,72 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { SessionStorageService } from 'ngx-webstorage';
+import { Router, RouterModule } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
+import { StateStorageService } from 'app/core/auth/state-storage.service';
+import SharedModule from 'app/shared/shared.module';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { VERSION } from 'app/app.constants';
-import { LANGUAGES } from 'app/core/language/language.constants';
+import { LANGUAGES } from 'app/config/language.constants';
+import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
-import { LoginModalService } from 'app/core/login/login-modal.service';
-import { LoginService } from 'app/core/login/login.service';
+import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
+import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
+import ActiveMenuDirective from './active-menu.directive';
+import NavbarItem from './navbar-item.model';
 
 @Component({
+  standalone: true,
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['navbar.scss'],
+  styleUrls: ['./navbar.component.scss'],
+  imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective],
 })
-export class NavbarComponent implements OnInit {
+export default class NavbarComponent implements OnInit {
   inProduction?: boolean;
   isNavbarCollapsed = true;
   languages = LANGUAGES;
-  swaggerEnabled?: boolean;
-  version: string;
+  openAPIEnabled?: boolean;
+  version = '';
+  account: Account | null = null;
+  entitiesNavbarItems: NavbarItem[] = [];
 
   constructor(
     private loginService: LoginService,
-    private languageService: JhiLanguageService,
-    private sessionStorage: SessionStorageService,
+    private translateService: TranslateService,
+    private stateStorageService: StateStorageService,
     private accountService: AccountService,
-    private loginModalService: LoginModalService,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
   ) {
-    this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
+    if (VERSION) {
+      this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
+    }
   }
 
   ngOnInit(): void {
+    this.entitiesNavbarItems = EntityNavbarItems;
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
-      this.swaggerEnabled = profileInfo.swaggerEnabled;
+      this.openAPIEnabled = profileInfo.openAPIEnabled;
+    });
+
+    this.accountService.getAuthenticationState().subscribe(account => {
+      this.account = account;
     });
   }
 
   changeLanguage(languageKey: string): void {
-    this.sessionStorage.store('locale', languageKey);
-    this.languageService.changeLanguage(languageKey);
+    this.stateStorageService.storeLocale(languageKey);
+    this.translateService.use(languageKey);
   }
 
   collapseNavbar(): void {
     this.isNavbarCollapsed = true;
   }
 
-  isAuthenticated(): boolean {
-    return this.accountService.isAuthenticated();
-  }
-
   login(): void {
-    this.loginModalService.open();
+    this.router.navigate(['/login']);
   }
 
   logout(): void {
@@ -66,9 +77,5 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
-  }
-
-  getImageUrl(): string {
-    return this.isAuthenticated() ? this.accountService.getImageUrl() : '';
   }
 }

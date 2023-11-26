@@ -8,37 +8,16 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([
       {
         path: 'user-management',
-        loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
-        data: {
-          pageTitle: 'userManagement.home.title',
-        },
-      },
-      {
-        path: 'audits',
-        loadChildren: () => import('./audits/audits.module').then(m => m.AuditsModule),
-      },
-      {
-        path: 'configuration',
-        loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule),
+        loadChildren: () => import('./user-management/user-management.route'),
+        title: 'userManagement.home.title',
       },
       {
         path: 'docs',
-        loadChildren: () => import('./docs/docs.module').then(m => m.DocsModule),
-      },
-      {
-        path: 'health',
-        loadChildren: () => import('./health/health.module').then(m => m.HealthModule),
-      },
-      {
-        path: 'logs',
-        loadChildren: () => import('./logs/logs.module').then(m => m.LogsModule),
-      },
-      {
-        path: 'metrics',
-        loadChildren: () => import('./metrics/metrics.module').then(m => m.MetricsModule),
+        loadComponent: () => import('./docs/docs.component'),
+        title: 'global.menu.admin.apidocs',
       },
       /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
     ]),
   ],
 })
-export class AdminRoutingModule {}
+export default class AdminRoutingModule {}

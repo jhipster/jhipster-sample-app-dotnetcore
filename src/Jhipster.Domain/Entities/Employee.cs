@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jhipster.Domain
+namespace Jhipster.Domain.Entities
 {
     [Table("employee")]
-    public class Employee
+    public class Employee : BaseEntity<long>
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
-
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -20,10 +16,8 @@ namespace Jhipster.Domain
         public long? Salary { get; set; }
         public long? CommissionPct { get; set; }
         public IList<Job> Jobs { get; set; } = new List<Job>();
-
         public long? ManagerId { get; set; }
         public Employee Manager { get; set; }
-
         public long? DepartmentId { get; set; }
         public Department Department { get; set; }
 

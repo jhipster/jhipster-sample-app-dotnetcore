@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using JHipsterNet.Core.Pagination;
-using Jhipster.Domain;
+using Jhipster.Domain.Entities;
 
 namespace Jhipster.Domain.Services.Interfaces
 {

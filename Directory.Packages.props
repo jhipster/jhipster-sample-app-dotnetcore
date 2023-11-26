@@ -1,0 +1,55 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AspNetCorePackageVersion>7.0.4</AspNetCorePackageVersion>
+    <EntityFrameworkPackageVersion>7.0.4</EntityFrameworkPackageVersion>
+    <JHipsterNetPackageVersion>1.0.10</JHipsterNetPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageVersion Include="JHipsterNet.Core" Version="$(JHipsterNetPackageVersion)" />
+	<PackageVersion Include="JHipsterNet.Web" Version="$(JHipsterNetPackageVersion)" />
+	<PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+	<PackageVersion Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
+	<PackageVersion Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="$(AspNetCorePackageVersion)" />
+	<PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(AspNetCorePackageVersion)" />
+	<PackageVersion Include="Scrutor" Version="4.2.2" />
+	<PackageVersion Include="Serilog.AspNetCore" Version="6.1.0" />
+	<PackageVersion Include="Serilog.Settings.Configuration" Version="3.4.0" />
+	<PackageVersion Include="Serilog.Sinks.Console" Version="4.1.0" />
+	<PackageVersion Include="Serilog.Enrichers.Process" Version="2.0.2" />
+	<PackageVersion Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+	<PackageVersion Include="Serilog.Sinks.SyslogMessages" Version="2.0.7" />
+	<PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	<PackageVersion Include="LanguageExt.Core" Version="4.4.2" />
+	<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
+	<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(AspNetCorePackageVersion)" />
+	<PackageVersion Include="BCrypt.Net-Next" Version="4.0.3" />
+
+	<PackageVersion Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+	<PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+	<PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	<PackageVersion Include="System.Text.Json" Version="7.0.2" />
+	<PackageVersion Include="Serilog" Version="2.12.0" />
+
+	<PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="$(EntityFrameworkPackageVersion)" />
+    <PackageVersion Include="Microsoft.Data.Sqlite.Core" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EntityFrameworkPackageVersion)" />
+	<PackageVersion Include="coverlet.msbuild" Version="3.2.0" />
+	<PackageVersion Include="FakeItEasy" Version="7.3.1" />
+	<PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(AspNetCorePackageVersion)" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+	<PackageVersion Include="Moq" Version="4.18.4" />
+	<PackageVersion Include="xunit" Version="2.4.2" />
+	<PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
+	<PackageVersion Include="xunit.runner.console" Version="2.4.2" />
+	<PackageVersion Include="FluentAssertions" Version="6.10.0" />
+	<PackageVersion Include="FluentAssertions.AspNetCore.Mvc" Version="4.2.0" />
+	<PackageVersion Include="FluentAssertions.Json" Version="6.1.0" />
+  </ItemGroup>
+</Project>

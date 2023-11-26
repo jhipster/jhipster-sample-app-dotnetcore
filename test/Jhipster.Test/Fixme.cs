@@ -1,17 +1,16 @@
 using Jhipster.Infrastructure.Data;
-using Jhipster.Domain;
+using Jhipster.Domain.Entities;
 using Jhipster.Test.Setup;
 
-namespace Jhipster.Test
+namespace Jhipster.Test;
+
+public static class Fixme
 {
-    public static class Fixme
+    public static User ReloadUser<TEntryPoint>(AppWebApplicationFactory<TEntryPoint> factory, User user)
+        where TEntryPoint : class, IStartup, new()
     {
-        public static User ReloadUser<TEntryPoint>(AppWebApplicationFactory<TEntryPoint> factory, User user)
-            where TEntryPoint : class
-        {
-            var applicationDatabaseContext = factory.GetRequiredService<ApplicationDatabaseContext>();
-            applicationDatabaseContext.Entry(user).Reload();
-            return user;
-        }
+        var applicationDatabaseContext = factory.GetRequiredService<ApplicationDatabaseContext>();
+        applicationDatabaseContext.Entry(user).Reload();
+        return user;
     }
 }

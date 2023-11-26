@@ -3,6 +3,7 @@
     "pieceOfWork": {
       "home": {
         "title": "Piece Of Works",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Piece Of Work",
         "createOrEditLabel": "Create or edit a Piece Of Work",
         "notFound": "No Piece Of Works found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Piece Of Work"
       },
+      "id": "ID",
       "title": "Title",
       "description": "Description",
       "job": "Job"

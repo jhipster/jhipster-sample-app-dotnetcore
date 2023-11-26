@@ -1,8 +1,7 @@
-namespace Jhipster.Crosscutting.Constants
+namespace Jhipster.Crosscutting.Constants;
+
+public static class JwtConstants
 {
-    public static class JwtConstants
-    {
-        public static readonly string AuthorizationHeader = "Authorization";
-        public static readonly string BearerPrefix = "Bearer";
-    }
+    public static readonly string AuthorizationHeader = "Authorization";
+    public static readonly string BearerPrefix = "Bearer";
 }

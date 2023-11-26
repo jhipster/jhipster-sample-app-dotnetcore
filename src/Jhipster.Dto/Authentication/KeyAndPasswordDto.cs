@@ -1,8 +1,7 @@
-namespace Jhipster.Dto
+namespace Jhipster.Dto.Authentication;
+
+public class KeyAndPasswordDto
 {
-    public class KeyAndPasswordDto
-    {
-        public string Key { get; set; }
-        public string NewPassword { get; set; }
-    }
+    public string Key { get; set; }
+    public string NewPassword { get; set; }
 }

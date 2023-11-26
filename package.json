@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "app:up": "docker compose -f docker/app.yml up --wait",
+    "ci:e2e:prepare": "npm run ci:e2e:prepare:docker",
+    "ci:e2e:prepare:docker": "npm run services:up --if-present && docker ps -a",
+    "ci:e2e:run": "concurrently -k -s first \"npm run ci:e2e:server:start\" \"npm run e2e:headless\"",
+    "ci:e2e:server:start": "docker compose -f docker/app.yml up --wait",
+    "ci:e2e:teardown": "npm run ci:e2e:teardown:docker --if-present",
+    "docker:db:up": "echo \"Docker for db sqllite not configured for application Jhipster\"",
+    "test": "npm test --prefix src/Jhipster/ClientApp/"
+  },
+  "devDependencies": {
+    "concurrently": "8.2.2",
+    "generator-jhipster": "6.10.5",
+    "generator-jhipster-dotnetcore": "4.0.0"
+  }
+}

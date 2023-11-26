@@ -3,6 +3,7 @@
     "country": {
       "home": {
         "title": "Countries",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Country",
         "createOrEditLabel": "Create or edit a Country",
         "notFound": "No Countries found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Country"
       },
+      "id": "ID",
       "countryName": "Country Name",
       "region": "Region"
     }

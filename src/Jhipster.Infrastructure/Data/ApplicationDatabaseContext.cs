@@ -1,5 +1,5 @@
-using Jhipster.Domain;
-using Jhipster.Domain.Interfaces;
+using Jhipster.Domain.Entities;
+using Jhipster.Domain.Entities.Interfaces;
 using Jhipster.Crosscutting.Enums;
 using System;
 using System.Linq;

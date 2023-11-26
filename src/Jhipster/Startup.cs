@@ -12,57 +12,52 @@ using Newtonsoft.Json;
 
 [assembly: ApiController]
 
-namespace Jhipster
+namespace Jhipster;
+
+public class Startup : IStartup
 {
-    public class Startup
+    public virtual void Configure(IConfiguration configuration, IServiceCollection services)
     {
-        public Startup(IConfiguration configuration, IHostEnvironment environment)
-        {
-            Configuration = configuration;
-            Environment = environment;
-        }
-
-        private IConfiguration Configuration { get; }
-
-        public IHostEnvironment Environment { get; }
-
-        public virtual void ConfigureServices(IServiceCollection services)
-        {
-            services
-                .AddAppSettingsModule(Configuration);
-
-            AddDatabase(services);
+        services
+            .AddAppSettingsModule(configuration);
 
 
-            services
-                .AddSecurityModule()
-                .AddProblemDetailsModule(Environment)
-                .AddAutoMapperModule()
-                .AddSwaggerModule()
-                .AddWebModule()
-                .AddRepositoryModule()
-                .AddServiceModule();
+        AddDatabase(configuration, services);
+    }
 
+    public virtual void ConfigureServices(IServiceCollection services, IHostEnvironment environment)
+    {
+        services
+            .AddSecurityModule()
+            .AddProblemDetailsModule(environment)
+            .AddAutoMapperModule()
+            .AddSwaggerModule()
+            .AddWebModule()
+            .AddRepositoryModule()
+            .AddServiceModule();
+    }
 
-        }
+    public virtual void ConfigureMiddleware(IApplicationBuilder app, IHostEnvironment environment)
+    {
+        IServiceProvider serviceProvider = app.ApplicationServices;
+        var securitySettingsOptions = serviceProvider.GetRequiredService<IOptions<SecuritySettings>>();
+        var securitySettings = securitySettingsOptions.Value;
+        app
+            .UseApplicationSecurity(securitySettings)
+            .UseApplicationProblemDetails()
+            .UseApplicationDatabase(environment)
+            .UseApplicationIdentity();
+    }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IHostEnvironment env, IServiceProvider serviceProvider,
-            ApplicationDatabaseContext context, IOptions<SecuritySettings> securitySettingsOptions)
-        {
-            var securitySettings = securitySettingsOptions.Value;
-            app
-                .UseApplicationSecurity(securitySettings)
-                .UseApplicationProblemDetails()
-                .UseApplicationSwagger()
-                .UseApplicationWeb(env)
-                .UseApplicationDatabase(serviceProvider, env)
-                .UseApplicationIdentity(serviceProvider);
-        }
+    public virtual void ConfigureEndpoints(IApplicationBuilder app, IHostEnvironment environment)
+    {
+        app
+            .UseApplicationSwagger()
+            .UseApplicationWeb(environment);
+    }
 
-        protected virtual void AddDatabase(IServiceCollection services)
-        {
-            services.AddDatabaseModule(Configuration);
-        }
+    protected virtual void AddDatabase(IConfiguration configuration, IServiceCollection services)
+    {
+        services.AddDatabaseModule(configuration);
     }
 }

@@ -1,15 +1,14 @@
 using System;
 
-namespace Jhipster.Domain.Interfaces
+namespace Jhipster.Domain.Entities.Interfaces;
+
+public interface IAuditedEntityBase
 {
-    public interface IAuditedEntityBase
-    {
-        string CreatedBy { get; set; }
+    string CreatedBy { get; set; }
 
-        DateTime CreatedDate { get; set; }
+    DateTime CreatedDate { get; set; }
 
-        string LastModifiedBy { get; set; }
+    string LastModifiedBy { get; set; }
 
-        DateTime LastModifiedDate { get; set; }
-    }
+    DateTime LastModifiedDate { get; set; }
 }

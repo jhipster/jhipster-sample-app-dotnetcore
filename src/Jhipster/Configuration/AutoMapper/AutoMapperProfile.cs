@@ -1,7 +1,7 @@
 
 using AutoMapper;
 using System.Linq;
-using Jhipster.Domain;
+using Jhipster.Domain.Entities;
 using Jhipster.Dto;
 
 

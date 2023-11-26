@@ -3,6 +3,7 @@
     "location": {
       "home": {
         "title": "Locations",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Location",
         "createOrEditLabel": "Create or edit a Location",
         "notFound": "No Locations found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Location"
       },
+      "id": "ID",
       "streetAddress": "Street Address",
       "postalCode": "Postal Code",
       "city": "City",

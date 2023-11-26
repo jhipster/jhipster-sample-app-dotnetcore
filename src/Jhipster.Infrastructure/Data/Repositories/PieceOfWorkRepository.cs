@@ -1,15 +1,17 @@
+using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using JHipsterNet.Core.Pagination;
 using JHipsterNet.Core.Pagination.Extensions;
-using Jhipster.Domain;
+using Jhipster.Domain.Entities;
 using Jhipster.Domain.Repositories.Interfaces;
 using Jhipster.Infrastructure.Data.Extensions;
 
 namespace Jhipster.Infrastructure.Data.Repositories
 {
-    public class PieceOfWorkRepository : GenericRepository<PieceOfWork>, IPieceOfWorkRepository
+    public class PieceOfWorkRepository : GenericRepository<PieceOfWork, long>, IPieceOfWorkRepository
     {
         public PieceOfWorkRepository(IUnitOfWork context) : base(context)
         {
@@ -17,17 +19,8 @@ namespace Jhipster.Infrastructure.Data.Repositories
 
         public override async Task<PieceOfWork> CreateOrUpdateAsync(PieceOfWork pieceOfWork)
         {
-            bool exists = await Exists(x => x.Id == pieceOfWork.Id);
-
-            if (pieceOfWork.Id != 0 && exists)
-            {
-                Update(pieceOfWork);
-            }
-            else
-            {
-                _context.AddOrUpdateGraph(pieceOfWork);
-            }
-            return pieceOfWork;
+            List<Type> entitiesToBeUpdated = new List<Type>();
+            return await base.CreateOrUpdateAsync(pieceOfWork, entitiesToBeUpdated);
         }
     }
 }

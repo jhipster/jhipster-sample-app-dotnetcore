@@ -1,6 +1,6 @@
 @import 'bootstrap-variables';
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -97,6 +97,10 @@ Generic styles
   word-break: break-all;
 }
 
+.form-control {
+  background-color: #fff;
+}
+
 .readonly {
   background-color: #eee;
   opacity: 1;
@@ -154,22 +158,37 @@ Custom alerts for notification
 }
 
 /* ==========================================================================
+entity list page css
+========================================================================== */
+
+.table-entities thead th .d-flex > * {
+  margin: auto 0;
+}
+
+/* ==========================================================================
 entity detail page css
 ========================================================================== */
-.row.jh-entity-details > {
-  dd {
-    margin-bottom: 15px;
-  }
+.row-md.jh-entity-details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  line-height: 1.5;
 }
 
 @media screen and (min-width: 768px) {
-  .row.jh-entity-details > {
+  .row-md.jh-entity-details > {
     dt {
-      margin-bottom: 15px;
+      float: left;
+      overflow: hidden;
+      clear: left;
+      text-align: right;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0.5em 0;
     }
     dd {
       border-bottom: 1px solid #eee;
-      padding-left: 180px;
+      padding: 0.5em 0;
       margin-left: 0;
     }
   }
@@ -192,4 +211,29 @@ ui bootstrap tweaks
   white-space: nowrap;
 }
 
+.dropdown-menu {
+  padding-left: 0px;
+}
+
+/* ==========================================================================
+angular-cli removes postcss-rtl processed inline css, processed rules must be added here instead
+========================================================================== */
+/* page-ribbon.component.scss */
+.ribbon {
+  left: -3.5em;
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+/* navbar.component.scss */
+.navbar {
+  ul.navbar-nav {
+    .nav-item {
+      margin-left: 0.5em;
+    }
+  }
+}
 /* jhipster-needle-scss-add-main JHipster will add new css style */

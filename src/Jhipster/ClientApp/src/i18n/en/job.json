@@ -3,6 +3,7 @@
     "job": {
       "home": {
         "title": "Jobs",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Job",
         "createOrEditLabel": "Create or edit a Job",
         "notFound": "No Jobs found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Job"
       },
+      "id": "ID",
       "jobTitle": "Job Title",
       "minSalary": "Min Salary",
       "maxSalary": "Max Salary",

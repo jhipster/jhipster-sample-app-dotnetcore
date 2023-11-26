@@ -3,6 +3,7 @@
     "jobHistory": {
       "home": {
         "title": "Job Histories",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Job History",
         "createOrEditLabel": "Create or edit a Job History",
         "notFound": "No Job Histories found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Job History"
       },
+      "id": "ID",
       "startDate": "Start Date",
       "endDate": "End Date",
       "language": "Language",

@@ -1,15 +1,18 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import PasswordStrengthBarComponent from 'app/account/password/password-strength-bar/password-strength-bar.component';
+import SharedModule from 'app/shared/shared.module';
 
-import { LoginModalService } from 'app/core/login/login-modal.service';
 import { PasswordResetFinishService } from './password-reset-finish.service';
 
 @Component({
   selector: 'jhi-password-reset-finish',
+  standalone: true,
+  imports: [SharedModule, RouterModule, FormsModule, ReactiveFormsModule, PasswordStrengthBarComponent],
   templateUrl: './password-reset-finish.component.html',
 })
-export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
+export default class PasswordResetFinishComponent implements OnInit, AfterViewInit {
   @ViewChild('newPassword', { static: false })
   newPassword?: ElementRef;
 
@@ -19,16 +22,20 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
   success = false;
   key = '';
 
-  passwordForm = this.fb.group({
-    newPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+  passwordForm = new FormGroup({
+    newPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
+    }),
+    confirmPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
+    }),
   });
 
   constructor(
     private passwordResetFinishService: PasswordResetFinishService,
-    private loginModalService: LoginModalService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -50,20 +57,15 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     this.doNotMatch = false;
     this.error = false;
 
-    const newPassword = this.passwordForm.get(['newPassword'])!.value;
-    const confirmPassword = this.passwordForm.get(['confirmPassword'])!.value;
+    const { newPassword, confirmPassword } = this.passwordForm.getRawValue();
 
     if (newPassword !== confirmPassword) {
       this.doNotMatch = true;
     } else {
-      this.passwordResetFinishService.save(this.key, newPassword).subscribe(
-        () => (this.success = true),
-        () => (this.error = true)
-      );
+      this.passwordResetFinishService.save(this.key, newPassword).subscribe({
+        next: () => (this.success = true),
+        error: () => (this.error = true),
+      });
     }
-  }
-
-  login(): void {
-    this.loginModalService.open();
   }
 }

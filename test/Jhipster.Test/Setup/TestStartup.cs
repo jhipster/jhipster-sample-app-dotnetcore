@@ -1,42 +1,46 @@
 using Jhipster.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Jhipster.Infrastructure.Data;
 using System;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jhipster.Test.Setup
+namespace Jhipster.Test.Setup;
+
+public class TestStartup : Startup
 {
-    public class TestStartup : Startup
+    public override void Configure(IConfiguration configuration, IServiceCollection services)
     {
-        public TestStartup(IConfiguration configuration, IHostEnvironment environment) : base(configuration, environment)
-        {
-        }
+        base.Configure(configuration, services);
+    }
 
-        public override void Configure(IApplicationBuilder app, IHostEnvironment env, IServiceProvider serviceProvider,
-            ApplicationDatabaseContext context, IOptions<SecuritySettings> securitySettingsOptions)
-        {
-            base.Configure(app, env, serviceProvider, context, securitySettingsOptions);
-        }
+    public override void ConfigureServices(IServiceCollection services, IHostEnvironment environment)
+    {
+        base.ConfigureServices(services, environment);
+    }
 
-        public override void ConfigureServices(IServiceCollection services)
-        {
-            base.ConfigureServices(services);
-        }
+    public override void ConfigureMiddleware(IApplicationBuilder app, IHostEnvironment environment)
+    {
+        base.ConfigureMiddleware(app, environment);
+    }
 
-        protected override void AddDatabase(IServiceCollection services)
-        {
-            var connection = new SqliteConnection(new SqliteConnectionStringBuilder
-            {
-                DataSource = ":memory:"
-            }.ToString());
+    public override void ConfigureEndpoints(IApplicationBuilder app, IHostEnvironment environment)
+    {
+        base.ConfigureEndpoints(app, environment);
+    }
 
-            services.AddDbContext<ApplicationDatabaseContext>(context => context.UseSqlite(connection));
-            services.AddScoped<DbContext>(provider => provider.GetService<ApplicationDatabaseContext>());
-        }
+    protected override void AddDatabase(IConfiguration configuration, IServiceCollection services)
+    {
+        var connection = new SqliteConnection(new SqliteConnectionStringBuilder
+        {
+            DataSource = ":memory:"
+        }.ToString());
+
+        services.AddDbContext<ApplicationDatabaseContext>(context => context.UseSqlite(connection));
+        services.AddScoped<DbContext>(provider => provider.GetService<ApplicationDatabaseContext>());
     }
 }

@@ -1,10 +1,9 @@
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace Jhipster.Domain.Services.Interfaces
+namespace Jhipster.Domain.Services.Interfaces;
+
+public interface IAuthenticationService
 {
-    public interface IAuthenticationService
-    {
-        Task<IPrincipal> Authenticate(string username, string password);
-    }
+    Task<IPrincipal> Authenticate(string username, string password);
 }

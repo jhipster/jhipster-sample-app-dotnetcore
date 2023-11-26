@@ -7,6 +7,7 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "region": "Region",
         "country": "Country",
         "location": "Location",
@@ -14,8 +15,7 @@
         "pieceOfWork": "Piece Of Work",
         "employee": "Employee",
         "job": "Job",
-        "jobHistory": "Job History",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jobHistory": "Job History"
       },
       "account": {
         "main": "Account",
@@ -34,7 +34,6 @@
         "health": "Health",
         "configuration": "Configuration",
         "logs": "Logs",
-        "audits": "Audits",
         "apidocs": "API",
         "database": "Database",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
@@ -106,7 +105,8 @@
       "edit": "Edit",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "show": "Show {{otherEntity}}"
     },
     "detail": {
       "field": "Field",
@@ -127,6 +127,11 @@
       "number": "This field should be a number.",
       "datetimelocal": "This field should be a date and time.",
       "patternLogin": "This field can only contain letters, digits and e-mail addresses."
+    },
+    "filters": {
+      "set": "Following filters are set",
+      "clear": "Clear filter",
+      "clearAll": "Clear all filters"
     }
   },
   "error": {
@@ -139,6 +144,8 @@
     "emailexists": "Email is already in use!",
     "idexists": "A new {{ entityName }} cannot already have an ID",
     "idnull": "Invalid ID",
+    "idinvalid": "Invalid ID",
+    "idnotfound": "ID cannot be found",
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""

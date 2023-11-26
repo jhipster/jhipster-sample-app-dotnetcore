@@ -9,4 +9,7 @@ useTabs: false
 arrowParens: avoid
 
 # jsx and tsx rules:
-jsxBracketSameLine: false
+bracketSameLine: false
+
+plugins:
+  - prettier-plugin-packagejson

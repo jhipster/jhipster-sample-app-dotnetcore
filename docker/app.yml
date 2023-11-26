@@ -1,6 +1,16 @@
-version: '2'
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: jhipster
 services:
-  jhipster-app:
-    image: jhipster
+  app:
+    build:
+      context: ../
+      dockerfile: Dockerfile-Back
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
     ports:
-      - 80:80
+      - 127.0.0.1:5000:80
+    # healthcheck:
+    #   test: ['CMD', 'curl', '-f', 'http://127.0.0.1:80/health']
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 40

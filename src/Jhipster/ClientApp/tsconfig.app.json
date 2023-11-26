@@ -1,4 +1,9 @@
 {
-  "extends": "./tsconfig.base.json",
-  "files": ["src/app/app.main.ts"]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./../../../tmp/out-tsc/app",
+    "types": ["@angular/localize"]
+  },
+  "files": ["src/main.ts"],
+  "include": ["src/**/*.d.ts"]
 }
