@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (location(); as locationRef) {
+      <div>
+        <h2 data-cy="locationDetailsHeading"><span>Location</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ locationRef.id }}</span>
+          </dd>
+          <dt><span>Street Address</span></dt>
+          <dd>
+            <span>{{ locationRef.streetAddress }}</span>
+          </dd>
+          <dt><span>Postal Code</span></dt>
+          <dd>
+            <span>{{ locationRef.postalCode }}</span>
+          </dd>
+          <dt><span>City</span></dt>
+          <dd>
+            <span>{{ locationRef.city }}</span>
+          </dd>
+          <dt><span>State Province</span></dt>
+          <dd>
+            <span>{{ locationRef.stateProvince }}</span>
+          </dd>
+          <dt><span>Country</span></dt>
+          <dd>
+            @if (location()!.country) {
+              <div>
+                <a [routerLink]="['/country', location()!.country?.id, 'view']">{{ locationRef.country?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/location', locationRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

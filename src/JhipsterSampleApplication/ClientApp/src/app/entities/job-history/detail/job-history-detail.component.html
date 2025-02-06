@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (jobHistory(); as jobHistoryRef) {
+      <div>
+        <h2 data-cy="jobHistoryDetailsHeading"><span>Job History</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ jobHistoryRef.id }}</span>
+          </dd>
+          <dt><span>Start Date</span></dt>
+          <dd>
+            <span>{{ jobHistoryRef.startDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>End Date</span></dt>
+          <dd>
+            <span>{{ jobHistoryRef.endDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Language</span></dt>
+          <dd>
+            <span>{{ { null: '', FRENCH: 'FRENCH', ENGLISH: 'ENGLISH', SPANISH: 'SPANISH' }[jobHistoryRef.language ?? 'null'] }}</span>
+          </dd>
+          <dt><span>Job</span></dt>
+          <dd>
+            @if (jobHistory()!.job) {
+              <div>
+                <a [routerLink]="['/job', jobHistory()!.job?.id, 'view']">{{ jobHistoryRef.job?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Department</span></dt>
+          <dd>
+            @if (jobHistory()!.department) {
+              <div>
+                <a [routerLink]="['/department', jobHistory()!.department?.id, 'view']">{{ jobHistoryRef.department?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Employee</span></dt>
+          <dd>
+            @if (jobHistory()!.employee) {
+              <div>
+                <a [routerLink]="['/employee', jobHistory()!.employee?.id, 'view']">{{ jobHistoryRef.employee?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/job-history', jobHistoryRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

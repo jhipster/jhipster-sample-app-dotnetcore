@@ -1,0 +1,59 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (job(); as jobRef) {
+      <div>
+        <h2 data-cy="jobDetailsHeading"><span>Job</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ jobRef.id }}</span>
+          </dd>
+          <dt><span>Job Title</span></dt>
+          <dd>
+            <span>{{ jobRef.jobTitle }}</span>
+          </dd>
+          <dt><span>Min Salary</span></dt>
+          <dd>
+            <span>{{ jobRef.minSalary }}</span>
+          </dd>
+          <dt><span>Max Salary</span></dt>
+          <dd>
+            <span>{{ jobRef.maxSalary }}</span>
+          </dd>
+          <dt><span>Chore</span></dt>
+          <dd>
+            @for (chore of jobRef.chores; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/piece-of-work', chore.id, 'view']">{{ chore?.title }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span>Employee</span></dt>
+          <dd>
+            @if (job()!.employee) {
+              <div>
+                <a [routerLink]="['/employee', job()!.employee?.id, 'view']">{{ jobRef.employee?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/job', jobRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

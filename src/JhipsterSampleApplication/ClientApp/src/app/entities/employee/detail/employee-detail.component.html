@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (employee(); as employeeRef) {
+      <div>
+        <h2 data-cy="employeeDetailsHeading"><span>Employee</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ employeeRef.id }}</span>
+          </dd>
+          <dt><span ngbTooltip="The firstname attribute.">First Name</span></dt>
+          <dd>
+            <span>{{ employeeRef.firstName }}</span>
+          </dd>
+          <dt><span>Last Name</span></dt>
+          <dd>
+            <span>{{ employeeRef.lastName }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ employeeRef.email }}</span>
+          </dd>
+          <dt><span>Phone Number</span></dt>
+          <dd>
+            <span>{{ employeeRef.phoneNumber }}</span>
+          </dd>
+          <dt><span>Hire Date</span></dt>
+          <dd>
+            <span>{{ employeeRef.hireDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Salary</span></dt>
+          <dd>
+            <span>{{ employeeRef.salary }}</span>
+          </dd>
+          <dt><span>Commission Pct</span></dt>
+          <dd>
+            <span>{{ employeeRef.commissionPct }}</span>
+          </dd>
+          <dt><span>Manager</span></dt>
+          <dd>
+            @if (employee()!.manager) {
+              <div>
+                <a [routerLink]="['/employee', employee()!.manager?.id, 'view']">{{ employeeRef.manager?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Department</span></dt>
+          <dd>
+            @if (employee()!.department) {
+              <div>
+                <a [routerLink]="['/department', employee()!.department?.id, 'view']">{{ employeeRef.department?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/employee', employeeRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

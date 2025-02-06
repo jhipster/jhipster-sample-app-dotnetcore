@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>JhipsterSampleApplication.Dto</RootNamespace>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper"  />
+        <PackageReference Include="Newtonsoft.Json"  />
+        <PackageReference Include="System.ComponentModel.Annotations"  />
+        <PackageReference Include="System.Text.Json"  />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\JhipsterSampleApplication.Crosscutting\JhipsterSampleApplication.Crosscutting.csproj" />
+   </ItemGroup>
+
+</Project>

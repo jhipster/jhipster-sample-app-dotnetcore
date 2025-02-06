@@ -1,0 +1,129 @@
+<div>
+  <h2 id="page-heading" data-cy="TimeSheetEntryHeading">
+    <span>Time Sheet Entries</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-time-sheet-entry"
+        [routerLink]="['/time-sheet-entry/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Time Sheet Entry</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (timeSheetEntries().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Time Sheet Entries found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="activityName">
+              <div class="d-flex">
+                <span>Activity Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="startTimeMilitary">
+              <div class="d-flex">
+                <span>Start Time Military</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="endTimeMilitary">
+              <div class="d-flex">
+                <span>End Time Military</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="totalTime">
+              <div class="d-flex">
+                <span>Total Time</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="timeSheet.id">
+              <div class="d-flex">
+                <span>Time Sheet</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (timeSheetEntry of timeSheetEntries(); track trackId(timeSheetEntry)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/time-sheet-entry', timeSheetEntry.id, 'view']">{{ timeSheetEntry.id }}</a>
+              </td>
+              <td>{{ timeSheetEntry.activityName }}</td>
+              <td>{{ timeSheetEntry.startTimeMilitary }}</td>
+              <td>{{ timeSheetEntry.endTimeMilitary }}</td>
+              <td>{{ timeSheetEntry.totalTime }}</td>
+              <td>
+                @if (timeSheetEntry.timeSheet) {
+                  <div>
+                    <a [routerLink]="['/time-sheet', timeSheetEntry.timeSheet.id, 'view']">{{ timeSheetEntry.timeSheet.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/time-sheet-entry', timeSheetEntry.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/time-sheet-entry', timeSheetEntry.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(timeSheetEntry)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

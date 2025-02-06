@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (country(); as countryRef) {
+      <div>
+        <h2 data-cy="countryDetailsHeading"><span>Country</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ countryRef.id }}</span>
+          </dd>
+          <dt><span>Country Name</span></dt>
+          <dd>
+            <span>{{ countryRef.countryName }}</span>
+          </dd>
+          <dt><span>Region</span></dt>
+          <dd>
+            @if (country()!.region) {
+              <div>
+                <a [routerLink]="['/region', country()!.region?.id, 'view']">{{ countryRef.region?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/country', countryRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

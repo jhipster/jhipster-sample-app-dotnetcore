@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (department(); as departmentRef) {
+      <div>
+        <h2 data-cy="departmentDetailsHeading"><span>Department</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ departmentRef.id }}</span>
+          </dd>
+          <dt><span>Department Name</span></dt>
+          <dd>
+            <span>{{ departmentRef.departmentName }}</span>
+          </dd>
+          <dt><span>Location</span></dt>
+          <dd>
+            @if (department()!.location) {
+              <div>
+                <a [routerLink]="['/location', department()!.location?.id, 'view']">{{ departmentRef.location?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/department', departmentRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

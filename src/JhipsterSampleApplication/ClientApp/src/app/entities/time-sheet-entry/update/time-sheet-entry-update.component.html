@@ -1,0 +1,92 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-time-sheet-entry-heading" data-cy="TimeSheetEntryCreateUpdateHeading">Create or edit a Time Sheet Entry</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_activityName">Activity Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="activityName"
+            id="field_activityName"
+            data-cy="activityName"
+            formControlName="activityName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_startTimeMilitary">Start Time Military</label>
+          <input
+            type="number"
+            class="form-control"
+            name="startTimeMilitary"
+            id="field_startTimeMilitary"
+            data-cy="startTimeMilitary"
+            formControlName="startTimeMilitary"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_endTimeMilitary">End Time Military</label>
+          <input
+            type="number"
+            class="form-control"
+            name="endTimeMilitary"
+            id="field_endTimeMilitary"
+            data-cy="endTimeMilitary"
+            formControlName="endTimeMilitary"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_totalTime">Total Time</label>
+          <input type="number" class="form-control" name="totalTime" id="field_totalTime" data-cy="totalTime" formControlName="totalTime" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_timeSheet">Time Sheet</label>
+          <select
+            class="form-control"
+            id="field_timeSheet"
+            data-cy="timeSheet"
+            name="timeSheet"
+            formControlName="timeSheet"
+            [compareWith]="compareTimeSheet"
+          >
+            <option [ngValue]="null"></option>
+            @for (timeSheetOption of timeSheetsSharedCollection; track $index) {
+              <option [ngValue]="timeSheetOption">{{ timeSheetOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

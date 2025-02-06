@@ -2,43 +2,48 @@
   "generator-jhipster": {
     "applicationType": "monolith",
     "authenticationType": "jwt",
-    "baseName": "Jhipster",
+    "baseName": "JhipsterSampleApplication",
     "blueprints": [
       {
-        "name": "generator-jhipster-dotnetcore",
-        "version": "4.0.0"
+        "name": "generator-jhipster-dotnetcore"
       }
     ],
     "clientFramework": "angular",
     "clientPackageManager": "npm",
     "clientTheme": "none",
-    "clientThemeVariant": "",
-    "creationTimestamp": 1606077078363,
+    "creationTimestamp": 1585496278113,
     "databaseType": "sqllite",
-    "devServerPort": 4200,
-    "dtoSuffix": "DTO",
-    "enableTranslation": true,
-    "entities": ["Region", "Country", "Location", "Department", "PieceOfWork", "Employee", "Job", "JobHistory"],
+    "dtoSuffix": "Dto",
+    "enableTranslation": false,
+    "entities": [
+      "Country",
+      "Department",
+      "Employee",
+      "Job",
+      "JobHistory",
+      "Location",
+      "PieceOfWork",
+      "Region",
+      "TimeSheet",
+      "TimeSheetEntry"
+    ],
     "entitySuffix": "",
     "jhiPrefix": "jhi",
-    "jhipsterVersion": "6.10.5",
-    "jwtSecretKey": "MGFjN2M4YjYxYTY2MmU1MGQ2MGQyNDM1NmYxNDE5MTQ2NjIyMzA4MjU4YTc4YTMyODFlMDc3ZDU4YjY5Yzk1MWE5NjFiMjNhNmIwMzczMDE3NDNmMDg1MzVhODE0NGM1MzA3MA==",
-    "languages": ["en"],
-    "lastLiquibaseTimestamp": 1606077558000,
-    "namespace": "Jhipster",
+    "jhipsterVersion": "8.8.0",
+    "jwtSecretKey": "M2ViM2RmN2U5ZWZiZTU0MzIxZWZmZGQ3Njc2MTY4Y2Q4NDkzZDNjYmMxZTI0ZmNkN2ZlYTMzOTdmNGI3ZjUzOTlkYmY4ZGU4MGViMzM5YmNhYmFkNzk0YmM3NTdmOTAzZDNjNA==",
+    "lastLiquibaseTimestamp": 1738862955000,
+    "namespace": "JhipsterSampleApplication",
     "nativeLanguage": "en",
-    "otherModules": [
-      {
-        "name": "generator-jhipster-dotnetcore",
-        "version": "2.1.0"
-      }
-    ],
+    "packageName": "JhipsterSampleApplication",
     "prodDatabaseType": "mysql",
-    "promptValues": {
-      "nativeLanguage": "en"
-    },
     "serverPort": "5000",
-    "testFrameworks": [],
-    "useSass": true
+    "skipCommitHook": true,
+    "skipJhipsterDependencies": true,
+    "testFrameworks": ["cypress"],
+    "useSass": true,
+    "withAdminUi": false
+  },
+  "generator-jhipster-dotnetcore": {
+    "ciType": "Github"
   }
 }

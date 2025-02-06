@@ -28,7 +28,7 @@
   // "remoteUser": "root",
   // "mounts": [
   //  "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
-  //  "source=${localWorkspaceFolderBasename}-client-node_modules,target=${containerWorkspaceFolder}/src/Jhipster/ClientApp//node_modules,type=volume",
+  //  "source=${localWorkspaceFolderBasename}-client-node_modules,target=${containerWorkspaceFolder}/src/JhipsterSampleApplication/ClientApp//node_modules,type=volume",
   // ],
   // "postCreateCommand": "sudo chown node node_modules",
 }

@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>Jhipster.Crosscutting</RootNamespace>
-        <OutputType>Library</OutputType>
-    </PropertyGroup>
-
-</Project>

@@ -1,10 +1,10 @@
 # Based on Microsoft's docker samples for dotnet core
 # available at https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp
-FROM mcr.microsoft.com/dotnet/sdk:7.0-jammy AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-noble AS build
 # First install nodejs - required to build generated client app
 WORKDIR /app
 RUN apt-get update -yq && apt-get install -yq curl
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get update && \
     apt-get install -yq nodejs && \
     rm -rf /var/lib/apt/lists/*
@@ -13,16 +13,16 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
 COPY src/*/*.csproj ./src/
 COPY Directory.Packages.props Directory.Packages.props
 RUN for file in $(ls src/*.csproj); do mkdir -p ${file%.*} && mv $file ${file%.*}; done
-RUN dotnet restore "src/Jhipster/Jhipster.csproj"
+RUN dotnet restore "src/JhipsterSampleApplication/JhipsterSampleApplication.csproj"
 
 # Copy everything else and build app
 COPY . ./
-WORKDIR src/Jhipster/
-RUN dotnet publish "Jhipster.csproj" -c Release -o /app/out
+WORKDIR src/JhipsterSampleApplication/
+RUN dotnet publish "JhipsterSampleApplication.csproj" -c Release -o /app/out
 
 # Final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0-jammy AS runtime
-EXPOSE 80
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble AS runtime
+EXPOSE 8080
 WORKDIR /app
 COPY docker-entrypoint-back.sh .
 RUN chmod +x /app/docker-entrypoint-back.sh

@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  jhipster-influxdb:
+  jhipstersampleapplication-influxdb:
     # Full tag list: https://hub.docker.com/r/library/influxdb/tags/
     image: docker.io/influxdb:latest
     volumes:
@@ -15,14 +15,14 @@ services:
       # UDP Port
       - '8089:8089/udp'
 
-  jhipster-telegraf:
+  jhipstersampleapplication-telegraf:
     # Full tag list: https://hub.docker.com/r/library/telegraf/tags/
     image: docker.io/telegraf:latest
     environment:
       HOSTNAME: 'tick-host'
     # Telegraf requires network access to InfluxDB
     links:
-      - jhipster-influxdb
+      - jhipstersampleapplication-influxdb
     ports:
       - '8094:8094'
       - '6514:6514'
@@ -32,14 +32,14 @@ services:
       # Mount for Docker API access
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
-      - jhipster-influxdb
+      - jhipstersampleapplication-influxdb
 
-  jhipster-grafana:
+  jhipstersampleapplication-grafana:
     image: grafana/grafana:latest
     ports:
       - 3000:3000
     links:
-      - jhipster-influxdb:influxdb
+      - jhipstersampleapplication-influxdb:influxdb
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
@@ -58,9 +58,9 @@ services:
       - ./grafana/data/dashboard:/etc/grafana/provisioning/dashboards
     restart: always
     depends_on:
-      - jhipster-influxdb
-      - jhipster-telegraf
-#  jhipster-kapacitor:
+      - jhipstersampleapplication-influxdb
+      - jhipstersampleapplication-telegraf
+#  jhipstersampleapplication-kapacitor:
 #    # Full tag list: https://hub.docker.com/r/library/kapacitor/tags/
 #    image: docker.io/kapacitor:latest
 #    volumes:
@@ -70,12 +70,12 @@ services:
 #      - ./kapacitor/config/:/etc/kapacitor/
 #    # Kapacitor requires network access to Influxdb
 #    links:
-#      - jhipster-influxdb
+#      - jhipstersampleapplication-influxdb
 #    ports:
 #      # The API for Kapacitor is served on port 9092
 #      - "9092:9092"
 
-#  jhipster-chronograf:
+#  jhipstersampleapplication-chronograf:
 #    # Full tag list: https://hub.docker.com/r/library/chronograf/tags/
 #    image: docker.io/chronograf:latest
 #    environment:
@@ -85,13 +85,13 @@ services:
 #      - ./chronograf/data/:/var/lib/chronograf/
 #    links:
 #      # Chronograf requires network access to InfluxDB and Kapacitor
-#      #      - jhipster-influxdb
-#      - jhipster-kapacitor
+#      #      - jhipstersampleapplication-influxdb
+#      - jhipstersampleapplication-kapacitor
 #    ports:
 #      # The WebUI for Chronograf is served on port 8888
 #      - "8888:8888"
 #    depends_on:
-#      - jhipster-kapacitor
-#      - jhipster-influxdb
-#      - jhipster-telegraf
+#      - jhipstersampleapplication-kapacitor
+#      - jhipstersampleapplication-influxdb
+#      - jhipstersampleapplication-telegraf
 

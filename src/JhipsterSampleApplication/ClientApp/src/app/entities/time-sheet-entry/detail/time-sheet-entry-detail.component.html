@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (timeSheetEntry(); as timeSheetEntryRef) {
+      <div>
+        <h2 data-cy="timeSheetEntryDetailsHeading"><span>Time Sheet Entry</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ timeSheetEntryRef.id }}</span>
+          </dd>
+          <dt><span>Activity Name</span></dt>
+          <dd>
+            <span>{{ timeSheetEntryRef.activityName }}</span>
+          </dd>
+          <dt><span>Start Time Military</span></dt>
+          <dd>
+            <span>{{ timeSheetEntryRef.startTimeMilitary }}</span>
+          </dd>
+          <dt><span>End Time Military</span></dt>
+          <dd>
+            <span>{{ timeSheetEntryRef.endTimeMilitary }}</span>
+          </dd>
+          <dt><span>Total Time</span></dt>
+          <dd>
+            <span>{{ timeSheetEntryRef.totalTime }}</span>
+          </dd>
+          <dt><span>Time Sheet</span></dt>
+          <dd>
+            @if (timeSheetEntry()!.timeSheet) {
+              <div>
+                <a [routerLink]="['/time-sheet', timeSheetEntry()!.timeSheet?.id, 'view']">{{ timeSheetEntryRef.timeSheet?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/time-sheet-entry', timeSheetEntryRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

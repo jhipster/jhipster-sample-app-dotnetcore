@@ -1,8 +1,8 @@
-# Jhipster
+# JhipsterSampleApplication
 
-This application was generated using JHipster 6.10.5, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
+This application was generated using JHipster 8.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.8.0](https://www.jhipster.tech/documentation-archive/v8.8.0).
 
-This application was generated using JHipster 6.10.5 and JHipster .Net Core , you can find documentation and help at https://jhipsternet.readthedocs.io/en/latest/index.html and [https://www.jhipster.tech/documentation-archive/v6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
+This application was generated using JHipster 8.8.0 and JHipster .Net Core , you can find documentation and help at https://jhipsternet.readthedocs.io/en/latest/index.html and [https://www.jhipster.tech/documentation-archive/v8.8.0](https://www.jhipster.tech/documentation-archive/v8.8.0).
 
 ## Project Structure
 
@@ -16,13 +16,37 @@ In the project root, JHipster generates configuration files for tools like git, 
   Allows to use a specific action when conflicts are found skipping prompts for files that matches a pattern. Each line should match `[pattern] [action]` with pattern been a [Minimatch](https://github.com/isaacs/minimatch#minimatch) pattern and action been one of skip (default if ommited) or force. Lines starting with `#` are considered comments and are ignored.
 - `.jhipster/*.json` - JHipster entity configuration files
 - `docker/` - Docker configurations for the application and services that the application depends on
-- `src/Jhipster/ClientApp/` - Web Application folder
+- `src/JhipsterSampleApplication/ClientApp/` - Web Application folder
 
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
 1. [Node.js][]: We use Node to run a development web server and build the project.
+   Depending on your system, you can install Node either from source or as a pre-packaged bundle.
+
+After installing Node, you should be able to run the following command to install development tools.
+You will only need to run this command when dependencies change in [package.json](package.json).
+
+In ./src/JhipsterSampleApplication/ClientApp run
+
+    npm install
+
+We use npm scripts and [Webpack][] as our build system.
+
+Run the following commands in two separate terminals to create a blissful development experience where your browser
+auto-refreshes when files change on your hard drive.
+
+    npm --prefix ./src/JhipsterSampleApplication/ClientApp start
+
+npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
+specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
+Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
+
+The `npm --prefix ./src/JhipsterSampleApplication/ClientApp run` command will list all of the scripts available to run for this project.
+Before you can build this project, you must install and configure the following dependencies on your machine:
+
+1. [Node.js](https://nodejs.org/): Node is used to run a development web server and build the project.
    Depending on your system, you can install Node either from source or as a pre-packaged bundle.
 
 After installing Node, you should be able to run the following command to install development tools.
@@ -46,13 +70,13 @@ Npm is also used to manage CSS and JavaScript dependencies used in this applicat
 specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
 Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
 
-The `npm run` command will list all of the scripts available to run for this project.
+The `npm run` command will list all the scripts available to run for this project.
 
 ### PWA Support
 
 JHipster ships with PWA (Progressive Web App) support, and it's turned off by default. One of the main components of a PWA is a service worker.
 
-The service worker initialization code is disabled by default. To enable it, uncomment the following code in `src/Jhipster/ClientApp/src/app/app.module.ts`:
+The service worker initialization code is disabled by default. To enable it, uncomment the following code in `src/JhipsterSampleApplication/ClientApp/src/app/app.config.ts`:
 
 ```typescript
 ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
@@ -73,13 +97,13 @@ npm install --save-dev --save-exact @types/leaflet
 ```
 
 Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
-Edit [src/Jhipster/ClientApp/src/app/app.module.ts](src/Jhipster/ClientApp/src/app/app.module.ts) file:
+Edit [src/JhipsterSampleApplication/ClientApp/src/app/app.config.ts](src/JhipsterSampleApplication/ClientApp/src/app/app.config.ts) file:
 
 ```
 import 'leaflet/dist/leaflet.js';
 ```
 
-Edit [src/Jhipster/ClientApp/src/content/scss/vendor.scss](src/Jhipster/ClientApp/src/content/scss/vendor.scss) file:
+Edit [src/JhipsterSampleApplication/ClientApp/src/content/scss/vendor.scss](src/JhipsterSampleApplication/ClientApp/src/content/scss/vendor.scss) file:
 
 ```
 @import 'leaflet/dist/leaflet.css';
@@ -102,59 +126,26 @@ ng generate component my-component
 will generate few files:
 
 ```
-create src/Jhipster/ClientApp/src/app/my-component/my-component.component.html
-create src/Jhipster/ClientApp/src/app/my-component/my-component.component.ts
-update src/Jhipster/ClientApp/src/app/app.module.ts
+create src/JhipsterSampleApplication/ClientApp/src/app/my-component/my-component.component.html
+create src/JhipsterSampleApplication/ClientApp/src/app/my-component/my-component.component.ts
+update src/JhipsterSampleApplication/ClientApp/src/app/app.config.ts
 ```
-
-Before you can build this project, you must install and configure the following dependencies on your machine:
-
-1. [Node.js][]: We use Node to run a development web server and build the project.
-   Depending on your system, you can install Node either from source or as a pre-packaged bundle.
-
-After installing Node, you should be able to run the following command to install development tools.
-You will only need to run this command when dependencies change in [package.json](package.json).
-
-In ./src/Jhipster/ClientApp run
-
-    npm install
-
-We use npm scripts and [Webpack][] as our build system.
-
-Run the following commands in two separate terminals to create a blissful development experience where your browser
-auto-refreshes when files change on your hard drive.
-
-    npm --prefix ./src/Jhipster/ClientApp start
-
-npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
-specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
-Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
-
-The `npm --prefix ./src/Jhipster/ClientApp run` command will list all of the scripts available to run for this project.
 
 ## Building for production
 
 ### .Net Production builds
 
-To build the artifacts and optimize the Jhipster application for production, run:
+To build the artifacts and optimize the JhipsterSampleApplication application for production, run:
 
 ```
-cd ./src/Jhipster
-rm -rf ./src/Jhipster/wwwroot
-dotnet publish --verbosity normal -c Release -o ./app/out ./Jhipster.csproj
+cd ./src/JhipsterSampleApplication
+rm -rf ./src/JhipsterSampleApplication/wwwroot
+dotnet publish --verbosity normal -c Release -o ./app/out ./JhipsterSampleApplication.csproj
 ```
 
-The `./src/Jhipster/app/out` directory will contain your application dll and its depedencies.
+The `./src/JhipsterSampleApplication/app/out` directory will contain your application dll and its depedencies.
 
 ## Testing
-
-### Client tests
-
-Unit tests are run by [Jest][]. They're located in [src/Jhipster/ClientApp/test/](src/Jhipster/ClientApp/test/) and can be run with:
-
-```
-npm test
-```
 
 ### .Net Backend tests
 
@@ -163,6 +154,23 @@ To launch your application's tests, run:
 ```
 dotnet test --verbosity normal
 ```
+
+### Client tests
+
+Unit tests are run by [Jest][]. They're located in [src/JhipsterSampleApplication/ClientApp/test/](src/JhipsterSampleApplication/ClientApp/test/) and can be run with:
+
+```
+npm test
+```
+
+UI end-to-end tests are powered by [Cypress][]. They're located in [src/JhipsterSampleApplication/ClientApp/test/cypress](src/JhipsterSampleApplication/ClientApp/test/cypress)
+and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`npm run e2e`) in a second one.
+
+#### Lighthouse audits
+
+You can execute automated [Lighthouse audits](https://developers.google.com/web/tools/lighthouse/) with [cypress-audit](https://github.com/mfrachet/cypress-audit) by running `npm run e2e:cypress:audits`.
+You should only run the audits when your application is packaged with the production profile.
+The lighthouse report is created in `target/cypress/lhreport.html`
 
 ## Others
 
@@ -190,7 +198,7 @@ Manually :
 
 `dotnet tool install --global dotnet-sonarscanner`
 
-3. Run ``dotnet sonarscanner begin /d:sonar.login=admin /d:sonar.password=admin /k:"Jhipster" /d:sonar.host.url="http://localhost:9001" /s:"`pwd`/SonarQube.Analysis.xml"``
+3. Run ``dotnet sonarscanner begin /d:sonar.login=admin /d:sonar.password=admin /k:"JhipsterSampleApplication" /d:sonar.host.url="http://localhost:9001" /s:"`pwd`/SonarQube.Analysis.xml"``
 
 4. Build your application : `dotnet build`
 
@@ -215,13 +223,13 @@ Manually :
 You can also fully dockerize your application and all the services that it depends on. To achieve this, first build a docker image of your app by running:
 
 ```bash
-docker build -f ./Dockerfile-Back -t jhipster .
+docker build -f ./Dockerfile-Back -t jhipstersampleapplication .
 ```
 
 Then run:
 
 ```bash
-docker run -p 8080:80 jhipster
+docker run -p 8080:8080 jhipstersampleapplication
 ```
 
 Or you can simply run :
@@ -237,18 +245,19 @@ docker compose -f .\docker\app.yml up
 ```
 
 [JHipster Homepage and latest documentation]: https://www.jhipster.tech
-[JHipster 6.10.5 archive]: https://www.jhipster.tech/documentation-archive/v6.10.5
-[Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v6.10.5/development/
-[Using Docker and Docker-Compose]: https://www.jhipster.tech/documentation-archive/v6.10.5/docker-compose
-[Using JHipster in production]: https://www.jhipster.tech/documentation-archive/v6.10.5/production/
-[Running tests page]: https://www.jhipster.tech/documentation-archive/v6.10.5/running-tests/
-[Code quality page]: https://www.jhipster.tech/documentation-archive/v6.10.5/code-quality/
-[Setting up Continuous Integration]: https://www.jhipster.tech/documentation-archive/v6.10.5/setting-up-ci/
+[JHipster 8.8.0 archive]: https://www.jhipster.tech/documentation-archive/v8.8.0
+[Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v8.8.0/development/
+[Using Docker and Docker-Compose]: https://www.jhipster.tech/documentation-archive/v8.8.0/docker-compose
+[Using JHipster in production]: https://www.jhipster.tech/documentation-archive/v8.8.0/production/
+[Running tests page]: https://www.jhipster.tech/documentation-archive/v8.8.0/running-tests/
+[Code quality page]: https://www.jhipster.tech/documentation-archive/v8.8.0/code-quality/
+[Setting up Continuous Integration]: https://www.jhipster.tech/documentation-archive/v8.8.0/setting-up-ci/
 [Node.js]: https://nodejs.org/
 [NPM]: https://www.npmjs.com/
 [Webpack]: https://webpack.github.io/
 [BrowserSync]: https://www.browsersync.io/
 [Jest]: https://facebook.github.io/jest/
+[Cypress]: https://www.cypress.io/
 [Leaflet]: https://leafletjs.com/
 [DefinitelyTyped]: https://definitelytyped.org/
 [Angular CLI]: https://cli.angular.io/

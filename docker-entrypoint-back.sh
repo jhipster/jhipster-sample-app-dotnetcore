@@ -16,4 +16,4 @@ if [ "$INCLUDE_BLAZOR" = "true" ];  then
 fi
 
 # run the dotnet app
-dotnet Jhipster.dll
+dotnet JhipsterSampleApplication.dll
