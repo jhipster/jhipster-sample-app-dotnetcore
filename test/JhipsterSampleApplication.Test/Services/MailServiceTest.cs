@@ -1,0 +1,171 @@
+using System;
+using System.Threading.Tasks;
+using Xunit;
+using FluentAssertions;
+using MimeKit;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Moq;
+using JhipsterSampleApplication.Domain.Entities;
+using JhipsterSampleApplication.Domain.Services;
+using JhipsterSampleApplication.Infrastructure.Configuration;
+
+namespace JhipsterSampleApplication.Test.Services;
+
+public class MailServiceTest
+{
+    private readonly Mock<ILogger<MailService>> _logger;
+    private readonly Mock<IOptions<SecuritySettings>> _settingsMock;
+    private readonly SecuritySettings _settings;
+    private readonly MailService _mailService;
+    private MimeMessage _capturedEmail;
+
+    public MailServiceTest()
+    {
+        _logger = new Mock<ILogger<MailService>>();
+        _settingsMock = new Mock<IOptions<SecuritySettings>>();
+        // Setup default security settings
+        _settings = new SecuritySettings
+        {
+            Email = new Email
+            {
+                From = "test@test.com",
+                BaseUrl = "http://localhost:8080",
+                Smtp = new SmtpSettings
+                {
+                    Host = "localhost",
+                    Port = 25,
+                    Username = "test",
+                    Password = "test",
+                    UseSsl = false
+                }
+            }
+        };
+
+        _settingsMock.Setup(x => x.Value).Returns(_settings);
+        _mailService = new MailService(_settingsMock.Object, _logger.Object);
+        SetupTestEmailCapture();
+    }
+
+    [Fact]
+    public async Task SendActivationEmail_ShouldSendCorrectEmail()
+    {
+        // Arrange
+        var email = "test@example.com";
+        var name = "Test User";
+        var activationKey = "activation-key";
+        _capturedEmail = null;
+
+        // Act
+        await _mailService.SendActivationEmail(email, name, activationKey);
+
+        // Assert
+        VerifyLoggerDebugCalled($"Sending activation email to {email}");
+        _capturedEmail.Should().NotBeNull();
+        _capturedEmail.To.ToString().Should().Be(email);
+        _capturedEmail.Subject.Should().Be("Activate Your Account");
+        _capturedEmail.HtmlBody.Should().Contain(name);
+        _capturedEmail.HtmlBody.Should().Contain(activationKey);
+    }
+
+    [Fact]
+    public async Task SendActivationEmail_WithEmptyEmail_ShouldThrowException()
+    {
+        // Arrange
+        var email = string.Empty;
+        var name = "Test User";
+        var key = "activation-key";
+
+        // Act & Assert
+        var act = () => _mailService.SendActivationEmail(email, name, key);
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [Fact]
+    public async Task SendCreationEmail_ShouldSendCorrectEmail()
+    {
+        // Arrange
+        var email = "test@example.com";
+        var name = "Test User";
+        _capturedEmail = null;
+
+        // Act
+        await _mailService.SendCreationEmail(email, name);
+
+        // Assert
+        VerifyLoggerDebugCalled($"Sending creation email to {email}");
+        _capturedEmail.Should().NotBeNull();
+        _capturedEmail.To.ToString().Should().Be(email);
+        _capturedEmail.Subject.Should().Be("Welcome to Your Account");
+        _capturedEmail.HtmlBody.Should().Contain(name);
+        _capturedEmail.HtmlBody.Should().Contain("Login to Your Account");
+    }
+
+    [Fact]
+    public async Task SendCreationEmail_WithEmptyEmail_ShouldThrowException()
+    {
+        // Arrange
+        var email = string.Empty;
+        var name = "Test User";
+
+        // Act & Assert
+        var act = () => _mailService.SendCreationEmail(email, name);
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [Fact]
+    public async Task SendPasswordResetMail_ShouldSendCorrectEmail()
+    {
+        // Arrange
+        var email = "test@example.com";
+        var name = "Test User";
+        var resetKey = "reset-key";
+        _capturedEmail = null;
+
+        // Act
+        await _mailService.SendPasswordResetMail(email, name, resetKey);
+
+        // Assert
+        VerifyLoggerDebugCalled($"Sending password reset email to {email}");
+        _capturedEmail.Should().NotBeNull();
+        _capturedEmail.To.ToString().Should().Be(email);
+        _capturedEmail.Subject.Should().Be("Password Reset Request");
+        _capturedEmail.HtmlBody.Should().Contain(name);
+        _capturedEmail.HtmlBody.Should().Contain(resetKey);
+    }
+
+    [Fact]
+    public async Task SendPasswordResetMail_WithEmptyEmail_ShouldThrowException()
+    {
+        // Arrange
+        var email = string.Empty;
+        var name = "Test User";
+        var resetKey = "reset-key";
+
+        // Act & Assert
+        var act = () => _mailService.SendPasswordResetMail(email, name, resetKey);
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    private void SetupTestEmailCapture()
+    {
+        // Setup test action to capture email content for verification
+        MailService.TestAction = async (email) =>
+        {
+            _capturedEmail = email;
+            await Task.CompletedTask;
+        };
+    }
+
+    private void VerifyLoggerDebugCalled(string message)
+    {
+        _logger.Verify(
+            x => x.Log(
+                LogLevel.Debug,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((o, t) => string.Equals(message, o.ToString(), StringComparison.InvariantCultureIgnoreCase)),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+            Times.Once);
+    }
+}

@@ -17,7 +17,7 @@ public class ActionResultWithHeaders : ActionResult
 
     private void AddHeaders(HttpResponse response)
     {
-        foreach (var (name, value) in _headers) response.Headers.Add(name, value);
+        foreach (var (name, value) in _headers) response.Headers.Append(name, value);
     }
 
     public override Task ExecuteResultAsync(ActionContext context)

@@ -47,7 +47,7 @@ describe('TimeSheetEntry Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call TimeSheet query and add missing value', () => {
+    it('should call TimeSheet query and add missing value', () => {
       const timeSheetEntry: ITimeSheetEntry = { id: 1487 };
       const timeSheet: ITimeSheet = { id: 'dec9d8a0-409c-4f6d-b493-f7f154c53ff6' };
       timeSheetEntry.timeSheet = timeSheet;
@@ -69,7 +69,7 @@ describe('TimeSheetEntry Management Update Component', () => {
       expect(comp.timeSheetsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should update editForm', () => {
+    it('should update editForm', () => {
       const timeSheetEntry: ITimeSheetEntry = { id: 1487 };
       const timeSheet: ITimeSheet = { id: 'dec9d8a0-409c-4f6d-b493-f7f154c53ff6' };
       timeSheetEntry.timeSheet = timeSheet;
@@ -83,7 +83,7 @@ describe('TimeSheetEntry Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('Should call update service on save for existing entity', () => {
+    it('should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ITimeSheetEntry>>();
       const timeSheetEntry = { id: 5799 };
@@ -106,7 +106,7 @@ describe('TimeSheetEntry Management Update Component', () => {
       expect(comp.isSaving).toEqual(false);
     });
 
-    it('Should call create service on save for new entity', () => {
+    it('should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ITimeSheetEntry>>();
       const timeSheetEntry = { id: 5799 };
@@ -129,7 +129,7 @@ describe('TimeSheetEntry Management Update Component', () => {
       expect(comp.previousState).toHaveBeenCalled();
     });
 
-    it('Should set isSaving to false on error', () => {
+    it('should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ITimeSheetEntry>>();
       const timeSheetEntry = { id: 5799 };
@@ -152,7 +152,7 @@ describe('TimeSheetEntry Management Update Component', () => {
 
   describe('Compare relationships', () => {
     describe('compareTimeSheet', () => {
-      it('Should forward to timeSheetService', () => {
+      it('should forward to timeSheetService', () => {
         const entity = { id: 'dec9d8a0-409c-4f6d-b493-f7f154c53ff6' };
         const entity2 = { id: 'd6f552c0-8ee7-4bb7-8593-218d779b5369' };
         jest.spyOn(timeSheetService, 'compareTimeSheet');

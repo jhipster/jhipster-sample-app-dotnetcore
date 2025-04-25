@@ -78,7 +78,7 @@ describe('Region Management Component', () => {
       );
   });
 
-  it('Should call load all on init', () => {
+  it('should call load all on init', () => {
     // WHEN
     comp.ngOnInit();
 
@@ -88,7 +88,7 @@ describe('Region Management Component', () => {
   });
 
   describe('trackId', () => {
-    it('Should forward to regionService', () => {
+    it('should forward to regionService', () => {
       const entity = { id: 3454 };
       jest.spyOn(service, 'getRegionIdentifier');
       const id = comp.trackId(entity);

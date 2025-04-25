@@ -1,38 +1,99 @@
-using System.Threading.Tasks;
-using JhipsterSampleApplication.Domain.Entities;
-using JhipsterSampleApplication.Domain.Services.Interfaces;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading.Tasks;
+using JhipsterSampleApplication.Domain.Services.Interfaces;
+using JhipsterSampleApplication.Infrastructure.Configuration;
 
 namespace JhipsterSampleApplication.Domain.Services;
 
 public class MailService : IMailService
 {
-    public MailService()
+    private readonly SecuritySettings _settings;
+    private readonly ILogger<MailService> _logger;
+    public static Func<MimeMessage, Task> TestAction { get; set; }
+
+    public MailService(IOptions<SecuritySettings> settings, ILogger<MailService> logger)
     {
+        _settings = settings.Value;
+        _logger = logger;
     }
 
-    // private readonly SecuritySettings _securitySettings;
-
-    // public MailService(IOptions<SecuritySettings> securitySettings)
-    // {
-    //     _securitySettings = securitySettings.Value;
-    // }
-
-    public virtual Task SendPasswordResetMail(User user)
+    private async Task SendEmailAsync(string to, string subject, string htmlContent)
     {
-        //TODO send reset Email
-        return Task.FromResult(Task.CompletedTask);
+        if (string.IsNullOrEmpty(to))
+        {
+            _logger.LogWarning("Email address is null or empty. Email not sent.");
+            throw new InvalidOperationException("Email address cannot be null or empty");
+        }
+        var email = new MimeMessage();
+        email.From.Add(MailboxAddress.Parse(_settings.Email.From));
+        email.To.Add(MailboxAddress.Parse(to));
+        email.Subject = subject;
+
+        var builder = new BodyBuilder { HtmlBody = htmlContent };
+        email.Body = builder.ToMessageBody();
+
+        if (TestAction != null)
+        {
+            await TestAction(email);
+            return;
+        }
+
+        try
+        {
+            using var smtp = new SmtpClient();
+            await smtp.ConnectAsync(_settings.Email.Smtp.Host, _settings.Email.Smtp.Port, _settings.Email.Smtp.UseSsl);
+            await smtp.AuthenticateAsync(_settings.Email.Smtp.Username, _settings.Email.Smtp.Password);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error sending email. Please check your SMTP settings.");
+        }
     }
 
-    public virtual Task SendActivationEmail(User user)
+    public async Task SendPasswordResetMail(string email, string name, string resetKey)
     {
-        //TODO Activation Email
-        return Task.FromResult(Task.CompletedTask);
+        _logger.LogDebug($"Sending password reset email to {email}");
+        var subject = "Password Reset Request";
+        var content = $@"
+            <h1>Password Reset Request</h1>
+            <p>Dear {name},</p>
+            <p>You recently requested to reset your password. Click the link below to proceed:</p>
+            <p><a href='{_settings.Email.BaseUrl}/account/reset/finish?key={resetKey}'>Reset Password</a></p>
+            <p>If you did not request this, please ignore this email.</p>";
+
+        await SendEmailAsync(email, subject, content);
     }
 
-    public virtual Task SendCreationEmail(User user)
+    public async Task SendActivationEmail(string email, string name, string activationKey)
     {
-        //TODO Creation Email
-        return Task.FromResult(Task.CompletedTask);
+        _logger.LogDebug($"Sending activation email to {email}");
+        var subject = "Activate Your Account";
+        var content = $@"
+            <h1>Account Activation</h1>
+            <p>Dear {name},</p>
+            <p>Please click on the link below to activate your account:</p>
+            <p><a href='{_settings.Email.BaseUrl}/account/activate?key={activationKey}'>Activate Account</a></p>";
+
+        await SendEmailAsync(email, subject, content);
+    }
+
+    public async Task SendCreationEmail(string email, string name)
+    {
+        _logger.LogDebug($"Sending creation email to {email}");
+        var subject = "Welcome to Your Account";
+        var content = $@"
+            <h1>Welcome!</h1>
+            <p>Dear {name},</p>
+            <p>Your account has been created successfully. Please click the link below to access your account:</p>
+            <p><a href='{_settings.Email.BaseUrl}/login'>Login to Your Account</a></p>";
+
+        await SendEmailAsync(email, subject, content);
     }
 }

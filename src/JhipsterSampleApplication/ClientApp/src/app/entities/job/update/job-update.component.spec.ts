@@ -51,7 +51,7 @@ describe('Job Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call PieceOfWork query and add missing value', () => {
+    it('should call PieceOfWork query and add missing value', () => {
       const job: IJob = { id: 29383 };
       const chores: IPieceOfWork[] = [{ id: 32037 }];
       job.chores = chores;
@@ -73,7 +73,7 @@ describe('Job Management Update Component', () => {
       expect(comp.pieceOfWorksSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Employee query and add missing value', () => {
+    it('should call Employee query and add missing value', () => {
       const job: IJob = { id: 29383 };
       const employee: IEmployee = { id: 1749 };
       job.employee = employee;
@@ -95,7 +95,7 @@ describe('Job Management Update Component', () => {
       expect(comp.employeesSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should update editForm', () => {
+    it('should update editForm', () => {
       const job: IJob = { id: 29383 };
       const chore: IPieceOfWork = { id: 32037 };
       job.chores = [chore];
@@ -112,7 +112,7 @@ describe('Job Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('Should call update service on save for existing entity', () => {
+    it('should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IJob>>();
       const job = { id: 30796 };
@@ -135,7 +135,7 @@ describe('Job Management Update Component', () => {
       expect(comp.isSaving).toEqual(false);
     });
 
-    it('Should call create service on save for new entity', () => {
+    it('should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IJob>>();
       const job = { id: 30796 };
@@ -158,7 +158,7 @@ describe('Job Management Update Component', () => {
       expect(comp.previousState).toHaveBeenCalled();
     });
 
-    it('Should set isSaving to false on error', () => {
+    it('should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IJob>>();
       const job = { id: 30796 };
@@ -181,7 +181,7 @@ describe('Job Management Update Component', () => {
 
   describe('Compare relationships', () => {
     describe('comparePieceOfWork', () => {
-      it('Should forward to pieceOfWorkService', () => {
+      it('should forward to pieceOfWorkService', () => {
         const entity = { id: 32037 };
         const entity2 = { id: 27493 };
         jest.spyOn(pieceOfWorkService, 'comparePieceOfWork');
@@ -191,7 +191,7 @@ describe('Job Management Update Component', () => {
     });
 
     describe('compareEmployee', () => {
-      it('Should forward to employeeService', () => {
+      it('should forward to employeeService', () => {
         const entity = { id: 1749 };
         const entity2 = { id: 1545 };
         jest.spyOn(employeeService, 'compareEmployee');

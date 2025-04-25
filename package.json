@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "app:up": "docker compose -f docker/app.yml up --wait",
+    "ci:e2e:dev": "concurrently -k -s first -n application,e2e -c red,blue npm:app:start npm:e2e:headless",
     "ci:e2e:prepare": "npm run ci:e2e:prepare:docker",
     "ci:e2e:prepare:docker": "npm run services:up --if-present && docker ps -a",
     "ci:e2e:run": "concurrently -k -s first \"npm run ci:e2e:server:start\" \"npm run e2e:headless\"",
@@ -15,6 +16,8 @@
     "ci:e2e:teardown": "npm run ci:e2e:teardown:docker --if-present",
     "ci:frontend:test": "npm run -w src/JhipsterSampleApplication/ClientApp/ ci:frontend:test",
     "docker:db:up": "echo \"Docker for db sqllite not configured for application JhipsterSampleApplication\"",
+    "e2e:dev": "concurrently -k -s first -n application,e2e -c red,blue npm:app:start npm:e2e",
+    "e2e:devserver": "concurrently -k -s first -n backend,frontend,e2e -c red,yellow,blue npm:backend:start npm:start \"wait-on -t 180000 http-get://127.0.0.1:9000 && npm run e2e:headless -- -c baseUrl=http://localhost:9000\"",
     "e2e:headless": "npm run -w src/JhipsterSampleApplication/ClientApp/ e2e:headless",
     "prettier:check": "prettier --check \"{,src/**/,webpack/,.blueprint/**/}*.{md,json,yml,js,cjs,mjs,ts,cts,mts,html,css,scss}\"",
     "prettier:format": "prettier --write \"{,src/**/,webpack/,.blueprint/**/}*.{md,json,yml,js,cjs,mjs,ts,cts,mts,html,css,scss}\"",
@@ -25,12 +28,12 @@
     "default_environment": "prod"
   },
   "devDependencies": {
-    "concurrently": "9.1.0",
-    "prettier": "3.4.2",
-    "prettier-plugin-packagejson": "2.5.6"
+    "concurrently": "9.1.2",
+    "prettier": "3.5.3",
+    "prettier-plugin-packagejson": "2.5.10"
   },
   "overrides": {
     "browser-sync": "3.0.3",
-    "webpack": "5.97.1"
+    "webpack": "5.98.0"
   }
 }

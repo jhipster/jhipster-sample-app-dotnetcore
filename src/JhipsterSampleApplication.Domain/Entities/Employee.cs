@@ -15,6 +15,8 @@ namespace JhipsterSampleApplication.Domain.Entities
         public DateTime HireDate { get; set; }
         public long? Salary { get; set; }
         public long? CommissionPct { get; set; }
+        public string InternalUserId { get; set; }
+        public User InternalUser { get; set; }
         public IList<Job> Jobs { get; set; } = new List<Job>();
         public IList<TimeSheet> TimeSheets { get; set; } = new List<TimeSheet>();
         public long? ManagerId { get; set; }

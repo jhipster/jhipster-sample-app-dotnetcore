@@ -15,6 +15,8 @@ namespace JhipsterSampleApplication.Dto
         public DateTime HireDate { get; set; }
         public long? Salary { get; set; }
         public long? CommissionPct { get; set; }
+        public string InternalUserId { get; set; }
+        public UserDto InternalUser { get; set; }
         public long? ManagerId { get; set; }
         public EmployeeDto Manager { get; set; }
         public long? DepartmentId { get; set; }

@@ -2,14 +2,29 @@ import { Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'region',
+    data: { pageTitle: 'Regions' },
+    loadChildren: () => import('./region/region.routes'),
+  },
+  {
     path: 'country',
     data: { pageTitle: 'Countries' },
     loadChildren: () => import('./country/country.routes'),
   },
   {
+    path: 'location',
+    data: { pageTitle: 'Locations' },
+    loadChildren: () => import('./location/location.routes'),
+  },
+  {
     path: 'department',
     data: { pageTitle: 'Departments' },
     loadChildren: () => import('./department/department.routes'),
+  },
+  {
+    path: 'piece-of-work',
+    data: { pageTitle: 'PieceOfWorks' },
+    loadChildren: () => import('./piece-of-work/piece-of-work.routes'),
   },
   {
     path: 'employee',
@@ -25,21 +40,6 @@ const routes: Routes = [
     path: 'job-history',
     data: { pageTitle: 'JobHistories' },
     loadChildren: () => import('./job-history/job-history.routes'),
-  },
-  {
-    path: 'location',
-    data: { pageTitle: 'Locations' },
-    loadChildren: () => import('./location/location.routes'),
-  },
-  {
-    path: 'piece-of-work',
-    data: { pageTitle: 'PieceOfWorks' },
-    loadChildren: () => import('./piece-of-work/piece-of-work.routes'),
-  },
-  {
-    path: 'region',
-    data: { pageTitle: 'Regions' },
-    loadChildren: () => import('./region/region.routes'),
   },
   {
     path: 'time-sheet',

@@ -47,7 +47,7 @@ describe('Location Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call Country query and add missing value', () => {
+    it('should call Country query and add missing value', () => {
       const location: ILocation = { id: 13013 };
       const country: ICountry = { id: 21165 };
       location.country = country;
@@ -69,7 +69,7 @@ describe('Location Management Update Component', () => {
       expect(comp.countriesSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should update editForm', () => {
+    it('should update editForm', () => {
       const location: ILocation = { id: 13013 };
       const country: ICountry = { id: 21165 };
       location.country = country;
@@ -83,7 +83,7 @@ describe('Location Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('Should call update service on save for existing entity', () => {
+    it('should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ILocation>>();
       const location = { id: 8454 };
@@ -106,7 +106,7 @@ describe('Location Management Update Component', () => {
       expect(comp.isSaving).toEqual(false);
     });
 
-    it('Should call create service on save for new entity', () => {
+    it('should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ILocation>>();
       const location = { id: 8454 };
@@ -129,7 +129,7 @@ describe('Location Management Update Component', () => {
       expect(comp.previousState).toHaveBeenCalled();
     });
 
-    it('Should set isSaving to false on error', () => {
+    it('should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ILocation>>();
       const location = { id: 8454 };
@@ -152,7 +152,7 @@ describe('Location Management Update Component', () => {
 
   describe('Compare relationships', () => {
     describe('compareCountry', () => {
-      it('Should forward to countryService', () => {
+      it('should forward to countryService', () => {
         const entity = { id: 21165 };
         const entity2 = { id: 2258 };
         jest.spyOn(countryService, 'compareCountry');

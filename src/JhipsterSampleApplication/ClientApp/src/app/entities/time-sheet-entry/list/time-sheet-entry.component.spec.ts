@@ -78,7 +78,7 @@ describe('TimeSheetEntry Management Component', () => {
       );
   });
 
-  it('Should call load all on init', () => {
+  it('should call load all on init', () => {
     // WHEN
     comp.ngOnInit();
 
@@ -88,7 +88,7 @@ describe('TimeSheetEntry Management Component', () => {
   });
 
   describe('trackId', () => {
-    it('Should forward to timeSheetEntryService', () => {
+    it('should forward to timeSheetEntryService', () => {
       const entity = { id: 5799 };
       jest.spyOn(service, 'getTimeSheetEntryIdentifier');
       const id = comp.trackId(entity);

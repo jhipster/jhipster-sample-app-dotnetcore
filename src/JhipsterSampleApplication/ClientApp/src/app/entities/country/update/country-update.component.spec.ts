@@ -47,7 +47,7 @@ describe('Country Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call Region query and add missing value', () => {
+    it('should call Region query and add missing value', () => {
       const country: ICountry = { id: 2258 };
       const region: IRegion = { id: 3454 };
       country.region = region;
@@ -69,7 +69,7 @@ describe('Country Management Update Component', () => {
       expect(comp.regionsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should update editForm', () => {
+    it('should update editForm', () => {
       const country: ICountry = { id: 2258 };
       const region: IRegion = { id: 3454 };
       country.region = region;
@@ -83,7 +83,7 @@ describe('Country Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('Should call update service on save for existing entity', () => {
+    it('should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ICountry>>();
       const country = { id: 21165 };
@@ -106,7 +106,7 @@ describe('Country Management Update Component', () => {
       expect(comp.isSaving).toEqual(false);
     });
 
-    it('Should call create service on save for new entity', () => {
+    it('should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ICountry>>();
       const country = { id: 21165 };
@@ -129,7 +129,7 @@ describe('Country Management Update Component', () => {
       expect(comp.previousState).toHaveBeenCalled();
     });
 
-    it('Should set isSaving to false on error', () => {
+    it('should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<ICountry>>();
       const country = { id: 21165 };
@@ -152,7 +152,7 @@ describe('Country Management Update Component', () => {
 
   describe('Compare relationships', () => {
     describe('compareRegion', () => {
-      it('Should forward to regionService', () => {
+      it('should forward to regionService', () => {
         const entity = { id: 3454 };
         const entity2 = { id: 30405 };
         jest.spyOn(regionService, 'compareRegion');

@@ -44,7 +44,7 @@ public class AccountController : ControllerBase
     {
         if (!CheckPasswordLength(managedUserDto.Password)) throw new InvalidPasswordException();
         var user = await _userService.RegisterUser(_userMapper.Map<User>(managedUserDto), managedUserDto.Password);
-        await _mailService.SendActivationEmail(user);
+        await _mailService.SendActivationEmail(user.Email, user.FirstName, user.ActivationKey);
         return CreatedAtAction(nameof(GetAccount), user);
     }
 
@@ -114,7 +114,7 @@ public class AccountController : ControllerBase
         var mail = await Request.BodyAsStringAsync();
         var user = await _userService.RequestPasswordReset(mail);
         if (user == null) throw new EmailNotFoundException();
-        await _mailService.SendPasswordResetMail(user);
+        await _mailService.SendPasswordResetMail(user.Email, user.FirstName, user.ResetKey);
         return Ok();
     }
 

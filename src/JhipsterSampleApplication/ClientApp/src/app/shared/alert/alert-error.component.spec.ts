@@ -35,7 +35,7 @@ describe('Alert Error Component', () => {
   });
 
   describe('Error Handling', () => {
-    it('Should display an alert on status 0', () => {
+    it('should display an alert on status 0', () => {
       // GIVEN
       eventManager.broadcast({ name: 'jhipsterSampleApplicationApp.httpError', content: { status: 0 } });
       // THEN
@@ -43,7 +43,7 @@ describe('Alert Error Component', () => {
       expect(comp.alerts()[0].message).toBe('Server not reachable');
     });
 
-    it('Should display an alert on status 404', () => {
+    it('should display an alert on status 404', () => {
       // GIVEN
       eventManager.broadcast({ name: 'jhipsterSampleApplicationApp.httpError', content: { status: 404 } });
       // THEN
@@ -51,7 +51,7 @@ describe('Alert Error Component', () => {
       expect(comp.alerts()[0].message).toBe('Not found');
     });
 
-    it('Should display an alert on generic error', () => {
+    it('should display an alert on generic error', () => {
       // GIVEN
       eventManager.broadcast({ name: 'jhipsterSampleApplicationApp.httpError', content: { error: { message: 'Error Message' } } });
       eventManager.broadcast({ name: 'jhipsterSampleApplicationApp.httpError', content: { error: 'Second Error Message' } });
@@ -61,7 +61,7 @@ describe('Alert Error Component', () => {
       expect(comp.alerts()[1].message).toBe('Second Error Message');
     });
 
-    it('Should display an alert on status 400 for generic error', () => {
+    it('should display an alert on status 400 for generic error', () => {
       // GIVEN
       const response = new HttpErrorResponse({
         url: 'http://localhost:8080/api/foos',
@@ -82,7 +82,7 @@ describe('Alert Error Component', () => {
       expect(comp.alerts()[0].message).toBe('error.validation');
     });
 
-    it('Should display an alert on status 400 for generic error without message', () => {
+    it('should display an alert on status 400 for generic error without message', () => {
       // GIVEN
       const response = new HttpErrorResponse({
         url: 'http://localhost:8080/api/foos',
@@ -96,7 +96,7 @@ describe('Alert Error Component', () => {
       expect(comp.alerts()[0].message).toBe('Bad Request');
     });
 
-    it('Should display an alert on status 400 for invalid parameters', () => {
+    it('should display an alert on status 400 for invalid parameters', () => {
       // GIVEN
       const response = new HttpErrorResponse({
         url: 'http://localhost:8080/api/foos',
@@ -118,7 +118,7 @@ describe('Alert Error Component', () => {
       expect(comp.alerts()[0].message).toBe('Error on field "MinField"');
     });
 
-    it('Should display an alert on status 400 for error headers', () => {
+    it('should display an alert on status 400 for error headers', () => {
       // GIVEN
       const response = new HttpErrorResponse({
         url: 'http://localhost:8080/api/foos',
@@ -136,7 +136,7 @@ describe('Alert Error Component', () => {
       expect(comp.alerts()[0].message).toBe('Error Message');
     });
 
-    it('Should display an alert on status 500 with detail', () => {
+    it('should display an alert on status 500 with detail', () => {
       // GIVEN
       const response = new HttpErrorResponse({
         url: 'http://localhost:8080/api/foos',

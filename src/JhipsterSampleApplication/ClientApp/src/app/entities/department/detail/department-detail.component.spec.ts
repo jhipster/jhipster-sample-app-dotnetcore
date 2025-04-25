@@ -35,7 +35,7 @@ describe('Department Management Detail Component', () => {
   });
 
   describe('OnInit', () => {
-    it('Should load department on init', async () => {
+    it('should load department on init', async () => {
       const harness = await RouterTestingHarness.create();
       const instance = await harness.navigateByUrl('/', DepartmentDetailComponent);
 
@@ -45,7 +45,7 @@ describe('Department Management Detail Component', () => {
   });
 
   describe('PreviousState', () => {
-    it('Should navigate to previous state', () => {
+    it('should navigate to previous state', () => {
       jest.spyOn(window.history, 'back');
       comp.previousState();
       expect(window.history.back).toHaveBeenCalled();

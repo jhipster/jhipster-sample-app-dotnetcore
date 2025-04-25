@@ -78,7 +78,7 @@ describe('Country Management Component', () => {
       );
   });
 
-  it('Should call load all on init', () => {
+  it('should call load all on init', () => {
     // WHEN
     comp.ngOnInit();
 
@@ -88,7 +88,7 @@ describe('Country Management Component', () => {
   });
 
   describe('trackId', () => {
-    it('Should forward to countryService', () => {
+    it('should forward to countryService', () => {
       const entity = { id: 21165 };
       jest.spyOn(service, 'getCountryIdentifier');
       const id = comp.trackId(entity);

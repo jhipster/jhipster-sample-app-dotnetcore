@@ -20,9 +20,9 @@
     </div>
   </h2>
 
-  <jhi-alert-error></jhi-alert-error>
+  <jhi-alert-error />
 
-  <jhi-alert></jhi-alert>
+  <jhi-alert />
 
   @if (employees().length === 0) {
     <div class="alert alert-warning" id="no-result">
@@ -89,6 +89,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="internalUser.id">
+              <div class="d-flex">
+                <span>Internal User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="manager.id">
               <div class="d-flex">
                 <span>Manager</span>
@@ -117,6 +123,9 @@
               <td>{{ employee.hireDate | formatMediumDatetime }}</td>
               <td>{{ employee.salary }}</td>
               <td>{{ employee.commissionPct }}</td>
+              <td>
+                {{ employee.internalUser?.id }}
+              </td>
               <td>
                 @if (employee.manager) {
                   <div>

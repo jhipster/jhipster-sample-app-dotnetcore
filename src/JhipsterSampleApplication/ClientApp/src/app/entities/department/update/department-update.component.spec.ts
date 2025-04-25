@@ -47,7 +47,7 @@ describe('Department Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call Location query and add missing value', () => {
+    it('should call Location query and add missing value', () => {
       const department: IDepartment = { id: 15970 };
       const location: ILocation = { id: 8454 };
       department.location = location;
@@ -69,7 +69,7 @@ describe('Department Management Update Component', () => {
       expect(comp.locationsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should update editForm', () => {
+    it('should update editForm', () => {
       const department: IDepartment = { id: 15970 };
       const location: ILocation = { id: 8454 };
       department.location = location;
@@ -83,7 +83,7 @@ describe('Department Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('Should call update service on save for existing entity', () => {
+    it('should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IDepartment>>();
       const department = { id: 29518 };
@@ -106,7 +106,7 @@ describe('Department Management Update Component', () => {
       expect(comp.isSaving).toEqual(false);
     });
 
-    it('Should call create service on save for new entity', () => {
+    it('should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IDepartment>>();
       const department = { id: 29518 };
@@ -129,7 +129,7 @@ describe('Department Management Update Component', () => {
       expect(comp.previousState).toHaveBeenCalled();
     });
 
-    it('Should set isSaving to false on error', () => {
+    it('should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IDepartment>>();
       const department = { id: 29518 };
@@ -152,7 +152,7 @@ describe('Department Management Update Component', () => {
 
   describe('Compare relationships', () => {
     describe('compareLocation', () => {
-      it('Should forward to locationService', () => {
+      it('should forward to locationService', () => {
         const entity = { id: 8454 };
         const entity2 = { id: 13013 };
         jest.spyOn(locationService, 'compareLocation');

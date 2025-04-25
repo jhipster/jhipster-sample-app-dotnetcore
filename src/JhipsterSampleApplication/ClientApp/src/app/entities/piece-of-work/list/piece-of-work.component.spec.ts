@@ -78,7 +78,7 @@ describe('PieceOfWork Management Component', () => {
       );
   });
 
-  it('Should call load all on init', () => {
+  it('should call load all on init', () => {
     // WHEN
     comp.ngOnInit();
 
@@ -88,7 +88,7 @@ describe('PieceOfWork Management Component', () => {
   });
 
   describe('trackId', () => {
-    it('Should forward to pieceOfWorkService', () => {
+    it('should forward to pieceOfWorkService', () => {
       const entity = { id: 32037 };
       jest.spyOn(service, 'getPieceOfWorkIdentifier');
       const id = comp.trackId(entity);

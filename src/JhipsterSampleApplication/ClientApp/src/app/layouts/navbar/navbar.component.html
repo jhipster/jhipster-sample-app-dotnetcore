@@ -46,6 +46,18 @@
               <li>
                 <a
                   class="dropdown-item"
+                  routerLink="/region"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span>Region</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
                   routerLink="/country"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
@@ -58,6 +70,18 @@
               <li>
                 <a
                   class="dropdown-item"
+                  routerLink="/location"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span>Location</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
                   routerLink="/department"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
@@ -65,6 +89,18 @@
                 >
                   <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
                   <span>Department</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/piece-of-work"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span>Piece Of Work</span>
                 </a>
               </li>
               <li>
@@ -101,42 +137,6 @@
                 >
                   <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
                   <span>Job History</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/location"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Location</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/piece-of-work"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Piece Of Work</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/region"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Region</span>
                 </a>
               </li>
               <li>

@@ -157,7 +157,7 @@ describe('TimeSheet Service', () => {
     });
 
     describe('compareTimeSheet', () => {
-      it('Should return true if both entities are null', () => {
+      it('should return true if both entities are null', () => {
         const entity1 = null;
         const entity2 = null;
 
@@ -166,7 +166,7 @@ describe('TimeSheet Service', () => {
         expect(compareResult).toEqual(true);
       });
 
-      it('Should return false if one entity is null', () => {
+      it('should return false if one entity is null', () => {
         const entity1 = { id: 'dec9d8a0-409c-4f6d-b493-f7f154c53ff6' };
         const entity2 = null;
 
@@ -177,7 +177,7 @@ describe('TimeSheet Service', () => {
         expect(compareResult2).toEqual(false);
       });
 
-      it('Should return false if primaryKey differs', () => {
+      it('should return false if primaryKey differs', () => {
         const entity1 = { id: 'dec9d8a0-409c-4f6d-b493-f7f154c53ff6' };
         const entity2 = { id: 'd6f552c0-8ee7-4bb7-8593-218d779b5369' };
 
@@ -188,7 +188,7 @@ describe('TimeSheet Service', () => {
         expect(compareResult2).toEqual(false);
       });
 
-      it('Should return false if primaryKey matches', () => {
+      it('should return false if primaryKey matches', () => {
         const entity1 = { id: 'dec9d8a0-409c-4f6d-b493-f7f154c53ff6' };
         const entity2 = { id: 'dec9d8a0-409c-4f6d-b493-f7f154c53ff6' };
 

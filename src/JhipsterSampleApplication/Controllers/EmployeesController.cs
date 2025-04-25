@@ -72,6 +72,7 @@ namespace JhipsterSampleApplication.Controllers
         {
             _log.LogDebug("REST request to get a page of Employees");
             var result = await _employeeRepository.QueryHelper()
+                .Include(employee => employee.InternalUser)
                 .Include(employee => employee.Manager)
                 .Include(employee => employee.Department)
                 .GetPageAsync(pageable);
@@ -84,6 +85,7 @@ namespace JhipsterSampleApplication.Controllers
         {
             _log.LogDebug($"REST request to get Employee : {id}");
             var result = await _employeeRepository.QueryHelper()
+                .Include(employee => employee.InternalUser)
                 .Include(employee => employee.Manager)
                 .Include(employee => employee.Department)
                 .GetOneAsync(employee => employee.Id == id);

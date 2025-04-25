@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using JhipsterSampleApplication.Crosscutting.Constants;
 using JhipsterSampleApplication.Configuration;
-using JhipsterSampleApplication.Security;
 using JhipsterSampleApplication.Test.Configuration;
+using JhipsterSampleApplication.Domain.Services.Interfaces;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Moq;
 
 namespace JhipsterSampleApplication.Test.Setup;
 
@@ -45,6 +48,7 @@ public class AppWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntr
             .UseSolutionRelativeContentRoot("src/JhipsterSampleApplication")
             .ConfigureServices(services =>
             {
+                services.AddSingleton(CreateMockMailService().Object);
                 services
                     .AddMvc(TestMvcStartup.ConfigureMvcAuthorization());
                 services.Replace(new ServiceDescriptor(typeof(IHttpContextFactory), typeof(MockHttpContextFactory),
@@ -79,5 +83,22 @@ public class AppWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntr
         var claims = new List<Claim> { new Claim(SecurityStartup.UserNameClaimType, name) };
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
         return new ClaimsPrincipal(new ClaimsIdentity(claims.ToArray(), authenticationType));
+    }
+
+    private static Mock<IMailService> CreateMockMailService()
+    {
+        // Setup mock mail service with default successful responses
+        var mockMailService = new Mock<IMailService>();
+        var setups = new Expression<Func<IMailService, Task>>[]
+        {
+            x => x.SendActivationEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+            x => x.SendCreationEmail(It.IsAny<string>(), It.IsAny<string>()),
+            x => x.SendPasswordResetMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+        };
+        foreach (Expression<Func<IMailService, Task>> setup in setups)
+        {
+            mockMailService.Setup(setup).Returns(Task.CompletedTask);
+        }
+        return mockMailService;
     }
 }

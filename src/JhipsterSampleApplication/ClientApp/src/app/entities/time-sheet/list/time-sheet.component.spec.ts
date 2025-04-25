@@ -78,7 +78,7 @@ describe('TimeSheet Management Component', () => {
       );
   });
 
-  it('Should call load all on init', () => {
+  it('should call load all on init', () => {
     // WHEN
     comp.ngOnInit();
 
@@ -88,7 +88,7 @@ describe('TimeSheet Management Component', () => {
   });
 
   describe('trackId', () => {
-    it('Should forward to timeSheetService', () => {
+    it('should forward to timeSheetService', () => {
       const entity = { id: 'dec9d8a0-409c-4f6d-b493-f7f154c53ff6' };
       jest.spyOn(service, 'getTimeSheetIdentifier');
       const id = comp.trackId(entity);

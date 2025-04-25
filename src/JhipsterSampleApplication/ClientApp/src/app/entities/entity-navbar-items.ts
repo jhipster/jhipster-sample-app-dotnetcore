@@ -2,12 +2,24 @@ import NavbarItem from 'app/layouts/navbar/navbar-item.model';
 
 export const EntityNavbarItems: NavbarItem[] = [
   {
+    name: 'Region',
+    route: '/region',
+  },
+  {
     name: 'Country',
     route: '/country',
   },
   {
+    name: 'Location',
+    route: '/location',
+  },
+  {
     name: 'Department',
     route: '/department',
+  },
+  {
+    name: 'PieceOfWork',
+    route: '/piece-of-work',
   },
   {
     name: 'Employee',
@@ -20,18 +32,6 @@ export const EntityNavbarItems: NavbarItem[] = [
   {
     name: 'JobHistory',
     route: '/job-history',
-  },
-  {
-    name: 'Location',
-    route: '/location',
-  },
-  {
-    name: 'PieceOfWork',
-    route: '/piece-of-work',
-  },
-  {
-    name: 'Region',
-    route: '/region',
   },
   {
     name: 'TimeSheet',

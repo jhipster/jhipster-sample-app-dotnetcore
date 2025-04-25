@@ -1,8 +1,8 @@
 # JhipsterSampleApplication
 
-This application was generated using JHipster 8.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.8.0](https://www.jhipster.tech/documentation-archive/v8.8.0).
+This application was generated using JHipster 8.10.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.10.0](https://www.jhipster.tech/documentation-archive/v8.10.0).
 
-This application was generated using JHipster 8.8.0 and JHipster .Net Core , you can find documentation and help at https://jhipsternet.readthedocs.io/en/latest/index.html and [https://www.jhipster.tech/documentation-archive/v8.8.0](https://www.jhipster.tech/documentation-archive/v8.8.0).
+This application was generated using JHipster 8.10.0 and JHipster .Net Core , you can find documentation and help at https://jhipsternet.readthedocs.io/en/latest/index.html and [https://www.jhipster.tech/documentation-archive/v8.10.0](https://www.jhipster.tech/documentation-archive/v8.10.0).
 
 ## Project Structure
 
@@ -157,7 +157,7 @@ dotnet test --verbosity normal
 
 ### Client tests
 
-Unit tests are run by [Jest][]. They're located in [src/JhipsterSampleApplication/ClientApp/test/](src/JhipsterSampleApplication/ClientApp/test/) and can be run with:
+Unit tests are run by [Jest][]. They're located near components and can be run with:
 
 ```
 npm test
@@ -245,18 +245,18 @@ docker compose -f .\docker\app.yml up
 ```
 
 [JHipster Homepage and latest documentation]: https://www.jhipster.tech
-[JHipster 8.8.0 archive]: https://www.jhipster.tech/documentation-archive/v8.8.0
-[Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v8.8.0/development/
-[Using Docker and Docker-Compose]: https://www.jhipster.tech/documentation-archive/v8.8.0/docker-compose
-[Using JHipster in production]: https://www.jhipster.tech/documentation-archive/v8.8.0/production/
-[Running tests page]: https://www.jhipster.tech/documentation-archive/v8.8.0/running-tests/
-[Code quality page]: https://www.jhipster.tech/documentation-archive/v8.8.0/code-quality/
-[Setting up Continuous Integration]: https://www.jhipster.tech/documentation-archive/v8.8.0/setting-up-ci/
+[JHipster 8.10.0 archive]: https://www.jhipster.tech/documentation-archive/v8.10.0
+[Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v8.10.0/development/
+[Using Docker and Docker-Compose]: https://www.jhipster.tech/documentation-archive/v8.10.0/docker-compose
+[Using JHipster in production]: https://www.jhipster.tech/documentation-archive/v8.10.0/production/
+[Running tests page]: https://www.jhipster.tech/documentation-archive/v8.10.0/running-tests/
+[Code quality page]: https://www.jhipster.tech/documentation-archive/v8.10.0/code-quality/
+[Setting up Continuous Integration]: https://www.jhipster.tech/documentation-archive/v8.10.0/setting-up-ci/
 [Node.js]: https://nodejs.org/
 [NPM]: https://www.npmjs.com/
 [Webpack]: https://webpack.github.io/
 [BrowserSync]: https://www.browsersync.io/
-[Jest]: https://facebook.github.io/jest/
+[Jest]: https://jestjs.io
 [Cypress]: https://www.cypress.io/
 [Leaflet]: https://leafletjs.com/
 [DefinitelyTyped]: https://definitelytyped.org/

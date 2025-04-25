@@ -172,9 +172,9 @@ describe('Employee e2e test', () => {
       cy.get(`[data-cy="phoneNumber"]`).type('abnegate');
       cy.get(`[data-cy="phoneNumber"]`).should('have.value', 'abnegate');
 
-      cy.get(`[data-cy="hireDate"]`).type('2025-02-06T11:51');
+      cy.get(`[data-cy="hireDate"]`).type('2025-04-24T23:30');
       cy.get(`[data-cy="hireDate"]`).blur();
-      cy.get(`[data-cy="hireDate"]`).should('have.value', '2025-02-06T11:51');
+      cy.get(`[data-cy="hireDate"]`).should('have.value', '2025-04-24T23:30');
 
       cy.get(`[data-cy="salary"]`).type('28526');
       cy.get(`[data-cy="salary"]`).should('have.value', '28526');

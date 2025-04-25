@@ -55,7 +55,7 @@ describe('JobHistory Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call Job query and add missing value', () => {
+    it('should call Job query and add missing value', () => {
       const jobHistory: IJobHistory = { id: 27293 };
       const job: IJob = { id: 30796 };
       jobHistory.job = job;
@@ -74,7 +74,7 @@ describe('JobHistory Management Update Component', () => {
       expect(comp.jobsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Department query and add missing value', () => {
+    it('should call Department query and add missing value', () => {
       const jobHistory: IJobHistory = { id: 27293 };
       const department: IDepartment = { id: 29518 };
       jobHistory.department = department;
@@ -96,7 +96,7 @@ describe('JobHistory Management Update Component', () => {
       expect(comp.departmentsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Employee query and add missing value', () => {
+    it('should call Employee query and add missing value', () => {
       const jobHistory: IJobHistory = { id: 27293 };
       const employee: IEmployee = { id: 1749 };
       jobHistory.employee = employee;
@@ -118,7 +118,7 @@ describe('JobHistory Management Update Component', () => {
       expect(comp.employeesSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should update editForm', () => {
+    it('should update editForm', () => {
       const jobHistory: IJobHistory = { id: 27293 };
       const job: IJob = { id: 30796 };
       jobHistory.job = job;
@@ -138,7 +138,7 @@ describe('JobHistory Management Update Component', () => {
   });
 
   describe('save', () => {
-    it('Should call update service on save for existing entity', () => {
+    it('should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IJobHistory>>();
       const jobHistory = { id: 18667 };
@@ -161,7 +161,7 @@ describe('JobHistory Management Update Component', () => {
       expect(comp.isSaving).toEqual(false);
     });
 
-    it('Should call create service on save for new entity', () => {
+    it('should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IJobHistory>>();
       const jobHistory = { id: 18667 };
@@ -184,7 +184,7 @@ describe('JobHistory Management Update Component', () => {
       expect(comp.previousState).toHaveBeenCalled();
     });
 
-    it('Should set isSaving to false on error', () => {
+    it('should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IJobHistory>>();
       const jobHistory = { id: 18667 };
@@ -207,7 +207,7 @@ describe('JobHistory Management Update Component', () => {
 
   describe('Compare relationships', () => {
     describe('compareJob', () => {
-      it('Should forward to jobService', () => {
+      it('should forward to jobService', () => {
         const entity = { id: 30796 };
         const entity2 = { id: 29383 };
         jest.spyOn(jobService, 'compareJob');
@@ -217,7 +217,7 @@ describe('JobHistory Management Update Component', () => {
     });
 
     describe('compareDepartment', () => {
-      it('Should forward to departmentService', () => {
+      it('should forward to departmentService', () => {
         const entity = { id: 29518 };
         const entity2 = { id: 15970 };
         jest.spyOn(departmentService, 'compareDepartment');
@@ -227,7 +227,7 @@ describe('JobHistory Management Update Component', () => {
     });
 
     describe('compareEmployee', () => {
-      it('Should forward to employeeService', () => {
+      it('should forward to employeeService', () => {
         const entity = { id: 1749 };
         const entity2 = { id: 1545 };
         jest.spyOn(employeeService, 'compareEmployee');

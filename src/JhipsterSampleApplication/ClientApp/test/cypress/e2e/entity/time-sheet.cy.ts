@@ -157,9 +157,9 @@ describe('TimeSheet e2e test', () => {
     });
 
     it('should create an instance of TimeSheet', () => {
-      cy.get(`[data-cy="timeSheetDate"]`).type('2025-02-05');
+      cy.get(`[data-cy="timeSheetDate"]`).type('2025-04-24');
       cy.get(`[data-cy="timeSheetDate"]`).blur();
-      cy.get(`[data-cy="timeSheetDate"]`).should('have.value', '2025-02-05');
+      cy.get(`[data-cy="timeSheetDate"]`).should('have.value', '2025-04-24');
 
       cy.get(entityCreateSaveButtonSelector).click();
 
