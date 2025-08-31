@@ -383,7 +383,9 @@ export class QueryInputComponent implements OnInit {
   saveNamedRuleset(rs: RuleSet) {
     if (rs.name) {
       this.namedRulesets[rs.name] = JSON.parse(JSON.stringify(rs));
-      const bql = rulesetToBql(rs, this.queryBuilderConfig);
+      const rsClone = JSON.parse(JSON.stringify(rs));
+      delete rsClone.name;
+      const bql = rulesetToBql(rsClone, this.queryBuilderConfig);
       const payload: NamedQuery = {
         name: rs.name,
         text: bql,
